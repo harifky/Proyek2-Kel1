@@ -19,9 +19,9 @@ Basic Fitur (Requirement)
 - Score System
 - Next Block Preview
 - Hold Block
-- Ghost Block
-- Level System
-- Game Over Screen
-- Save and Load Game
+- Ghost Block.
+- Level System.
+- Game Over Screen.
+- Save and Load Game.
 
 references game (Tricky Towers, Puyo puyo)
