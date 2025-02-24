@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and Run C++ with graphics.h",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "${file}", 
+                "-o", "${fileDirname}/output.exe",
+                "-lbgi", "-lgdi32", "-lcomdlg32", "-luuid", "-loleaut32", "-lole32"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Compile C++ with graphics.h in VS Code"
+        }
+    ]
+}
