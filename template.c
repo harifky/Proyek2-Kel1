@@ -2,8 +2,8 @@
 #include <conio.h>
 #include <stdio.h>
 
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH  620
+#define SCREEN_HEIGHT 440
 #define BLOCK_SIZE    20
 
 // Struktur untuk menyimpan data permainan
@@ -19,13 +19,15 @@ typedef struct {
 
 GameState game;
 
-// Inisialisasi grafikoid initGraphics() {
+void initGraphics() {
     int gd = DETECT, gm;
     initgraph(&gd, &gm, "");
+
 }
 
 // Menggambar papan permainan
 void drawBoard() {
+    int x = 100, y = 100;
     // TODO: Implementasi menggambar papan dan blok
 }
 
