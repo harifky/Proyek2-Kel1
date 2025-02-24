@@ -12,11 +12,12 @@ Melanjutkan eksplorasi git dan menggunakan graphics.h Menentukan atau mengidenti
 
 Game yang dipilih tetris Kebutuhan Program: Basic Fitur (Requirement)
 
-Score System
-Next Block Preview
-Hold Block
-Ghost Block.
-Level System.
-Game Over Screen.
-Save and Load Game.
+-Score System
+-Next Block Preview
+-Hold Block
+-Ghost Block.
+-Level System.
+-Game Over Screen.
+-Save and Load Game.
+
 references game (Tricky Towers, Puyo puyo)
