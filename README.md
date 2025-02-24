@@ -8,14 +8,14 @@ ide untuk game yang akan dibuat saat ini Tetris dan Pacman
 
 Pertemuan 2
 
-Melanjutkan eksplorasi git dan menggunakan graphics.h
-Menentukan atau mengidentifikasi fitur game apa saja yang diinginkan
-Jelaskan detail dari fitur tersebut
-Pembagian tugas terhadap kelompok
+- Melanjutkan eksplorasi git dan menggunakan graphics.h
+- Menentukan atau mengidentifikasi fitur game apa saja yang diinginkan
+- Jelaskan detail dari fitur tersebut
+- Pembagian tugas terhadap kelompok
 
-Game yang dipilih tetris
-Kebutuhan Program:
-Basic Fitur (Requirement)
+- Game yang dipilih tetris
+- Kebutuhan Program:
+- Basic Fitur (Requirement)
 - Score System
 - Next Block Preview
 - Hold Block
