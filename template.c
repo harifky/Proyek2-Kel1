@@ -12,27 +12,6 @@
 #define GRID_X 100     // Posisi awal grid di layar
 #define GRID_Y 0
 
-// // Bentuk Tetromino (T)
-// int tetromino[4][4] = {
-//     {0, 1, 0, 0},
-//     {0, 1, 0, 0},
-//     {1, 1, 0, 0},
-//     {0, 0, 0, 0}
-// };
-
-// // Fungsi untuk menggambar satu Tetromino di posisi (x, y)
-// void drawTetromino(int x, int y, int color) {
-//     setfillstyle(SOLID_FILL, color);
-    
-//     for (int i = 0; i < 4; i++) {
-//         for (int j = 0; j < 4; j++) {
-//             if (tetromino[i][j] == 1) {
-//                 bar(x + j * BLOCK_SIZE, y + i * BLOCK_SIZE, 
-//                     x + (j + 1) * BLOCK_SIZE, y + (i + 1) * BLOCK_SIZE);
-//             }
-//         }
-//     }
-// }
 
 typedef enum { I, O, T, L, J, S, Z } TetrominoType;
 
@@ -192,7 +171,7 @@ int main() {
     // gameLoop();
 
     // drawTetromino(GRID_X, GRID_Y, T);
-    currentTetronimo = T;
+    currentTetronimo = J;
 
     while(1){
 
