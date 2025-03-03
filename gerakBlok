@@ -1,0 +1,64 @@
+#include <graphics.h>
+#include <conio.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SCREEN_WIDTH  640
+#define SCREEN_HEIGHT 480
+#define BLOCK_SIZE    30
+#define SPEED         10  // Kecepatan gerakan
+
+// Posisi awal blok
+int x = 200, y = 50;
+int rotation = 0; // Status rotasi (0-3)
+
+// Fungsi untuk menggambar blok berbentuk "T"
+void drawTshape(int x, int y, int rotation, int color) {
+    setfillstyle(SOLID_FILL, color);
+    
+    if (rotation == 0) {  // Bentuk awal
+        bar(x, y, x + BLOCK_SIZE * 3, y + BLOCK_SIZE);
+        bar(x + BLOCK_SIZE, y + BLOCK_SIZE, x + BLOCK_SIZE * 2, y + BLOCK_SIZE * 2);
+    } 
+    else if (rotation == 1) {  // Rotasi 90 derajat
+        bar(x + BLOCK_SIZE, y, x + BLOCK_SIZE * 2, y + BLOCK_SIZE * 3);
+        bar(x, y + BLOCK_SIZE, x + BLOCK_SIZE * 3, y + BLOCK_SIZE * 2);
+    } 
+    else if (rotation == 2) {  // Rotasi 180 derajat
+        bar(x, y + BLOCK_SIZE, x + BLOCK_SIZE * 3, y + BLOCK_SIZE * 2);
+        bar(x + BLOCK_SIZE, y, x + BLOCK_SIZE * 2, y + BLOCK_SIZE);
+    } 
+    else if (rotation == 3) {  // Rotasi 270 derajat
+        bar(x + BLOCK_SIZE, y, x + BLOCK_SIZE * 2, y + BLOCK_SIZE * 3);
+        bar(x, y + BLOCK_SIZE, x + BLOCK_SIZE * 3, y + BLOCK_SIZE * 2);
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, NULL);
+
+    while (1) {
+        cleardevice();  // Hapus gambar sebelumnya
+
+        // Gambar bentuk T di posisi saat ini
+        drawTshape(x, y, rotation, RED);
+
+        // Menangani input keyboard untuk menggerakkan blok
+        if (kbhit()) {
+            char ch = getch();
+            
+            if (ch == 27) break;  // Tekan ESC untuk keluar
+            if (ch == 75) x -= SPEED;  // ← Kiri
+            if (ch == 77) x += SPEED;  // → Kanan
+            if (ch == 80) y += SPEED;  // ↓ Turun lebih cepat
+            if (ch == 32) y += 3 * SPEED; // SPACE: Langsung turun
+            if (ch == 72) rotation = (rotation + 1) % 4; // ↑ Rotasi searah jarum jam
+        }
+
+        delay(50); // Mengontrol kecepatan pergerakan
+    }
+
+    closegraph();
+    return 0;
+}
