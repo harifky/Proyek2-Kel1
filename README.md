@@ -1,7 +1,15 @@
 # Proyek2-Kel1
 Percobaan pertama pembuatan game retro menggunakan Bahasa C
 
-Pertemuan 1
+Anggota:
+- Hafizh Andika
+- M. Naufal Alfarizky
+- M. Naufal Nurmaryadi
+- Micky Ridho
+- Rifky Hermawan
 
-Menentukan Jenis game yang kaan dibuat
-ide untuk game yang akan dibuat saat ini Tetris dan Pacman
+Judul Game = Tetromania
+
+Progres
+- Per 24 Februari 2025
+-- Membuat assets block dan background oleh Hafizh dan M. N. Nurmaryadi

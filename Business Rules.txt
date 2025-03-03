@@ -1,0 +1,25 @@
+Business Rules - Tetromania
+- Aturan Umum
+-- Tetromania adalah permainan berbasis Tetris yang dimainkan pada area grid dengan ukuran tertentu.
+-- Pemain mengontrol blok yang jatuh dan harus menyusunnya agar membentuk baris penuh.
+-- Blok akan turun secara otomatis, tetapi pemain bisa menggerakkan dan memutar blok.
+-- Jika tumpukan blok mencapai batas atas layar, permainan berakhir.
+
+- Aturan Blok dan Gerakan
+-- Setiap blok (Tetromino) memiliki bentuk dan warna berbeda.
+-- Blok dapat digerakkan ke kiri atau kanan.
+-- Pemain dapat memutar blok dalam dua orientasi (horizontal dan vertikal).
+-- Jika pemain menekan Spasi, blok langsung jatuh ke posisi terendah yang tersedia.
+-- Blok akan berhenti jika bertabrakan dengan blok lain atau dasar permainan.
+
+- Aturan Skor
+-- Pemain mendapatkan 100 poin untuk setiap baris yang berhasil dihapus.
+-- Jika lebih dari satu baris terhapus sekaligus, pemain mendapatkan poin tambahan:
+--- 1 baris = 100 poin
+--- 2 baris = 250 poin
+--- 3 baris = 400 poin
+--- 4 baris (Tetris) = 800 poin
+-- Skor total akan ditampilkan di layar selama permainan berlangsung.
+
+- Aturan Kemenangan & Kekalahan
+-- Permainan berakhir jika blok mencapai batas atas layar.
