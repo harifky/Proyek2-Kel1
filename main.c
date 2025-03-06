@@ -175,7 +175,7 @@ int main() {
         drawGrid();
         drawShape(x, y, currentShape);
         drawScore();
-        delay(250);
+        delay(100);
 
         if (kbhit()) {
             char key = getch();
