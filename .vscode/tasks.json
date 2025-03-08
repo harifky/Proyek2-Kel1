@@ -6,8 +6,11 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "${file}", 
-                "-o", "${fileDirname}/output.exe",
+                "main.c", 
+                "body/game.c",
+                "body/grid.c",
+                "body/tetromino.c",
+                "-o", "output/output.exe",
                 "-lbgi", "-lgdi32", "-lcomdlg32", "-luuid", "-loleaut32", "-lole32"
             ],
             "group": {
