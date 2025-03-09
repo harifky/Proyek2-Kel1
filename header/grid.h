@@ -1,8 +1,8 @@
 #ifndef GRID_H
 #define GRID_H
 
-#include "game.h"
-#include "tetromino.h"
+#define GRID_WIDTH 10
+#define GRID_HEIGHT 20
 
 typedef struct {
     int x, y;
@@ -17,10 +17,12 @@ typedef struct {
 
 void drawGrid(Grid grid);
 
-void drawPanel(Panel panel);
+void drawPanel(Panel panel, int score);
 
 void drawHoldPanel(Panel panel);
 
-void storeTetrominoInGrid(Grid *grid, Tetromino t)
+void drawStoredBlocks(Grid *grid);
+
+int clearFullRows(Grid *grid);
 
 #endif
