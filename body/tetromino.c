@@ -6,17 +6,18 @@
 
 // Definisi bentuk Tetromino (koordinat relatif terhadap pusat rotasi)
 const Block tetrominoShapes[7][4] = {
-    {{-1, 0}, {0, 0}, {0, 1}, {0, 2}},   // I (Garis)
+    {{-1, 0}, {0, 0}, {1, 0}, {2, 0}},  // I (Garis)
     {{1, 0}, {0, 0}, {0, 1}, {1, 1}},   // O (Kotak)
     {{-1, 0}, {0, 0}, {1, 0}, {0, 1}},  // T
-    {{-1, 0}, {0, 0}, {1, 0}, {1, 1}},   // L
-    {{1, }, {0, 0}, {-1, 0}, {1, -1}},  // J
+    {{-1, 0}, {0, 0}, {1, 0}, {1, 1}},  // L
+    {{1, 0}, {0, 0}, {-1, 0}, {1, -1}}, // J
     {{1, 0}, {0, 0}, {0, 1}, {-1, 1}},  // Z
     {{-1, 0}, {0, 0}, {0, 1}, {1, 1}}   // S
 };
 
 // Warna Tetromino
 const int tetrominoColors[7] = {CYAN, YELLOW, MAGENTA, LIGHTRED, BLUE, RED, GREEN};
+
 
 Tetromino createTetromino(int type, int startX, int startY) {
     Tetromino t;
@@ -27,6 +28,7 @@ Tetromino createTetromino(int type, int startX, int startY) {
     t.color = tetrominoColors[type]; // Menentukan warna berdasarkan tipe
     return t;
 }
+
 
 void drawTetromino(Tetromino t) {
     // setcolor(t.color);
@@ -46,6 +48,7 @@ void drawTetromino(Tetromino t) {
         }
     }
 }
+
 
 void moveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
     if (canMoveTetromino(t, grid, dx, dy)) {
@@ -116,13 +119,30 @@ void rotateTetromino(Tetromino *t, Grid *grid) {
     }
 }
 
-void hardDropTetromino(Tetromino *t, Grid *grid) {
+void hardDropTetromino(Tetromino *t, Grid *grid, int *score) {
     while (canMoveDown(t, grid)) {
         moveTetromino(t, grid, 0, 1); // Turunkan terus hingga mentok
     }
 
     storeTetrominoInGrid(grid, t); // Simpan blok di grid
-    clearFullRows(grid); // Hapus baris penuh jika ada
+    printf("Memeriksa baris penuh...\n");
+    int rowsCleared = clearFullRows(grid);
+    printf("Baris dihapus: %d\n", rowsCleared); // DEBUGGING
+    printf("Baris dihapus:ufqeyjhkajslnd;ckoesuk \n"); // DEBUGGING
+
+    // Tambahkan skor berdasarkan jumlah baris yang dihapus
+    if (rowsCleared == 1) {
+        *score += 100;
+    } else if (rowsCleared == 2) { 
+        *score += 300;
+    } else if (rowsCleared == 3) {
+        *score += 500;
+    } else if (rowsCleared == 4) {
+        *score += 800;
+    }
+
+    printf("Score setelah update: %d\n", *score); // Debugging
+
 
     // Buat Tetromino baru setelah hard drop
     *t = createTetromino(setRandomTetromino(), 5, -2);
@@ -147,17 +167,39 @@ int canMoveDown(Tetromino *t, Grid *grid) {
 }
 
 void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
+    printf("Menyimpan tetromino...\n");
     for (int i = 0; i < 4; i++) {
         int x = t->blocks[i].x;
         int y = t->blocks[i].y;
 
         if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
-            grid->cells[y][x] = t->color;  // Gunakan '.' untuk mengakses struct
+            grid->cells[y][x] = t->color;
+        } else {
+            printf("ERROR: Blok di luar batas grid! x: %d, y: %d\n", x, y);
         }
+
+
+        // // Cek apakah blok berada dalam batas grid
+        // if (y >= 0 && y < GRID_HEIGHT && x >= 0 && x < GRID_WIDTH) {
+        //     grid->cells[y][x] = t->color;
+        // } 
     }
+
+    printf("Grid setelah tetromino disimpan:\n");
+    for (int y = 0; y < GRID_HEIGHT; y++) {
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            printf("%d ", grid->cells[y][x]);
+        }
+        printf("\n");
+    }
+    printf("Keluar dari storeTetrominoInGrid()\n\n");
+
+
 }
 
 int setRandomTetromino() {
     srand(time(NULL)); // Seed untuk angka acak
-    return rand() % 7; // menentukan jenis tetromino 
+    int type = rand() % 7;
+    printf("type : %d\n", type);
+    return type; // menentukan jenis tetromino 
 }

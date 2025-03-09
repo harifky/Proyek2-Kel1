@@ -1,10 +1,11 @@
 #include <graphics.h>
 #include <string.h>
+
 #include "../header/grid.h"
 #include "../header/game.h"
 #include "../header/tetromino.h"
 
-
+//fungsi untuk menggambar Grid
 void drawGrid(Grid grid) {
     for (int i = 0; i <= GRID_WIDTH; i++) {
         line(grid.x + i * BLOCK_SIZE, grid.y, grid.x + i * BLOCK_SIZE, grid.y + GRID_HEIGHT * BLOCK_SIZE);
@@ -14,6 +15,7 @@ void drawGrid(Grid grid) {
     }
 }
 
+//fungsi untuk menggambar holdPanel
 void drawHoldPanel(Panel panel){
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
     char holdText[] = "Hold";
@@ -21,11 +23,13 @@ void drawHoldPanel(Panel panel){
     outtextxy(panel.x + 20, panel.y + 20, holdText);
 }
 
-void drawPanel(Panel panel, int score) {
+//fungsi untuk menggambar panel
+void drawPanel(Panel panel, int *score) {
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
     
     char scoreText[20];
-    sprintf(scoreText, "Score: %d", score);
+    sprintf(scoreText, "Score: %d", *score);
+    
     char hiScoreText[] = "Hi-Score";
     char speedText[] = "Speed";
     char nextText[] = "Next";
@@ -36,7 +40,7 @@ void drawPanel(Panel panel, int score) {
     outtextxy(panel.x + 20, panel.y + 150, nextText);
 }
 
-// Fungsi untuk menggambar ulang blok yang sudah tersimpan di grid
+//fungsi untuk menggambar blok yang sudah disimpan dalam grid
 void drawStoredBlocks(Grid *grid) {
     for (int y = 0; y < GRID_HEIGHT; y++) {
         for (int x = 0; x < GRID_WIDTH; x++) {
@@ -54,34 +58,37 @@ void drawStoredBlocks(Grid *grid) {
     }
 }
 
+//fungsi untuk menghapus baris yang sudah penuh
 int clearFullRows(Grid *grid) {
+    printf("Menghapus rows\n");
     int rowsCleared = 0;
 
     for (int y = 0; y < GRID_HEIGHT; y++) {
-        bool full = true;
+        int full = 1;  // Anggap penuh
         for (int x = 0; x < GRID_WIDTH; x++) {
             if (grid->cells[y][x] == 0) {
-                full = false;
+                full = 0; // Baris ini tidak penuh
                 break;
             }
         }
 
         if (full) {
-            rowsCleared++;
-
-            // Geser semua baris di atas ke bawah
-            for (int row = y; row > 0; row--) {
-                for (int x = 0; x < GRID_WIDTH; x++) {
-                    grid->cells[row][x] = grid->cells[row - 1][x];
+            printf("Baris penuh ditemukan di y=%d\n", y);
+            // Geser semua baris ke bawah
+            for (int i = y; i > 0; i--) {
+                for (int j = 0; j < GRID_WIDTH; j++) {
+                    grid->cells[i][j] = grid->cells[i - 1][j];
                 }
             }
 
             // Kosongkan baris paling atas
-            for (int x = 0; x < GRID_WIDTH; x++) {
-                grid->cells[0][x] = 0;
+            for (int j = 0; j < GRID_WIDTH; j++) {
+                grid->cells[0][j] = 0;
             }
+
+            rowsCleared++; // Tambah jumlah baris yang dihapus
         }
     }
 
-    return rowsCleared; // Kembalikan jumlah baris yang dihapus
+    return rowsCleared;
 }
