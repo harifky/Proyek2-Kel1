@@ -4,7 +4,7 @@
         {
             "label": "Build and Run C++ with graphics.h",
             "type": "shell",
-            "command": "g++",
+            "command": "cmd",
             "args": [
                 "${file}", 
                 "-o", "${fileDirname}/main.exe",
