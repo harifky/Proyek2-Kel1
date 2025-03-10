@@ -126,23 +126,8 @@ void hardDropTetromino(Tetromino *t, Grid *grid, int *score) {
 
     storeTetrominoInGrid(grid, t); // Simpan blok di grid
     printf("Memeriksa baris penuh...\n");
-    int rowsCleared = clearFullRows(grid);
-    printf("Baris dihapus: %d\n", rowsCleared); // DEBUGGING
-    printf("Baris dihapus:ufqeyjhkajslnd;ckoesuk \n"); // DEBUGGING
 
-    // Tambahkan skor berdasarkan jumlah baris yang dihapus
-    if (rowsCleared == 1) {
-        *score += 100;
-    } else if (rowsCleared == 2) { 
-        *score += 300;
-    } else if (rowsCleared == 3) {
-        *score += 500;
-    } else if (rowsCleared == 4) {
-        *score += 800;
-    }
-
-    printf("Score setelah update: %d\n", *score); // Debugging
-
+    *score = addScore(score, grid);
 
     // Buat Tetromino baru setelah hard drop
     *t = createTetromino(setRandomTetromino(), 5, -2);
@@ -202,4 +187,26 @@ int setRandomTetromino() {
     int type = rand() % 7;
     printf("type : %d\n", type);
     return type; // menentukan jenis tetromino 
+}
+
+int addScore(int *score, Grid *grid){
+    printf("Memeriksa baris penuh...\n");
+    int rowsCleared = clearFullRows(grid);
+    printf("Baris dihapus: %d\n", rowsCleared); // DEBUGGING
+    printf("Baris dihapus:ufqeyjhkajslnd;ckoesuk \n"); // DEBUGGING
+
+    // Tambahkan skor berdasarkan jumlah baris yang dihapus
+    if (rowsCleared == 1) {
+        *score += 100;
+    } else if (rowsCleared == 2) { 
+        *score += 250;
+    } else if (rowsCleared == 3) {
+        *score += 400;
+    } else if (rowsCleared == 4) {
+        *score += 800;
+    }
+
+    return *score;
+
+    printf("Score setelah update: %d\n", *score); // Debugging
 }
