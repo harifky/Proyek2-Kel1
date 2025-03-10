@@ -41,6 +41,27 @@ void drawBackground() {
         line(0, i, SCREEN_WIDTH, i);
 }
 
+// Fungsi menggambar bentuk blok
+void drawShape(int x, int y, BlockShape shape) {
+    for (int i = 0; i < 4; i++) {
+        drawBlock(x + shape.coords[i][0] * BLOCK_SIZE, y + shape.coords[i][1] * BLOCK_SIZE, shape.color);
+    }
+}
+
+// Menampilkan semua contoh blok di layar
+void drawExampleShapes() {
+    int startX = SCREEN_WIDTH / 4;  // Mulai dari kiri
+    int startY = SCREEN_HEIGHT / 4; // Mulai dari atas
+    int spacing = BLOCK_SIZE * 5;   // Jarak antar blok
+
+    for (int i = 0; i < sizeof(shapes) / sizeof(shapes[0]); i++) {
+        int posX = startX + (i % 2) * spacing;  // Sebarkan dalam 2 kolom
+        int posY = startY + (i / 2) * spacing;  // Baris baru tiap 2 blok
+        drawShape(posX, posY, shapes[i]);       // Gambar setiap bentuk
+    }
+}
+
+
 int main() {
     int gd = DETECT, gm;
     initgraph(&gd, &gm, NULL);
@@ -49,8 +70,7 @@ int main() {
     drawBackground(); // Menggambar latar belakang
     
     // Menampilkan contoh blok di tengah layar
-    BlockShape exampleShape = shapes[0];
-    drawBlock(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, exampleShape.color);
+    drawExampleShapes(); // Panggil fungsi untuk menampilkan semua blok contoh
     
     getch();
     closegraph();
