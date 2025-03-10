@@ -27,4 +27,6 @@ void drawStoredBlocks(Grid *grid); //fungsi untuk menggambar blok yang sudah dis
 
 int clearFullRows(Grid *grid); //fungsi untuk menghapus baris yang sudah penuh
 
+void drawScore(Panel panel, int score);
+
 #endif
