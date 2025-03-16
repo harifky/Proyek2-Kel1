@@ -42,4 +42,6 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t);
 //fungsi untuk menentukan tetromino secara acak
 int setRandomTetromino();
 
+int addScore(int *score, Grid *grid);
+
 #endif

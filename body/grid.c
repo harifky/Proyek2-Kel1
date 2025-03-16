@@ -92,3 +92,13 @@ int clearFullRows(Grid *grid) {
 
     return rowsCleared;
 }
+
+
+// void drawScore(Panel panel, int score){
+//     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
+
+//     char scoreGet[20];
+//     sprintf(scoreGet, "Great\n+%d", score);
+
+//     outtextxy(panel.x + 100, panel.y + 100, scoreGet);
+// }
