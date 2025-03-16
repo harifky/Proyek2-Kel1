@@ -18,7 +18,7 @@ typedef struct {
 // Fungsi untuk membuat Tetromino
 Tetromino createTetromino(int type, int startX, int startY);
 
-// Fungsi untuk menggambar Tetromino
+// Fungsi untuk menggambar Tetrominoz
 void drawTetromino(Tetromino t);
 
 // fungsi untuk menggerakkan blok tetromino
@@ -43,5 +43,9 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t);
 int setRandomTetromino();
 
 int addScore(int *score, Grid *grid);
+
+Tetromino findShadowPosition(Tetromino *t, Grid *grid);
+
+void drawShadowBlock(Tetromino *t, Grid *grid);
 
 #endif

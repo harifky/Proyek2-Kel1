@@ -210,3 +210,30 @@ int addScore(int *score, Grid *grid){
 
     printf("Score setelah update: %d\n", *score); // Debugging
 }
+
+Tetromino findShadowPosition(Tetromino *t, Grid *grid) {
+    Tetromino shadow = *t; // Salin tetromino asli
+
+    while (canMoveDown(&shadow, grid)) {
+        for (int i = 0; i < 4; i++) {
+            shadow.blocks[i].y += 1;
+        }
+    }
+    return shadow;
+}
+
+void drawShadowBlock(Tetromino *t, Grid *grid) {
+    Tetromino shadow = findShadowPosition(t, grid);
+
+    setcolor(DARKGRAY);  // Gunakan warna gelap untuk bayangan
+    setlinestyle(DOTTED_LINE, 0, 1);  // Garis putus-putus untuk efek bayangan
+
+    for (int i = 0; i < 4; i++) {
+        int x = shadow.blocks[i].x * BLOCK_SIZE + 220;
+        int y = shadow.blocks[i].y * BLOCK_SIZE + 50;
+
+        rectangle(x, y, x + BLOCK_SIZE, y + BLOCK_SIZE);
+    }
+
+    setlinestyle(SOLID_LINE, 0, 1); // Kembalikan ke garis solid setelah menggambar
+}

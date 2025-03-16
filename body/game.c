@@ -78,6 +78,8 @@ void playGame(){
         drawGrid(gameGrid);
         
         drawPanel(gamePanel, &score);
+
+        drawShadowBlock(&currentTetromino, &gameGrid);
         
         drawStoredBlocks(&gameGrid);  // Gambar blok yang sudah tersimpan
 
