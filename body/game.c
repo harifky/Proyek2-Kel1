@@ -21,22 +21,6 @@ void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
 }
 
 void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
-    // if (frameCount % DROP_SPEED == 0) {
-    //     if (canMoveDown(tetromino, grid)) {
-    //         moveTetromino(tetromino, grid, 0, 1);
-    //     } else {
-    //         storeTetrominoInGrid(grid, tetromino);
-    //         int rowsCleared = clearFullRows(grid);
-
-    //         // Skor berdasarkan jumlah baris yang dihapus
-    //         int scoreTable[] = {0, 100, 300, 500, 800};
-    //         *score += scoreTable[rowsCleared];
-    //         printf("skornya : %d\n", *score);
-
-    //         *tetromino = createTetromino(setRandomTetromino(), 5, -2);
-    //     }
-    // }
-
     if (frameCount % DROP_SPEED == 0) {
         if (canMoveDown(tetromino, grid)) {
             moveTetromino(tetromino, grid, 0, 1);
@@ -44,22 +28,8 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
             storeTetrominoInGrid(grid, tetromino); // Simpan blok di grid
 
             printf("Memeriksa baris penuh...\n");
-            int rowsCleared = clearFullRows(grid);
-            printf("Baris dihapus: %d\n", rowsCleared); // DEBUGGING
-            printf("Baris dihapus:ufqeyjhkajslnd;ckoesuk \n"); // DEBUGGING
 
-            // Tambahkan skor berdasarkan jumlah baris yang dihapus
-            if (rowsCleared == 1) {
-                *score += 100;
-            } else if (rowsCleared == 2) { 
-                *score += 300;
-            } else if (rowsCleared == 3) {
-                *score += 500;
-            } else if (rowsCleared == 4) {
-                *score += 800;
-            }
-
-            printf("Score setelah update: %d\n", *score); // Debugging
+            *score = addScore(score, grid);
 
             // Buat tetromino baru
             *tetromino = createTetromino(setRandomTetromino(), 5, -2);
@@ -70,15 +40,18 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
 void playGame(){
     int gd = DETECT, gm;
     initgraph(&gd, &gm, NULL);
+
+    // Buat window fullscreen
+    initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3); // -3 agar benar-benar fullscreen
+    
+    Grid gameGrid = {220, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
+    Panel gameHoldPanel = {gameGrid.x - 110, 50, 100, 100};
+    Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 110, gameGrid.height};
     
     int tick = 0;
     int currentPage = 0; // Untuk mengatur buffer aktif
     int frameCount = 0; // Counter untuk mengontrol kecepatan jatuh
     int score = 0;
-    
-    Grid gameGrid = {220, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
-    Panel gameHoldPanel = {gameGrid.x - 110, 50, 100, 100};
-    Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 110, gameGrid.height};
 
     for (int y = 0; y < GRID_HEIGHT; y++) {
         for (int x = 0; x < GRID_WIDTH; x++) {

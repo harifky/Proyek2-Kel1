@@ -126,23 +126,8 @@ void hardDropTetromino(Tetromino *t, Grid *grid, int *score) {
 
     storeTetrominoInGrid(grid, t); // Simpan blok di grid
     printf("Memeriksa baris penuh...\n");
-    int rowsCleared = clearFullRows(grid);
-    printf("Baris dihapus: %d\n", rowsCleared); // DEBUGGING
-    printf("Baris dihapus:ufqeyjhkajslnd;ckoesuk \n"); // DEBUGGING
 
-    // Tambahkan skor berdasarkan jumlah baris yang dihapus
-    if (rowsCleared == 1) {
-        *score += 100;
-    } else if (rowsCleared == 2) { 
-        *score += 300;
-    } else if (rowsCleared == 3) {
-        *score += 500;
-    } else if (rowsCleared == 4) {
-        *score += 800;
-    }
-
-    printf("Score setelah update: %d\n", *score); // Debugging
-
+    *score = addScore(score, grid);
 
     // Buat Tetromino baru setelah hard drop
     *t = createTetromino(setRandomTetromino(), 5, -2);
@@ -204,29 +189,24 @@ int setRandomTetromino() {
     return type; // menentukan jenis tetromino 
 }
 
-Tetromino findShadowPosition(Tetromino *t, Grid *grid) {
-    Tetromino shadow = *t; // Salin tetromino asli
+int addScore(int *score, Grid *grid){
+    printf("Memeriksa baris penuh...\n");
+    int rowsCleared = clearFullRows(grid);
+    printf("Baris dihapus: %d\n", rowsCleared); // DEBUGGING
+    printf("Baris dihapus:ufqeyjhkajslnd;ckoesuk \n"); // DEBUGGING
 
-    while (canMoveDown(&shadow, grid)) {
-        for (int i = 0; i < 4; i++) {
-            shadow.blocks[i].y += 1;
-        }
-    }
-    return shadow;
-}
-
-void drawShadowBlock(Tetromino *t, Grid *grid) {
-    Tetromino shadow = findShadowPosition(t, grid);
-
-    setcolor(RED);  // Gunakan warna gelap untuk bayangan
-    setlinestyle(DOTTED_LINE, 0, 1);  // Garis putus-putus untuk efek bayangan
-
-    for (int i = 0; i < 4; i++) {
-        int x = shadow.blocks[i].x * BLOCK_SIZE + 220;
-        int y = shadow.blocks[i].y * BLOCK_SIZE + 50;
-
-        rectangle(x, y, x + BLOCK_SIZE, y + BLOCK_SIZE);
+    // Tambahkan skor berdasarkan jumlah baris yang dihapus
+    if (rowsCleared == 1) {
+        *score += 100;
+    } else if (rowsCleared == 2) { 
+        *score += 250;
+    } else if (rowsCleared == 3) {
+        *score += 400;
+    } else if (rowsCleared == 4) {
+        *score += 800;
     }
 
-    setlinestyle(SOLID_LINE, 0, 1); // Kembalikan ke garis solid setelah menggambar
+    return *score;
+
+    printf("Score setelah update: %d\n", *score); // Debugging
 }

@@ -42,6 +42,8 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t);
 //fungsi untuk menentukan tetromino secara acak
 int setRandomTetromino();
 
+int addScore(int *score, Grid *grid);
+
 Tetromino findShadowPosition(Tetromino *t, Grid *grid);
 
 void drawShadowBlock(Tetromino *t, Grid *grid);
