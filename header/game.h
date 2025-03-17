@@ -18,4 +18,6 @@ void playGame(); // fungsi untuk menjalankan game
 
 void holdTetromino(Tetromino *current);
 
+void updateFrameDelay(int *score); // fungsi untuk mengatur speed jika sudah sampai ke skor tertentu
+
 #endif

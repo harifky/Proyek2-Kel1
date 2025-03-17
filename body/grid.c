@@ -84,11 +84,25 @@ void drawPanel(Panel panel, int *score) {
     char hiScoreText[] = "Hi-Score";
     char speedText[] = "Speed";
     char nextText[] = "Next";
+    int levelSpeed = 1;
+    
 
+    if (*score >= 4000) {
+       levelSpeed = 4;
+    } else if (*score >= 2000) {
+       levelSpeed = 3;
+    } else if (*score >= 1000) {
+       levelSpeed = 2; 
+    }
+
+    char levelSpeedText[10];
+    sprintf(levelSpeedText, "Speed: %d", levelSpeed); 
+
+    
     outtextxy(panel.x + 20, panel.y + 20, scoreText);
     outtextxy(panel.x + 20, panel.y + 50, hiScoreText);
-    outtextxy(panel.x + 20, panel.y + 100, speedText);
     outtextxy(panel.x + 20, panel.y + 150, nextText);
+    outtextxy(panel.x + 20, panel.y + 100, levelSpeedText);
 }
 
 // Fungsi untuk menggambar blok yang sudah tersimpan dalam grid
