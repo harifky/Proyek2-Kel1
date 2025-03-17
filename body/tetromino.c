@@ -225,7 +225,7 @@ Tetromino findShadowPosition(Tetromino *t, Grid *grid) {
 void drawShadowBlock(Tetromino *t, Grid *grid) {
     Tetromino shadow = findShadowPosition(t, grid);
 
-    setcolor(DARKGRAY);  // Gunakan warna gelap untuk bayangan
+    setcolor(RED);  // Gunakan warna gelap untuk bayangan
     setlinestyle(DOTTED_LINE, 0, 1);  // Garis putus-putus untuk efek bayangan
 
     for (int i = 0; i < 4; i++) {
