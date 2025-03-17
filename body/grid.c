@@ -93,6 +93,38 @@ int clearFullRows(Grid *grid) {
     return rowsCleared;
 }
 
+void playSoundEffect(const char* soundFile) {
+    PlaySound(soundFile, NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void stopSound() {
+    PlaySound(NULL, NULL, 0);
+}
+
+// Mengecek apakah ada blok di baris paling atas
+int isGameOver(Grid* grid) {
+    for (int x = 0; x < GRID_WIDTH; x++) {
+        if (grid->cells[0][x] != 0) {
+            return 1; // Game Over
+        }
+    }
+    return 0; // Game masih berjalan
+}
+
+void drawGameOverScreen() {
+    cleardevice();
+    setcolor(RED);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
+
+    char gameOverText[] = "GAME OVER";
+    outtextxy(150, 200, gameOverText);
+
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);
+    char exitText[] = "Press any key to exit...";
+    outtextxy(140, 250, exitText);
+    
+    getch(); // Tunggu input sebelum keluar
+}
 
 // void drawScore(Panel panel, int score){
 //     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);

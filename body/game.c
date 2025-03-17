@@ -39,7 +39,7 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
 
 void playGame(){
     int gd = DETECT, gm;
-    initgraph(&gd, &gm, NULL);
+    // initgraph(&gd, &gm, NULL);
 
     // Buat window fullscreen
     initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3); // -3 agar benar-benar fullscreen
@@ -61,6 +61,7 @@ void playGame(){
     
     Tetromino currentTetromino;
     currentTetromino = createTetromino(setRandomTetromino(), 5, -3); // Tetromino 'I' di tengah atas
+    playSoundEffect("sound/HoldOnTight.wav");
 
 
     while (1) {
@@ -74,8 +75,17 @@ void playGame(){
         cleardevice();
 
         drawHoldPanel(gameHoldPanel);
-        
-        drawGrid(gameGrid);
+
+        if (isGameOver(&gameGrid)) {
+            setvisualpage(currentPage);
+            drawGrid(gameGrid);
+            drawPanel(gamePanel, &score);
+            stopSound();
+            drawGameOverScreen();
+            break;
+        }else {
+            drawGrid(gameGrid);
+        }
         
         drawPanel(gamePanel, &score);
 

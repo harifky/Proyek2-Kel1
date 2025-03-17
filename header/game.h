@@ -3,6 +3,8 @@
 
 #include "grid.h" 
 #include "tetromino.h"
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 
 #define screenWidth getmaxwidth()
 #define screenHeight getmaxheight()

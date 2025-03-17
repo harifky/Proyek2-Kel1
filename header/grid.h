@@ -29,4 +29,12 @@ int clearFullRows(Grid *grid); //fungsi untuk menghapus baris yang sudah penuh
 
 void drawScore(Panel panel, int score);
 
+void playSoundEffect(const char* soundFile);
+
+void stopSound();
+
+int isGameOver(Grid* grid);
+
+void drawGameOverScreen();
+
 #endif
