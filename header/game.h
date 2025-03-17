@@ -16,4 +16,6 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount); /
 
 void playGame(); // fungsi untuk menjalankan game
 
+void holdTetromino(Tetromino *current);
+
 #endif

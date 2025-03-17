@@ -1,11 +1,21 @@
 #include <graphics.h>
 #include <string.h>
-
 #include "../header/grid.h"
 #include "../header/game.h"
 #include "../header/tetromino.h"
 
-//fungsi untuk menggambar Grid
+Tetromino heldTetromino;
+int isHolding = 0;
+int hasHeldThisTurn = 0;
+
+// Struktur untuk menyimpan informasi tentang kotak Hold
+typedef struct {
+    int x, y, width, height;
+} HoldBox;
+
+HoldBox holdBox = {100, 50, 100, 100}; // Posisi dan ukuran kotak Hold
+
+// Fungsi untuk menggambar Grid
 void drawGrid(Grid grid) {
     for (int i = 0; i <= GRID_WIDTH; i++) {
         line(grid.x + i * BLOCK_SIZE, grid.y, grid.x + i * BLOCK_SIZE, grid.y + GRID_HEIGHT * BLOCK_SIZE);
@@ -15,15 +25,56 @@ void drawGrid(Grid grid) {
     }
 }
 
-//fungsi untuk menggambar holdPanel
-void drawHoldPanel(Panel panel){
-    rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
-    char holdText[] = "Hold";
+// Fungsi untuk menggambar Hold Panel dan menampilkan tetromino yang di-hold
 
-    outtextxy(panel.x + 20, panel.y + 20, holdText);
+void drawHoldPanel(Panel panel) {
+    // Gambar kotak Hold
+    rectangle(holdBox.x, holdBox.y, holdBox.x + holdBox.width, holdBox.y + holdBox.height);
+    char holdText[] = "Hold";
+    outtextxy(holdBox.x + 30, holdBox.y + 10, holdText);
+    // Jika ada tetromino yang di-hold
+    if (isHolding) {
+        int minX = 5, minY = 5, maxX = -5, maxY = -5;  // Inisialisasi nilai batas
+        for (int i = 0; i < 4; i++) {
+            if (heldTetromino.blocks[i].x < minX) minX = heldTetromino.blocks[i].x;
+            if (heldTetromino.blocks[i].y < minY) minY = heldTetromino.blocks[i].y;
+            if (heldTetromino.blocks[i].x > maxX) maxX = heldTetromino.blocks[i].x;
+            if (heldTetromino.blocks[i].y > maxY) maxY = heldTetromino.blocks[i].y;
+        }
+
+        int tetrominoWidth = (maxX - minX + 1) * (BLOCK_SIZE / 2);
+        int tetrominoHeight = (maxY - minY + 1) * (BLOCK_SIZE / 2);
+
+        int startX = holdBox.x + (holdBox.width - tetrominoWidth) / 2;
+        int startY = holdBox.y + (holdBox.height - tetrominoHeight) / 2;
+
+        for (int i = 0; i < 4; i++) {
+            int bx = startX + (heldTetromino.blocks[i].x - minX) * (BLOCK_SIZE / 2);
+            int by = startY + (heldTetromino.blocks[i].y - minY) * (BLOCK_SIZE / 2);
+
+            setfillstyle(SOLID_FILL, heldTetromino.color);
+            bar(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
+        }
+    }
 }
 
-//fungsi untuk menggambar panel
+void holdTetromino(Tetromino *current) {
+    Tetromino temp = *current;
+
+    if (!isHolding) {// Jika Hold Box kosong
+        heldTetromino = *current;
+        isHolding = 1;
+        *current = createTetromino(setRandomTetromino(), 5, 0);
+    } else {// Jika sudah ada tetromino di Hold Box, tukar
+        *current = heldTetromino;
+        heldTetromino = temp;
+        current->x = 5;
+        current->y = 0;
+    }
+}
+
+
+// Fungsi untuk menggambar panel informasi (skor, speed, dll.)
 void drawPanel(Panel panel, int *score) {
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
     
@@ -40,27 +91,25 @@ void drawPanel(Panel panel, int *score) {
     outtextxy(panel.x + 20, panel.y + 150, nextText);
 }
 
-//fungsi untuk menggambar blok yang sudah disimpan dalam grid
+// Fungsi untuk menggambar blok yang sudah tersimpan dalam grid
 void drawStoredBlocks(Grid *grid) {
     for (int y = 0; y < GRID_HEIGHT; y++) {
         for (int x = 0; x < GRID_WIDTH; x++) {
-            if (grid->cells[y][x] != 0) { // Jika ada blok di grid
-                setfillstyle(SOLID_FILL, grid->cells[y][x]); // Pakai warna sesuai grid
+            if (grid->cells[y][x] != 0) {
+                setfillstyle(SOLID_FILL, grid->cells[y][x]);
                 bar(grid->x + x * BLOCK_SIZE, grid->y + y * BLOCK_SIZE, 
                     grid->x + (x + 1) * BLOCK_SIZE - 2, grid->y + (y + 1) * BLOCK_SIZE - 2);
 
-                // Gambar outline blok
-                setcolor(WHITE); // Ubah warna outline sesuai keinginan
+                setcolor(WHITE);
                 rectangle(grid->x + x * BLOCK_SIZE, grid->y + y * BLOCK_SIZE, 
-                grid->x + (x + 1) * BLOCK_SIZE, grid->y + (y + 1) * BLOCK_SIZE);
+                          grid->x + (x + 1) * BLOCK_SIZE, grid->y + (y + 1) * BLOCK_SIZE);
             }
         }
     }
 }
 
-//fungsi untuk menghapus baris yang sudah penuh
+// Fungsi untuk menghapus baris yang sudah penuh
 int clearFullRows(Grid *grid) {
-    printf("Menghapus rows\n");
     int rowsCleared = 0;
 
     for (int y = 0; y < GRID_HEIGHT; y++) {
@@ -73,15 +122,12 @@ int clearFullRows(Grid *grid) {
         }
 
         if (full) {
-            printf("Baris penuh ditemukan di y=%d\n", y);
-            // Geser semua baris ke bawah
             for (int i = y; i > 0; i--) {
                 for (int j = 0; j < GRID_WIDTH; j++) {
                     grid->cells[i][j] = grid->cells[i - 1][j];
                 }
             }
 
-            // Kosongkan baris paling atas
             for (int j = 0; j < GRID_WIDTH; j++) {
                 grid->cells[0][j] = 0;
             }
@@ -92,13 +138,3 @@ int clearFullRows(Grid *grid) {
 
     return rowsCleared;
 }
-
-
-// void drawScore(Panel panel, int score){
-//     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
-
-//     char scoreGet[20];
-//     sprintf(scoreGet, "Great\n+%d", score);
-
-//     outtextxy(panel.x + 100, panel.y + 100, scoreGet);
-// }
