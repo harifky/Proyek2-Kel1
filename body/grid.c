@@ -113,7 +113,7 @@ int isGameOver(Grid* grid) {
 
 void drawGameOverScreen() {
     cleardevice();
-    setcolor(RED);
+    setcolor(LIGHTMAGENTA);
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
 
     char gameOverText[] = "GAME OVER";
