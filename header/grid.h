@@ -1,8 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
 
-#define GRID_WIDTH 10 //Definisikan lebar Grid
-#define GRID_HEIGHT 20 //Definisikan panjang Grid
+#include "config.h"
 
 //struktur panel tampilan skor dll
 typedef struct {

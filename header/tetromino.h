@@ -1,6 +1,7 @@
 #ifndef TETROMINO_H
 #define TETROMINO_H
 
+#include "config.h"
 #include "grid.h"
 
 // Struktur blok individual dalam tetromino
