@@ -1,8 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
 
-#define GRID_WIDTH 10 //Definisikan lebar Grid
-#define GRID_HEIGHT 20 //Definisikan panjang Grid
+#include "config.h"
 
 //struktur panel tampilan skor dll
 typedef struct {
@@ -28,5 +27,13 @@ void drawStoredBlocks(Grid *grid); //fungsi untuk menggambar blok yang sudah dis
 int clearFullRows(Grid *grid); //fungsi untuk menghapus baris yang sudah penuh
 
 void drawScore(Panel panel, int score);
+
+void playSoundEffect(const char* soundFile);
+
+void stopSound();
+
+int isGameOver(Grid* grid);
+
+void drawGameOverScreen();
 
 #endif
