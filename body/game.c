@@ -19,6 +19,7 @@ void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
         if (key == 80) moveTetromino(tetromino, grid, 0, 1);
         if (key == 32) hardDropTetromino(tetromino, grid, score);
         if (key == 72) rotateTetromino(tetromino, grid);
+        if (key == 13) holdTetromino(tetromino);
     }
 }
 
@@ -37,6 +38,7 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
             printf("Score: %d\n", *score);
 
             *tetromino = createTetromino(setRandomTetromino(), 5, -2);
+            int hasHeldThisTurn = 0;
         }
     }
 }
