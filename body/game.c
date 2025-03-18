@@ -42,7 +42,6 @@ void playGame(){
     initgraph(&gd, &gm, NULL);
 
     // Buat window fullscreen
-    initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3); // -3 agar benar-benar fullscreen
     
     Grid gameGrid = {220, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
     Panel gameHoldPanel = {gameGrid.x - 110, 50, 100, 100};
@@ -60,6 +59,7 @@ void playGame(){
     }
     
     Tetromino currentTetromino;
+    Tetromino nextTetromino;
     currentTetromino = createTetromino(setRandomTetromino(), 5, -3); // Tetromino 'I' di tengah atas
 
 
@@ -77,8 +77,8 @@ void playGame(){
         
         drawGrid(gameGrid);
         
-        drawPanel(gamePanel, &score);
-
+        drawPanel(gamePanel, &score, nextTetromino);
+        
         drawShadowBlock(&currentTetromino, &gameGrid);
         
         drawStoredBlocks(&gameGrid);  // Gambar blok yang sudah tersimpan
@@ -87,7 +87,6 @@ void playGame(){
 
         setvisualpage(currentPage);  // Tampilkan halaman buffer
         currentPage = 1 - currentPage; // Ganti halaman untuk frame berikutnya
-
 
         // Update frame count
         frameCount++;

@@ -24,7 +24,7 @@ void drawHoldPanel(Panel panel){
 }
 
 //fungsi untuk menggambar panel
-void drawPanel(Panel panel, int *score) {
+void drawPanel(Panel panel, int *score, Tetromino nextTetromino) {
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
     
     char scoreText[20];
@@ -32,13 +32,39 @@ void drawPanel(Panel panel, int *score) {
     
     char hiScoreText[] = "Hi-Score";
     char speedText[] = "Speed";
-    char nextText[] = "Next";
 
     outtextxy(panel.x + 20, panel.y + 20, scoreText);
     outtextxy(panel.x + 20, panel.y + 50, hiScoreText);
     outtextxy(panel.x + 20, panel.y + 100, speedText);
-    outtextxy(panel.x + 20, panel.y + 150, nextText);
+
+    // Panggil fungsi untuk menampilkan Tetromino berikutnya
+    nextPreviewBlock(panel, nextTetromino);
 }
+
+
+void nextPreviewBlock(Panel panel, Tetromino nextTetromino) {
+    // Koordinat awal untuk menggambar Next Block di dalam panel
+    int startX = panel.x + 20;
+    int startY = panel.y + 180;
+
+    // Gambar label "Next"
+    char nextText[] = "Next";
+    outtextxy(startX, startY - 20, nextText);
+
+    // Gambar Tetromino di dalam panel
+    setfillstyle(SOLID_FILL, nextTetromino.color);
+    for (int i = 0; i < 4; i++) {
+        int x = startX + nextTetromino.blocks[i].x * BLOCK_SIZE;
+        int y = startY + nextTetromino.blocks[i].y * BLOCK_SIZE;
+
+        bar(x, y, x + BLOCK_SIZE - 2, y + BLOCK_SIZE - 2);
+
+        // Outline blok
+        setcolor(WHITE);
+        rectangle(x, y, x + BLOCK_SIZE, y + BLOCK_SIZE);
+    }
+}
+
 
 //fungsi untuk menggambar blok yang sudah disimpan dalam grid
 void drawStoredBlocks(Grid *grid) {
