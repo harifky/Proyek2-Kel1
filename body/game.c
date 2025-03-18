@@ -61,7 +61,7 @@ void playGame(){
     initgraph(&gd, &gm, NULL);
 
     // Buat window fullscreen
-    initwindow(screenWidth, screenHeight - 10, "Tetris Fullscreen", -3, -3); // -3 agar benar-benar fullscreen
+    initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3); // -3 agar benar-benar fullscreen
     
     Grid gameGrid = {220, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
     Panel gameHoldPanel = {gameGrid.x - 110, 50, 100, 100};
