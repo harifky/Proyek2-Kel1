@@ -16,6 +16,8 @@ typedef struct {
     int color; // untuk warna dari tetromino
 } Tetromino;
 
+extern Tetromino nextTetromino;
+
 // Fungsi untuk membuat Tetromino
 Tetromino createTetromino(int type, int startX, int startY);
 
@@ -48,5 +50,9 @@ int addScore(int *score, Grid *grid);
 Tetromino findShadowPosition(Tetromino *t, Grid *grid);
 
 void drawShadowBlock(Tetromino *t, Grid *grid);
+
+void drawNextTetromino(Tetromino next, int posX, int posY);
+
+Tetromino getNewTetromino();
 
 #endif

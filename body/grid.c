@@ -103,6 +103,8 @@ void drawPanel(Panel panel, int *score) {
     outtextxy(panel.x + 20, panel.y + 50, hiScoreText);
     outtextxy(panel.x + 20, panel.y + 150, nextText);
     outtextxy(panel.x + 20, panel.y + 100, levelSpeedText);
+
+    drawNextTetromino(nextTetromino, panel.x - 60, panel.y + 250);
 }
 
 // Fungsi untuk menggambar blok yang sudah tersimpan dalam grid

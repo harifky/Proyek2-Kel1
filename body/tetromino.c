@@ -1,8 +1,11 @@
 #include <graphics.h>
 #include <time.h>
+#include "../header/config.h"
 #include "../header/tetromino.h"
 #include "../header/game.h"
 #include "../header/grid.h"
+
+Tetromino nextTetromino;
 
 // Definisi bentuk Tetromino (koordinat relatif terhadap pusat rotasi)
 const Block tetrominoShapes[7][4] = {
@@ -130,7 +133,8 @@ void hardDropTetromino(Tetromino *t, Grid *grid, int *score) {
     *score = addScore(score, grid);
 
     // Buat Tetromino baru setelah hard drop
-    *t = createTetromino(setRandomTetromino(), 5, -2);
+    // *t = createTetromino(setRandomTetromino(), 5, -2);
+    *t = getNewTetromino();
 }
 
 int canMoveDown(Tetromino *t, Grid *grid) {
@@ -162,12 +166,6 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
         } else {
             printf("ERROR: Blok di luar batas grid! x: %d, y: %d\n", x, y);
         }
-
-
-        // // Cek apakah blok berada dalam batas grid
-        // if (y >= 0 && y < GRID_HEIGHT && x >= 0 && x < GRID_WIDTH) {
-        //     grid->cells[y][x] = t->color;
-        // } 
     }
 
     printf("Grid setelah tetromino disimpan:\n");
@@ -236,4 +234,22 @@ void drawShadowBlock(Tetromino *t, Grid *grid) {
     }
 
     setlinestyle(SOLID_LINE, 0, 1); // Kembalikan ke garis solid setelah menggambar
+}
+
+Tetromino getNewTetromino() {
+    Tetromino current = nextTetromino;  // Tetromino yang sebelumnya sudah ditampilkan menjadi aktif
+    nextTetromino = createTetromino(rand() % 7, 5, -3); // Buat Tetromino berikutnya
+    return current;
+}
+
+void drawNextTetromino(Tetromino next, int posX, int posY) {
+    int blockSize = BLOCK_SIZE / 2;
+    
+    setcolor(next.color);
+    for (int i = 0; i < 4; i++) {
+        int x = posX + next.blocks[i].x * blockSize;
+        int y = posY + next.blocks[i].y * blockSize;
+        rectangle(x, y, x + blockSize, y + blockSize);
+        floodfill(x + blockSize, y + blockSize, next.color);
+    }
 }
