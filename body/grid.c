@@ -32,37 +32,26 @@ void drawPanel(Panel panel, int *score, Tetromino nextTetromino) {
     
     char hiScoreText[] = "Hi-Score";
     char speedText[] = "Speed";
+    char nextText[] = "Next";
+    int levelSpeed = 1;
+    
 
+    if (*score >= 4000) {
+       levelSpeed = 4;
+    } else if (*score >= 2000) {
+       levelSpeed = 3;
+    } else if (*score >= 1000) {
+       levelSpeed = 2; 
+    }
+
+    char levelSpeedText[10];
+    sprintf(levelSpeedText, "Speed: %d", levelSpeed); 
+
+    
     outtextxy(panel.x + 20, panel.y + 20, scoreText);
     outtextxy(panel.x + 20, panel.y + 50, hiScoreText);
-    outtextxy(panel.x + 20, panel.y + 100, speedText);
-
-    // Panggil fungsi untuk menampilkan Tetromino berikutnya
-    nextPreviewBlock(panel, nextTetromino);
-}
-
-
-void nextPreviewBlock(Panel panel, Tetromino nextTetromino) {
-    // Koordinat awal untuk menggambar Next Block di dalam panel
-    int startX = panel.x + 20;
-    int startY = panel.y + 180;
-
-    // Gambar label "Next"
-    char nextText[] = "Next";
-    outtextxy(startX, startY - 20, nextText);
-
-    // Gambar Tetromino di dalam panel
-    setfillstyle(SOLID_FILL, nextTetromino.color);
-    for (int i = 0; i < 4; i++) {
-        int x = startX + nextTetromino.blocks[i].x * BLOCK_SIZE;
-        int y = startY + nextTetromino.blocks[i].y * BLOCK_SIZE;
-
-        bar(x, y, x + BLOCK_SIZE - 2, y + BLOCK_SIZE - 2);
-
-        // Outline blok
-        setcolor(WHITE);
-        rectangle(x, y, x + BLOCK_SIZE, y + BLOCK_SIZE);
-    }
+    outtextxy(panel.x + 20, panel.y + 150, nextText);
+    outtextxy(panel.x + 20, panel.y + 100, levelSpeedText);
 }
 
 

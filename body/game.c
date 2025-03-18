@@ -3,9 +3,11 @@
 #include "../header/grid.h"
 #include "../header/tetromino.h"
 
-#define TARGET_FPS 60  // Bisa diganti ke 20 jika ingin 20 FPS
-#define FRAME_DELAY (1000 / TARGET_FPS)
-#define DROP_SPEED 20
+//#define TARGET_FPS 60  // Bisa diganti ke 20 jika ingin 20 FPS
+//#define FRAME_DELAY (1000 / TARGET_FPS)
+//#define DROP_SPEED 20
+
+int frameDelay = 1000 / 60;
 
 // #define score 0 
 
@@ -21,27 +23,45 @@ void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
 }
 
 void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
-    if (frameCount % DROP_SPEED == 0) {
+    int dropSpeed = (frameDelay / 5 > 1) ? (frameDelay / 5) : 1;
+    if (frameCount % dropSpeed == 0) {  
         if (canMoveDown(tetromino, grid)) {
             moveTetromino(tetromino, grid, 0, 1);
         } else {
-            storeTetrominoInGrid(grid, tetromino); // Simpan blok di grid
+            storeTetrominoInGrid(grid, tetromino);
+            int rowsCleared = clearFullRows(grid);
 
-            printf("Memeriksa baris penuh...\n");
+            int scoreTable[] = {0, 100, 300, 500, 800};
+            *score += scoreTable[rowsCleared];
 
-            *score = addScore(score, grid);
+            printf("Score: %d\n", *score);
 
-            // Buat tetromino baru
             *tetromino = createTetromino(setRandomTetromino(), 5, -2);
         }
     }
 }
+
+void updateFrameDelay(int *score) {
+    if (*score >= 4000) {
+        frameDelay = 150;  // Sangat cepat
+    } else if (*score >= 3000) {
+        frameDelay = 300;
+    } else if (*score >= 2000) {
+        frameDelay = 600;
+    } else if (*score >= 1000) {
+        frameDelay = 1200;
+    } else {
+        frameDelay = 2000;  // Kecepatan awal (1 detik per drop)
+    }
+}
+
 
 void playGame(){
     int gd = DETECT, gm;
     initgraph(&gd, &gm, NULL);
 
     // Buat window fullscreen
+    initwindow(screenWidth, screenHeight - 10, "Tetris Fullscreen", -3, -3); // -3 agar benar-benar fullscreen
     
     Grid gameGrid = {220, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
     Panel gameHoldPanel = {gameGrid.x - 110, 50, 100, 100};
@@ -91,6 +111,6 @@ void playGame(){
         // Update frame count
         frameCount++;
 
-        delay(FRAME_DELAY); // Untuk animasi
+        updateFrameDelay(&score); // Update frame delay berdasarkan skor
     }
 }
