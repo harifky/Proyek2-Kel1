@@ -223,8 +223,8 @@ Tetromino findShadowPosition(Tetromino *t, Grid *grid) {
 void drawShadowBlock(Tetromino *t, Grid *grid) {
     Tetromino shadow = findShadowPosition(t, grid);
 
-    setcolor(RED);  // Gunakan warna gelap untuk bayangan
-    setlinestyle(DOTTED_LINE, 0, 1);  // Garis putus-putus untuk efek bayangan
+    setcolor(WHITE);  // Gunakan warna gelap untuk bayangan
+    setlinestyle(SOLID_LINE, 0, 1);  // Garis putus-putus untuk efek bayangan
 
     for (int i = 0; i < 4; i++) {
         int x = shadow.blocks[i].x * BLOCK_SIZE + 220;
@@ -246,10 +246,13 @@ void drawNextTetromino(Tetromino next, int posX, int posY) {
     int blockSize = BLOCK_SIZE / 2;
     
     setcolor(next.color);
+    setfillstyle(SOLID_FILL, next.color); // Mengatur fill style dan warna
     for (int i = 0; i < 4; i++) {
         int x = posX + next.blocks[i].x * blockSize;
         int y = posY + next.blocks[i].y * blockSize;
+        bar(x, y, x + blockSize, y + blockSize); // Menggambar kotak terisi warna
         rectangle(x, y, x + blockSize, y + blockSize);
-        floodfill(x + blockSize, y + blockSize, next.color);
+        // printf("Color: %d\n", next.color);
+        // floodfill(x + blockSize, y + blockSize, next.color);
     }
 }

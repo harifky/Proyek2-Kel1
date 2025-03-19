@@ -51,6 +51,9 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
 }
 
 void updateFrameDelay(int *score) {
+    // if (*score < 4000) {
+    //     frameDelay = 100;
+    // }else 
     if (*score >= 4000) {
         frameDelay = 150;  // Sangat cepat
     } else if (*score >= 3000) {
@@ -75,7 +78,9 @@ void playGame(){
     Grid gameGrid = {220, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
     Panel gameHoldPanel = {gameGrid.x - 110, 100, 100, 100};
     Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 110, gameGrid.height};
+    Panel leadPanel = {gameGrid.x + gameGrid.width + gamePanel.width + 20, 50, 250, 300};
     
+    bool start = true;
     int tick = 0;
     int currentPage = 0; // Untuk mengatur buffer aktif
     int frameCount = 0; // Counter untuk mengontrol kecepatan jatuh
@@ -97,7 +102,7 @@ void playGame(){
     currentTetromino = createTetromino(rand() % 7, 5, -3);
     // nextTetromino = createTetromino(rand() % 7, 0, 0);
     
-    while (1) {
+    while (start) {
 
         handleInput(&currentTetromino, &gameGrid, &score);
 
@@ -111,16 +116,20 @@ void playGame(){
 
         if (isGameOver(&gameGrid)) {
             setvisualpage(currentPage);
-            drawGrid(gameGrid);
             drawPanel(gamePanel, &score);
             stopSound();
-            drawGameOverScreen();
+            drawGrid(gameGrid);
+            drawLeadPanel(leadPanel);
+            drawGameOverScreen(gameGrid, score);
+            start = false;
             break;
         }else {
             drawGrid(gameGrid);
         }
         
         drawPanel(gamePanel, &score);
+
+        drawLeadPanel(leadPanel);
 
         drawShadowBlock(&currentTetromino, &gameGrid);
         

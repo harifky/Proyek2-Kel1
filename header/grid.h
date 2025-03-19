@@ -20,6 +20,8 @@ void drawGrid(Grid grid); //fungsi untuk menggambar Grid
 
 void drawPanel(Panel panel, int *score); //fungsi untuk menggambar panel
 
+void drawLeadPanel(Panel panel); //fungsi untuk menggambar panel Leaderboard
+
 void drawHoldPanel(Panel panel); //fungsi untuk menggambar holdPanel
 
 void drawStoredBlocks(Grid *grid); //fungsi untuk menggambar blok yang sudah disimpan dalam grid
@@ -34,6 +36,8 @@ void stopSound();
 
 int isGameOver(Grid* grid);
 
-void drawGameOverScreen();
+void drawGameOverScreen(Grid grid, int score);
+
+void saveScoreToFile(const char *username, int score);
 
 #endif
