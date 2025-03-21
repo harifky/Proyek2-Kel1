@@ -11,6 +11,7 @@ Business Rules - Tetromania
 -- Pemain dapat memutar blok dalam dua orientasi (horizontal dan vertikal).
 -- Jika pemain menekan Spasi, blok langsung jatuh ke posisi terendah yang tersedia.
 -- Blok akan berhenti jika bertabrakan dengan blok lain atau dasar permainan.
+-- Blok dapat dihold dengan menekan Enter
 
 - Aturan Skor
 -- Pemain mendapatkan 100 poin untuk setiap baris yang berhasil dihapus.
@@ -23,3 +24,5 @@ Business Rules - Tetromania
 
 - Aturan Kemenangan & Kekalahan
 -- Permainan berakhir jika blok mencapai batas atas layar.
+-- Setelah permainan berakhir user akan diminta memasukan nama agar dapat dimasukan ke leaderboard
+-- Leaderbord hanya akan memunculkan Top 5 score tertinggi

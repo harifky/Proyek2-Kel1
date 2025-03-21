@@ -8,8 +8,9 @@ Anggota:
 - Micky Ridho
 - Rifky Hermawan
 
-Judul Game = Tetromania
-
-Progres
-- Per 24 Februari 2025
--- Membuat assets block dan background oleh Hafizh dan M. N. Nurmaryadi
+Cara Menggunakannya
+- Silahkan clone terlebih dahulu projectnya
+- Kemudian cd ke dalam Proyek2-Kel1
+- Tekan CTRL+SHIFT+B untuk membuild aplikasi
+- Hasilnya akan keluar di folder output dengan nama output.exe
+- Klik kanan pada file tersebut dan Run Executable
