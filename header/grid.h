@@ -1,14 +1,10 @@
 #ifndef GRID_H
 #define GRID_H
 
+#include "tetromino.h"
+
 #define GRID_WIDTH 10 //Definisikan lebar Grid
 #define GRID_HEIGHT 20 //Definisikan panjang Grid
-
-//struktur panel tampilan skor dll
-typedef struct {
-    int x, y; //Inisialisasi koordinat x & y untuk panel
-    int width, height; //Inisialisasi panjang dan lebar untuk panel
-} Panel;
 
 //struktur tampilan grid area permainan
 typedef struct {
@@ -17,9 +13,17 @@ typedef struct {
     int cells[GRID_HEIGHT][GRID_WIDTH]; // Grid untuk menyimpan blok
 } Grid;
 
+//struktur panel tampilan skor dll
+typedef struct {
+    int x, y; //Inisialisasi koordinat x & y untuk panel
+    int width, height; //Inisialisasi panjang dan lebar untuk panel
+} Panel;
+
 void drawGrid(Grid grid); //fungsi untuk menggambar Grid
 
-void drawPanel(Panel panel, int *score); //fungsi untuk menggambar panel
+void drawPanel(Panel panel, int *score, Tetromino *nextTetromino); //fungsi untuk menggambar panel
+
+void drawNextPreviewBlock(Panel panel, Tetromino *nextTetromino);
 
 void drawHoldPanel(Panel panel); //fungsi untuk menggambar holdPanel
 

@@ -24,7 +24,7 @@ void drawHoldPanel(Panel panel){
 }
 
 //fungsi untuk menggambar panel
-void drawPanel(Panel panel, int *score) {
+void drawPanel(Panel panel, int *score, Tetromino *nextTetromino) {
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
     
     char scoreText[20];
@@ -38,6 +38,9 @@ void drawPanel(Panel panel, int *score) {
     outtextxy(panel.x + 20, panel.y + 50, hiScoreText);
     outtextxy(panel.x + 20, panel.y + 100, speedText);
     outtextxy(panel.x + 20, panel.y + 150, nextText);
+
+    // Gambar preview Tetromino berikutnya
+    drawNextPreviewBlock(panel, nextTetromino);
 }
 
 //fungsi untuk menggambar blok yang sudah disimpan dalam grid
@@ -102,3 +105,20 @@ int clearFullRows(Grid *grid) {
 
 //     outtextxy(panel.x + 100, panel.y + 100, scoreGet);
 // }
+
+void drawNextPreviewBlock(Panel panel, Tetromino *nextTetromino) {
+    // Gambar kotak preview
+    rectangle(panel.x + 20, panel.y + 170, panel.x + panel.width - 20, panel.y + 250);
+
+    // Gambar Tetromino berikutnya di dalam kotak preview
+    for (int i = 0; i < 4; i++) {
+        int x = panel.x + 40 + nextTetromino->blocks[i].x * (BLOCK_SIZE / 2);
+        int y = panel.y + 190 + nextTetromino->blocks[i].y * (BLOCK_SIZE / 2);
+
+        setfillstyle(SOLID_FILL, nextTetromino->color);
+        bar(x, y, x + (BLOCK_SIZE / 2) - 2, y + (BLOCK_SIZE / 2) - 2);
+
+        setcolor(WHITE);
+        rectangle(x, y, x + (BLOCK_SIZE / 2), y + (BLOCK_SIZE / 2));
+    }
+}

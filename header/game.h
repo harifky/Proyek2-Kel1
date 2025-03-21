@@ -12,7 +12,7 @@
 
 void handleInput(Tetromino *tetromino, Grid *grid, int *score); // fungsi untuk menangani input user
 
-void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount); //fungsi untuk memperbarui tampilan layar
+void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount, Tetromino *nextTetromino); //fungsi untuk memperbarui tampilan layar
 
 void playGame(); // fungsi untuk menjalankan game
 

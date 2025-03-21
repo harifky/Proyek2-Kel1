@@ -1,8 +1,8 @@
 #include <graphics.h>
 #include <time.h>
+#include "../header/grid.h"
 #include "../header/tetromino.h"
 #include "../header/game.h"
-#include "../header/grid.h"
 
 // Definisi bentuk Tetromino (koordinat relatif terhadap pusat rotasi)
 const Block tetrominoShapes[7][4] = {

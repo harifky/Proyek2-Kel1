@@ -1,11 +1,14 @@
 #include <graphics.h>
-#include "../header/game.h"
+#include <stdio.h>
 #include "../header/grid.h"
+#include "../header/game.h"
 #include "../header/tetromino.h"
 
 #define TARGET_FPS 60  // Bisa diganti ke 20 jika ingin 20 FPS
 #define FRAME_DELAY (1000 / TARGET_FPS)
 #define DROP_SPEED 20
+
+Tetromino nextTetromino;  // Variabel global untuk menyimpan Tetromino berikutnya
 
 // #define score 0 
 
@@ -20,7 +23,7 @@ void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
     }
 }
 
-void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
+void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount, Tetromino *nextTetromino) {
     if (frameCount % DROP_SPEED == 0) {
         if (canMoveDown(tetromino, grid)) {
             moveTetromino(tetromino, grid, 0, 1);
@@ -31,8 +34,11 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
 
             *score = addScore(score, grid);
 
-            // Buat tetromino baru
-            *tetromino = createTetromino(setRandomTetromino(), 5, -2);
+            // Buat tetromino baru dari nextTetromino
+            *tetromino = *nextTetromino;
+
+            // Generate nextTetromino baru
+            *nextTetromino = createTetromino(setRandomTetromino(), 5, -2);
         }
     }
 }
@@ -61,13 +67,13 @@ void playGame(){
     
     Tetromino currentTetromino;
     currentTetromino = createTetromino(setRandomTetromino(), 5, -3); // Tetromino 'I' di tengah atas
-
+    Tetromino nextTetromino = createTetromino(setRandomTetromino(), 5, -3); // Tetromino berikutnya
 
     while (1) {
 
         handleInput(&currentTetromino, &gameGrid, &score);
 
-        updateGame(&currentTetromino, &gameGrid, &score, frameCount);
+        updateGame(&currentTetromino, &gameGrid, &score, frameCount, &nextTetromino);;
     
         // Update tampilan
         setactivepage(currentPage);  // Aktifkan halaman buffer
@@ -77,7 +83,7 @@ void playGame(){
         
         drawGrid(gameGrid);
         
-        drawPanel(gamePanel, &score);
+        drawPanel(gamePanel, &score, &nextTetromino);
 
         drawShadowBlock(&currentTetromino, &gameGrid);
         
