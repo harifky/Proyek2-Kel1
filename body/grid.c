@@ -89,7 +89,6 @@ void drawPanel(Panel panel, int *score) {
     char scoreText[20];
     sprintf(scoreText, "Score: %d", *score);
     
-    char hiScoreText[] = "Hi-Score";
     char speedText[] = "Speed";
     char nextText[] = "Next";
     int levelSpeed = 1;
@@ -108,11 +107,10 @@ void drawPanel(Panel panel, int *score) {
     
     
     outtextxy(panel.x + 20, panel.y + 20, scoreText);
-    outtextxy(panel.x + 20, panel.y + 50, hiScoreText);
     outtextxy(panel.x + 20, panel.y + 150, nextText);
-    outtextxy(panel.x + 20, panel.y + 100, levelSpeedText);
+    outtextxy(panel.x + 20, panel.y + 80, levelSpeedText);
     
-    drawNextTetromino(nextTetromino, panel.x - 60, panel.y + 250);
+    drawNextTetromino(nextTetromino, panel.x - 60, panel.y + 240);
 }
 
 void drawLeadPanel(Panel panel) {
@@ -212,22 +210,21 @@ void drawGameOverScreen(Grid grid, int score) {
     setcolor(WHITE);
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
     
-    // char scoreText[20];
-    // sprintf(scoreText, "Score: %d", *score);
-    
     settextstyle(10, HORIZ_DIR, 5);
     char gameOverText[] = "GAME OVER";
     outtextxy(300, 200, gameOverText);
     
-    settextstyle(10, HORIZ_DIR, 2);
-    char exitText[] = "Press any key to exit...";
-    outtextxy(290, 250, exitText);
-
+    // settextstyle(10, HORIZ_DIR, 2);
+    // char exitText[] = "Press any key to exit...";
+    // outtextxy(290, 250, exitText);
+    
+    settextstyle(10, HORIZ_DIR, 3);
     char scoreText[30];
     sprintf(scoreText, "Final Score: %d", score);
     outtextxy(320, 300, scoreText);
-
+    
     // **Minta Username**
+    settextstyle(10, HORIZ_DIR, 3);
     char username[20];
     outtextxy(280, 350, "Enter your name: ");
 
@@ -319,12 +316,3 @@ void saveScoreToFile(const char *username, int score) {
 
     fclose(file);
 }
-
-// void drawScore(Panel panel, int score){
-//     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
-
-//     char scoreGet[20];
-//     sprintf(scoreGet, "Great\n+%d", score);
-
-//     outtextxy(panel.x + 100, panel.y + 100, scoreGet);
-// }

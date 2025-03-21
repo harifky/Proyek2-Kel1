@@ -184,7 +184,7 @@ int setRandomTetromino() {
     srand(time(NULL)); // Seed untuk angka acak
     int type = rand() % 7;
     printf("type : %d\n", type);
-    return type; // menentukan jenis tetromino 
+    return type;
 }
 
 int addScore(int *score, Grid *grid){
