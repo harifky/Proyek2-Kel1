@@ -45,14 +45,19 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t);
 //fungsi untuk menentukan tetromino secara acak
 int setRandomTetromino();
 
+//fungsi untuk mekanisme pernghitungan skor
 int addScore(int *score, Grid *grid);
 
+//fungsi untuk menyalin tetromino yang digunakan dalam shadow block
 Tetromino findShadowPosition(Tetromino *t, Grid *grid);
 
+//fungsi untuk membuat shadow block
 void drawShadowBlock(Tetromino *t, Grid *grid);
 
+//fungsi untuk menampilkan tetromino di bagian next
 void drawNextTetromino(Tetromino next, int posX, int posY);
 
+//fungsi untuk memastikan tetromino yang muncul di bagian 'next' akan keluar selanjuntya
 Tetromino getNewTetromino();
 
 #endif

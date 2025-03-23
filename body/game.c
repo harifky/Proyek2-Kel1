@@ -2,6 +2,8 @@
 #include "../header/game.h"
 #include "../header/grid.h"
 #include "../header/tetromino.h"
+#include <windows.h>
+#include <mmsystem.h>
 
 //#define TARGET_FPS 60  // Bisa diganti ke 20 jika ingin 20 FPS
 //#define FRAME_DELAY (1000 / TARGET_FPS)

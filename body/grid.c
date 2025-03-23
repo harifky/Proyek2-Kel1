@@ -119,12 +119,14 @@ void drawLeadPanel(Panel panel) {
     setcolor(WHITE);
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
     
-    char leaderBoardText[] = "Leader Board";
+    // Gunakan array char agar kompatibel dengan outtextxy()
+    char leaderBoardText[] = "Leader Board";  
     outtextxy(panel.x + 50, panel.y + 20, leaderBoardText);
 
     FILE *file = fopen("leaderboard.txt", "r");
     if (file == NULL) {
-        outtextxy(panel.x + 20, panel.y + 50, "No scores available");
+        char noScoresText[] = "No scores available";  
+        outtextxy(panel.x + 20, panel.y + 50, noScoresText);
         return;
     }
 
@@ -211,25 +213,26 @@ void drawGameOverScreen(Grid grid, int score) {
     // cleardevice();
     setcolor(WHITE);
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
-    
-    // char scoreText[20];
-    // sprintf(scoreText, "Score: %d", *score);
-    
-    settextstyle(10, HORIZ_DIR, 5);
+
+    // Deklarasi string sebagai array char agar kompatibel dengan `outtextxy`
     char gameOverText[] = "GAME OVER";
-    outtextxy(300, 200, gameOverText);
-    
-    settextstyle(10, HORIZ_DIR, 2);
     char exitText[] = "Press any key to exit...";
+    char enterNameText[] = "Enter your name: ";
+
+    settextstyle(10, HORIZ_DIR, 5);
+    outtextxy(300, 200, gameOverText);
+
+    settextstyle(10, HORIZ_DIR, 2);
     outtextxy(290, 250, exitText);
 
+    // Tampilkan skor
     char scoreText[30];
     sprintf(scoreText, "Final Score: %d", score);
     outtextxy(320, 300, scoreText);
 
     // **Minta Username**
-    char username[20];
-    outtextxy(280, 350, "Enter your name: ");
+    char username[20] = {0};  // Buffer untuk nama pengguna
+    outtextxy(280, 350, enterNameText);
 
     int i = 0;
     while (1) {
@@ -255,13 +258,14 @@ void drawGameOverScreen(Grid grid, int score) {
     // **Simpan Skor ke File**
     saveScoreToFile(username, score);
     
-    // getch(); // Tunggu input sebelum keluar
+    // Tunggu input sebelum keluar
+    getch();
 }
 
 
 // Fungsi untuk menyimpan skor ke dalam file leaderboard.txt
 // Fungsi untuk menyimpan skor ke dalam leaderboard
-void saveScoreToFile(const char *username, int score) {
+void saveScoreToFile(char username[], int score) {
     FILE *file = fopen("leaderboard.txt", "r");
     char names[MAX_LEADERBOARD][20];
     int scores[MAX_LEADERBOARD];

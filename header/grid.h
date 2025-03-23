@@ -38,6 +38,6 @@ int isGameOver(Grid* grid);
 
 void drawGameOverScreen(Grid grid, int score);
 
-void saveScoreToFile(const char *username, int score);
+void saveScoreToFile(char username[], int score);
 
 #endif
