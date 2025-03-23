@@ -36,49 +36,68 @@ void drawGrid(Grid grid) {
 // Fungsi untuk menggambar Hold Panel dan menampilkan tetromino yang di-hold
 
 void drawHoldPanel(Panel panel) {
-    // Gambar kotak Hold
+    // 1. Gambar kotak Hold Box
     rectangle(holdBox.x, holdBox.y, holdBox.x + holdBox.width, holdBox.y + holdBox.height);
+
     char holdText[] = "Hold";
     outtextxy(holdBox.x + 30, holdBox.y + 10, holdText);
-    // Jika ada tetromino yang di-hold
+
+    // 2. Jika ada Tetromino yang sedang di-hold
     if (isHolding) {
-        int minX = 5, minY = 5, maxX = -5, maxY = -5;  // Inisialisasi nilai batas
-        for (int i = 0; i < 4; i++) {
+        int blockSize = BLOCK_SIZE / 2; // Ukuran Tetromino lebih kecil untuk Hold Box
+
+        // 3. Tetapkan posisi tetap untuk pusat Hold Box
+        int centerX = holdBox.x + holdBox.width / 2;
+        int centerY = holdBox.y + holdBox.height / 2;
+
+        // 4. Cari batas minimum dan maksimum untuk menyusun ulang blok
+        int minX = heldTetromino.blocks[0].x;
+        int minY = heldTetromino.blocks[0].y;
+        int maxX = heldTetromino.blocks[0].x;
+        int maxY = heldTetromino.blocks[0].y;
+
+        for (int i = 1; i < 4; i++) {
             if (heldTetromino.blocks[i].x < minX) minX = heldTetromino.blocks[i].x;
             if (heldTetromino.blocks[i].y < minY) minY = heldTetromino.blocks[i].y;
             if (heldTetromino.blocks[i].x > maxX) maxX = heldTetromino.blocks[i].x;
             if (heldTetromino.blocks[i].y > maxY) maxY = heldTetromino.blocks[i].y;
         }
 
-        int tetrominoWidth = (maxX - minX + 1) * (BLOCK_SIZE / 2);
-        int tetrominoHeight = (maxY - minY + 1) * (BLOCK_SIZE / 2);
+        // 5. Hitung offset agar Tetromino selalu berada di tengah
+        int offsetX = (minX + maxX) / 2;
+        int offsetY = (minY + maxY) / 2;
 
-        int startX = holdBox.x + (holdBox.width - tetrominoWidth) / 2;
-        int startY = holdBox.y + (holdBox.height - tetrominoHeight) / 2;
-
+        // 6. Gambar Tetromino di dalam Hold Box
         for (int i = 0; i < 4; i++) {
-            int bx = startX + (heldTetromino.blocks[i].x - minX) * (BLOCK_SIZE / 2);
-            int by = startY + (heldTetromino.blocks[i].y - minY) * (BLOCK_SIZE / 2);
+            int bx = centerX + (heldTetromino.blocks[i].x - offsetX) * blockSize;
+            int by = centerY + (heldTetromino.blocks[i].y - offsetY) * blockSize;
 
             setfillstyle(SOLID_FILL, heldTetromino.color);
-            bar(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
+            bar(bx, by, bx + blockSize, by + blockSize);
+            rectangle(bx, by, bx + blockSize, by + blockSize);
         }
     }
 }
 
 void holdTetromino(Tetromino *current) {
+    static int lastX = 5, lastY = 0;
     Tetromino temp = *current;
 
-    if (!isHolding) {// Jika Hold Box kosong
+    if (!isHolding) {
         heldTetromino = *current;
         isHolding = 1;
         *current = createTetromino(setRandomTetromino(), 5, 0);
-    } else {// Jika sudah ada tetromino di Hold Box, tukar
-        *current = heldTetromino;
+    } else {
+        Tetromino swapTetromino = heldTetromino;
         heldTetromino = temp;
-        current->x = 5;
-        current->y = 0;
+        \
+        *current = swapTetromino;
+        current->x = lastX;
+        current->y = lastY;
     }
+\
+    lastX = temp.x;
+    lastY = temp.y;
 }
 
 
