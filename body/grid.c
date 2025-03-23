@@ -67,6 +67,7 @@ void drawHoldPanel(Panel panel) {
     }
 }
 
+// fungsi untuk fitur hold block
 /*Dibuat oleh M. Naufal Nurmaryadi*/
 void holdTetromino(Tetromino *current) {
     Tetromino temp = *current;
@@ -222,17 +223,19 @@ int clearFullRows(Grid *grid) {
     return rowsCleared;
 }
 
+// fungsi untuk memulai backsound
 /*Dibuat oleh M. Naufal Alfarizky*/
 void playSoundEffect(const char* soundFile) {
     PlaySound(soundFile, NULL, SND_LOOP | SND_ASYNC);
 }
 
+// fungsi untuk menghentikan backsound
 /*Dibuat oleh M. Naufal Alfarizky*/
 void stopSound() {
     PlaySound(NULL, NULL, 0);
 }
 
-// Mengecek apakah ada blok di baris paling atas
+//fungsi untuk logika menampilkan game over
 /*Dibuat oleh M. Naufal Alfarizky*/
 int isGameOver(Grid* grid) {
     for (int x = 0; x < GRID_WIDTH; x++) {
@@ -243,12 +246,14 @@ int isGameOver(Grid* grid) {
     return 0; // Game masih berjalan
 }
 
+//fungsi untuk membuat tampilan game over
 /*Dibuat oleh M. Naufal Alfarizky*/
 void drawGameOverScreen(Grid grid, int score) {
     setcolor(WHITE);
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
     
     settextstyle(10, HORIZ_DIR, 5);
+    char gameOverText[10] = "GAME OVER";
     outtextxy(300, 200, gameOverText);
     
     
