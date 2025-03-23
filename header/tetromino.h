@@ -54,10 +54,10 @@ Tetromino findShadowPosition(Tetromino *t, Grid *grid);
 //fungsi untuk membuat shadow block
 void drawShadowBlock(Tetromino *t, Grid *grid);
 
-//fungsi untuk menampilkan tetromino di bagian next
+//fungsi untuk menampilkan tetromino di panel 'Next'
 void drawNextTetromino(Tetromino next, int posX, int posY);
 
-//fungsi untuk memastikan tetromino yang muncul di bagian 'next' akan keluar selanjuntya
+//fungsi untuk mengambil tetromino berikutnya dari panel 'Next' dan mengembalikannya sebagai tetromino aktif.
 Tetromino getNewTetromino();
 
 #endif
