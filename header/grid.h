@@ -28,16 +28,14 @@ void drawStoredBlocks(Grid *grid); //fungsi untuk menggambar blok yang sudah dis
 
 int clearFullRows(Grid *grid); //fungsi untuk menghapus baris yang sudah penuh
 
-void drawScore(Panel panel, int score);
+void playSoundEffect(const char* soundFile);// fungsi untuk memulai backsound
 
-void playSoundEffect(const char* soundFile);
+void stopSound();// fungsi untuk menghentikan backsound
 
-void stopSound();
+int isGameOver(Grid* grid);//fungsi untuk logika menampilkan game over
 
-int isGameOver(Grid* grid);
+void drawGameOverScreen(Grid grid, int score);//fungsi untuk membuat tampilan game over
 
-void drawGameOverScreen(Grid grid, int score);
-
-void saveScoreToFile(const char *username, int score);
+void saveScoreToFile(char username[], int score);//fungsi untuk menyimpan skor pemain
 
 #endif

@@ -139,7 +139,8 @@ void drawLeadPanel(Panel panel) {
 
     //jika File NULL tampilkan No scores available
     if (file == NULL) {
-        outtextxy(panel.x + 20, panel.y + 50, "No scores available");
+        char noScoresText[] = "No scores available";  
+        outtextxy(panel.x + 20, panel.y + 50, noScoresText);
         return;
     }
 
@@ -248,7 +249,6 @@ void drawGameOverScreen(Grid grid, int score) {
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
     
     settextstyle(10, HORIZ_DIR, 5);
-    char gameOverText[] = "GAME OVER";
     outtextxy(300, 200, gameOverText);
     
     
@@ -291,7 +291,8 @@ void drawGameOverScreen(Grid grid, int score) {
     // **Simpan Skor ke File**
     saveScoreToFile(username, score);
     
-    // getch(); // Tunggu input sebelum keluar
+    // Tunggu input sebelum keluar
+    getch();
 }
 
 
