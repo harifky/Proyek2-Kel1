@@ -10,8 +10,6 @@
 int frameDelay = 1000 / 60;
 Tetromino currentTetromino;
 
-// #define score 0 
-
 void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
     if (kbhit()) {
         char key = getch();
@@ -39,7 +37,6 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
             printf("Score: %d\n", *score);
 
             *tetromino = nextTetromino;
-            // nextTetromino = createTetromino(setRandomTetromino(), 0, 0);
 
             *tetromino = createTetromino(setRandomTetromino(), 5, -2);
             int hasHeldThisTurn = 0;
@@ -51,9 +48,6 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
 }
 
 void updateFrameDelay(int *score) {
-    // if (*score < 4000) {
-    //     frameDelay = 100;
-    // }else 
     if (*score >= 4000) {
         frameDelay = 150;  // Sangat cepat
     } else if (*score >= 3000) {
@@ -70,8 +64,7 @@ void updateFrameDelay(int *score) {
 
 void playGame(){
     int gd = DETECT, gm;
-    // initgraph(&gd, &gm, NULL);
-
+    
     // Buat window fullscreen
     initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3); // -3 agar benar-benar fullscreen
     
@@ -91,16 +84,11 @@ void playGame(){
             gameGrid.cells[y][x] = 0;  // Pastikan grid kosong saat memulai permainan
         }
     }
-
-    nextTetromino = createTetromino(setRandomTetromino(), 5, -2);
-
-    currentTetromino = createTetromino(setRandomTetromino(), 5, -2); // Tetromino 'I' di tengah atas
-    playSoundEffect("sound/HoldOnTight.wav");
-
-
+    
     // **Inisialisasi currentTetromino & nextTetromino**
+    nextTetromino = createTetromino(setRandomTetromino(), 5, -2);
     currentTetromino = createTetromino(rand() % 7, 5, -3);
-    // nextTetromino = createTetromino(rand() % 7, 0, 0);
+    playSoundEffect("sound/HoldOnTight.wav");
     
     while (start) {
 
