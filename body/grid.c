@@ -284,7 +284,8 @@ void drawGameOverScreen(Grid grid, int score) {
     // **Minta Username**
     settextstyle(10, HORIZ_DIR, 3);
     char username[20];
-    outtextxy(280, 350, "Enter your name: ");
+    char enterNameText[] = "Enter your name:";
+    outtextxy(280, 350, enterNameText);
 
     int i = 0;
     while (1) {
