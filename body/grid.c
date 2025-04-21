@@ -326,33 +326,35 @@ void drawGameOverScreen(Grid grid, int score) {
 /*Dibuat oleh Rifky Hermawan*/
 void saveScoreToFile(const char *username, int score) {
     FILE *file = fopen("leaderboard.txt", "r");
-    char names[MAX_LEADERBOARD][20];
-    int scores[MAX_LEADERBOARD];
+    char names[100][20];  // simpan lebih banyak dulu
+    int scores[100];
     int count = 0;
     int found = 0;
 
-    // **1. Baca leaderboard yang ada**
     if (file != NULL) {
-        while (fscanf(file, "%s %d", names[count], &scores[count]) != EOF && count < MAX_LEADERBOARD) {
-            if (strcmp(names[count], username) == 0) {
-                if (score > scores[count]) {
-                    scores[count] = score;  // Perbarui skor jika lebih besar
+        char tempName[20];
+        int tempScore;
+        while (fscanf(file, "%s %d", tempName, &tempScore) != EOF) {
+            if (strcmp(tempName, username) == 0) {
+                if (score > tempScore) {
+                    tempScore = score;
                 }
-                found = 1;  // Tandai bahwa username sudah ada
+                found = 1;
             }
+            strcpy(names[count], tempName);
+            scores[count] = tempScore;
             count++;
         }
         fclose(file);
     }
 
-    // **2. Jika username belum ada, tambahkan ke daftar**
-    if (!found && count < MAX_LEADERBOARD) {
+    if (!found) {
         strcpy(names[count], username);
         scores[count] = score;
         count++;
     }
 
-    // **3. Urutkan skor dari yang terbesar ke terkecil (Bubble Sort)**
+    // Urutkan descending
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
             if (scores[j] < scores[j + 1]) {
@@ -369,10 +371,9 @@ void saveScoreToFile(const char *username, int score) {
         }
     }
 
-    // **4. Simpan hanya 5 skor tertinggi**
     file = fopen("leaderboard.txt", "w");
     if (file == NULL) {
-        printf("Error: Tidak dapat membuka file leaderboard.txt untuk menulis\n");
+        perror("Tidak bisa menulis file leaderboard");
         return;
     }
 
