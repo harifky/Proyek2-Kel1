@@ -4,20 +4,6 @@
 #include "config.h"
 #include "grid.h"
 
-// Struktur blok individual dalam tetromino
-typedef struct {
-    int x, y; //inisialisasi koordinat blok
-} Block;
-
-// Struktur Tetromino
-typedef struct {
-    int x, y;      // Posisi Tetromino di dalam grid
-    Block blocks[4]; //Ukuran dari satu blok tetromino
-    int color; // untuk warna dari tetromino
-} Tetromino;
-
-extern Tetromino nextTetromino;
-
 // Fungsi untuk membuat Tetromino
 Tetromino createTetromino(int type, int startX, int startY);
 

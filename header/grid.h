@@ -3,19 +3,6 @@
 
 #include "config.h"
 
-//struktur panel tampilan skor dll
-typedef struct {
-    int x, y; //Inisialisasi koordinat x & y untuk panel
-    int width, height; //Inisialisasi panjang dan lebar untuk panel
-} Panel;
-
-//struktur tampilan grid area permainan
-typedef struct {
-    int x, y; //Inisialisasi koordinat x & y untuk grid
-    int width, height;  //Inisialisasi panjang dan lebar untuk grid
-    int cells[GRID_HEIGHT][GRID_WIDTH]; // Grid untuk menyimpan blok
-} Grid;
-
 void drawGrid(Grid grid); //fungsi untuk menggambar Grid
 
 void drawPanel(Panel panel, int *score); //fungsi untuk menggambar panel

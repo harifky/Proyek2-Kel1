@@ -7,7 +7,8 @@
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
-void handleInput(Tetromino *tetromino, Grid *grid, int *score); // fungsi untuk menangani input user
+void handleInput(Tetromino *
+tetromino, Grid *grid, int *score); // fungsi untuk menangani input user
 
 void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount); //fungsi untuk memperbarui tampilan layar
 
@@ -16,5 +17,4 @@ void playGame(); // fungsi untuk menjalankan game
 void holdTetromino(Tetromino *current);// fungsi untuk fitur hold block
 
 void updateFrameDelay(int *score); // fungsi untuk mengatur speed jika sudah sampai ke skor tertentu
-
 #endif
