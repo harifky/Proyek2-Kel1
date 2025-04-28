@@ -10,8 +10,11 @@
                 "-o", "output/tetris.exe", 
                 "main.c", 
                 "body/game.c",
-                "body/grid.c",
-                "body/tetromino.c",
+                "body/Hafizh.c",
+                "body/Micky.c",
+                "body/Naufal_A.c",
+                "body/Naufal_N.c",
+                "body/Rifky.c",
                 "-lbgi", "-lgdi32", "-lcomdlg32", "-luuid", "-loleaut32", "-lole32", "-lwinmm"
             ],
             "group": {

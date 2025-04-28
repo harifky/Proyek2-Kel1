@@ -1,6 +1,8 @@
 #include "../header/Hafizh.h"
 #include "../header/config.h"
 
+// Tetromino nextTetromino;
+
 Tetromino createTetromino(int type, int startX, int startY) {
     //Kamus lokal inisialisasi tetromino sebagai t
     Tetromino t;
@@ -55,4 +57,10 @@ Tetromino getNewTetromino() {
     Tetromino current = nextTetromino;  // Tetromino yang sebelumnya sudah ditampilkan menjadi aktif
     nextTetromino = createTetromino(rand() % 7, 5, -3); // Buat Tetromino berikutnya
     return current;
+}
+
+int setRandomTetromino() {
+    srand(time(NULL)); // Seed untuk angka acak
+    int type = rand() % 7; // Mencari angka acak dari 1 - 7 
+    return type;
 }

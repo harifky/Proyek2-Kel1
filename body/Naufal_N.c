@@ -1,7 +1,9 @@
-#include "../header/Naufal_N.h"
 #include "../header/config.h"
+#include "../header/Naufal_N.h"
+#include "../header/Hafizh.h"
 
 Tetromino heldTetromino;
+HoldBox holdBox = {100, 50, 100, 100};
 int isHolding = 0;
 
 void drawGrid(Grid grid) {
@@ -87,5 +89,5 @@ void drawPanel(Panel panel, int *score) {
     char nextText[] = "Next";
     outtextxy(panel.x + 20, panel.y + 150, nextText);
     // Gambar next block
-    drawNextTetromino(nextTetromino, panel.x - 60, panel.y + 240);
+    drawNextTetromino(nextTetromino, panel.x - 60, panel.y + 240);
 }

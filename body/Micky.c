@@ -1,5 +1,7 @@
-#include "../header/Micky.h"
 #include "../header/config.h"
+#include "../header/Micky.h"
+#include "../header/Naufal_A.h"
+#include "../header/Hafizh.h"
 
 void moveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
 
