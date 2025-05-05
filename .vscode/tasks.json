@@ -6,13 +6,21 @@
             "type": "shell",
             "command": "g++",
             "args": [
+<<<<<<< HEAD
                 //"/c if not exist output mkdir output && g++ main.c body/game.c body/grid.c body/tetromino.c -o output/output.exe -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32"
                 "-o", "output/output.exe", 
+=======
+                // "/c if not exist output mkdir output && g++ main.c body/game.c body/grid.c body/tetromino.c -o output/output.exe -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32"
+                "-o", "output/tetris.exe", 
+>>>>>>> 0fba7511a99aa72b08afa6dad0673030931f688d
                 "main.c", 
                 "body/game.c",
-                "body/grid.c",
-                "body/tetromino.c",
-                "-lbgi", "-lgdi32", "-lcomdlg32", "-luuid", "-loleaut32", "-lole32"
+                "body/Hafizh.c",
+                "body/Micky.c",
+                "body/Naufal_A.c",
+                "body/Naufal_N.c",
+                "body/Rifky.c",
+                "-lbgi", "-lgdi32", "-lcomdlg32", "-luuid", "-loleaut32", "-lole32", "-lwinmm"
             ],
             "group": {
                 "kind": "build",
