@@ -1,7 +1,5 @@
 #include <graphics.h>
 #include "../header/game.h"
-#include "../header/grid.h"
-#include "../header/tetromino.h"
 #include <windows.h>
 #include <mmsystem.h>
 
@@ -11,20 +9,7 @@
 
 int frameDelay = 1000 / 60;
 Tetromino currentTetromino;
-
-// fungsi untuk menangani input user
-/*Dibuat oleh Micky Ridho*/
-void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
-    if (kbhit()) {
-        char key = getch();
-        if (key == 75) moveTetromino(tetromino, grid, -1, 0);
-        if (key == 77) moveTetromino(tetromino, grid, 1, 0);
-        if (key == 80) moveTetromino(tetromino, grid, 0, 1);
-        if (key == 32) hardDropTetromino(tetromino, grid, score);
-        if (key == 72) rotateTetromino(tetromino, grid);
-        if (key == 13) holdTetromino(tetromino);
-    }
-}
+Tetromino nextTetromino;
 
 //fungsi untuk memperbarui tampilan layar
 /*Dibuat oleh M. Naufal Nurmaryadi & M. Naufal Alfarizky*/
@@ -50,22 +35,6 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
             currentTetromino = getNewTetromino();
 
         }
-    }
-}
-
-// fungsi untuk mengatur speed jika sudah sampai ke skor tertentu
-/*Dibuat oleh Micky Ridho*/
-void updateFrameDelay(int *score) {
-    if (*score >= 4000) {
-        frameDelay = 150;  // Sangat cepat
-    } else if (*score >= 3000) {
-        frameDelay = 300;
-    } else if (*score >= 2000) {
-        frameDelay = 600;
-    } else if (*score >= 1000) {
-        frameDelay = 1200;
-    } else {
-        frameDelay = 2000;  // Kecepatan awal (1 detik per drop)
     }
 }
 
@@ -96,11 +65,19 @@ void playGame(){
     int score = 0; //inisialisasi awal score
 
     //Inisialisasi grid dengan mengisi sel dengan nilai 0 (kosong)
-    for (int y = 0; y < GRID_HEIGHT; y++) {
-        for (int x = 0; x < GRID_WIDTH; x++) {
-            gameGrid.cells[y][x] = 0;  // Pastikan grid kosong saat memulai permainan
-        }
+    // for (int y = 0; y < GRID_HEIGHT; y++) {
+    //     for (int x = 0; x < GRID_WIDTH; x++) {
+    //         gameGrid.cells[y][x] = 0;  // Pastikan grid kosong saat memulai permainan
+    //     }
+    // }
+
+    StoredBlock* current = grid->blocks;
+    while (current != NULL) {
+        StoredBlock* temp = current;
+        current = current->next;
+        free(temp);
     }
+    grid->blocks = NULL;
     
     //Inisialisasi currentTetromino & nextTetromino**
     nextTetromino = createTetromino(setRandomTetromino(), 5, -2);
