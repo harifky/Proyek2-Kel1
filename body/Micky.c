@@ -1,6 +1,7 @@
 #include "../header/config.h"
 #include "../header/Micky.h"
 #include "../header/Naufal_A.h"
+#include "../header/Naufal_N.h"
 #include "../header/Hafizh.h"
 
 void moveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
@@ -138,7 +139,7 @@ void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
         if (key == 80) moveTetromino(tetromino, grid, 0, 1);
         if (key == 32) hardDropTetromino(tetromino, grid, score);
         if (key == 72) rotateTetromino(tetromino, grid);
-        // if (key == 13) holdTetromino(tetromino);
+        if (key == 13) holdTetromino(tetromino);
     }
 }
 

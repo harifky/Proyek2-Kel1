@@ -2,21 +2,37 @@
 #include "../header/Rifky.h"
 #include "../header/Naufal_A.h"
 
+// typedef struct 
+
 void drawStoredBlocks(Grid *grid) {
 
     //Gambar semua block yang sudah didimpan didalam grid
-    for (int y = 0; y < GRID_HEIGHT; y++) {
-        for (int x = 0; x < GRID_WIDTH; x++) {
-            if (grid->cells[y][x] != 0) {
-                setfillstyle(SOLID_FILL, grid->cells[y][x]);
-                bar(grid->x + x * BLOCK_SIZE, grid->y + y * BLOCK_SIZE, 
-                    grid->x + (x + 1) * BLOCK_SIZE - 2, grid->y + (y + 1) * BLOCK_SIZE - 2);
+    // for (int y = 0; y < GRID_HEIGHT; y++) {
+    //     for (int x = 0; x < GRID_WIDTH; x++) {
+    //         if (grid->cells[y][x] != 0) {
+    //             setfillstyle(SOLID_FILL, grid->cells[y][x]);
+    //             bar(grid->x + x * BLOCK_SIZE, grid->y + y * BLOCK_SIZE, 
+    //                 grid->x + (x + 1) * BLOCK_SIZE - 2, grid->y + (y + 1) * BLOCK_SIZE - 2);
 
-                setcolor(WHITE);
-                rectangle(grid->x + x * BLOCK_SIZE, grid->y + y * BLOCK_SIZE, 
-                          grid->x + (x + 1) * BLOCK_SIZE, grid->y + (y + 1) * BLOCK_SIZE);
-            }
-        }
+    //             setcolor(WHITE);
+    //             rectangle(grid->x + x * BLOCK_SIZE, grid->y + y * BLOCK_SIZE, 
+    //                       grid->x + (x + 1) * BLOCK_SIZE, grid->y + (y + 1) * BLOCK_SIZE);
+    //         }
+    //     }
+    // }
+
+
+    StoredBlock* current = grid->blocks;
+    while (current != NULL) {
+        setfillstyle(SOLID_FILL, current->color);
+        bar(grid->x + current->x * BLOCK_SIZE, grid->y + current->y * BLOCK_SIZE,
+            grid->x + (current->x + 1) * BLOCK_SIZE - 2, grid->y + (current->y + 1) * BLOCK_SIZE - 2);
+
+        setcolor(WHITE);
+        rectangle(grid->x + current->x * BLOCK_SIZE, grid->y + current->y * BLOCK_SIZE,
+                  grid->x + (current->x + 1) * BLOCK_SIZE, grid->y + (current->y + 1) * BLOCK_SIZE);
+
+        current = current->next;
     }
 }
 
@@ -135,24 +151,20 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
     // printf("Menyimpan tetromino...\n"); //?DEBUGGING
 
     //Gambar blok dan simpan jika sudah mencapai batas pergerakan
-    for (int i = 0; i < 4; i++) {
-        int x = t->blocks[i].x;
-        int y = t->blocks[i].y;
+    // for (int i = 0; i < 4; i++) {
+    //     int x = t->blocks[i].x;
+    //     int y = t->blocks[i].y;
         
-        if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
-            grid->cells[y][x] = t->color;
-        }
-    }
-
-    //?DEBUGGING
-    // printf("Grid setelah tetromino disimpan:\n");
-    // for (int y = 0; y < GRID_HEIGHT; y++) {
-    //     for (int x = 0; x < GRID_WIDTH; x++) {
-    //         printf("%d ", grid->cells[y][x]);
+    //     if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
+    //         grid->cells[y][x] = t->color;
     //     }
-    //     printf("\n");
     // }
-    // printf("Keluar dari storeTetrominoInGrid()\n\n");
 
+    StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
+    newBlock->x = x;
+    newBlock->y = y;
+    newBlock->color = t->color;
+    newBlock->next = grid->blocks;
+    grid->blocks = newBlock;
 
 }
