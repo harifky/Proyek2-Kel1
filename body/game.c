@@ -10,6 +10,7 @@
 int frameDelay = 1000 / 60;
 Tetromino currentTetromino;
 Tetromino nextTetromino;
+Grid grid;
 
 //fungsi untuk memperbarui tampilan layar
 /*Dibuat oleh M. Naufal Nurmaryadi & M. Naufal Alfarizky*/
@@ -71,13 +72,13 @@ void playGame(){
     //     }
     // }
 
-    StoredBlock* current = grid->blocks;
+    StoredBlock* current = grid.blocks;
     while (current != NULL) {
         StoredBlock* temp = current;
         current = current->next;
         free(temp);
     }
-    grid->blocks = NULL;
+    grid.blocks = NULL;
     
     //Inisialisasi currentTetromino & nextTetromino**
     nextTetromino = createTetromino(setRandomTetromino(), 5, -2);
