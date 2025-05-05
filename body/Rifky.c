@@ -77,7 +77,7 @@ void drawLeadPanel(Panel panel) {
     FILE *file = fopen("leaderboard.txt", "r");
 
     if (file == NULL) {
-        outtextxy(panel.x + 20, panel.y + 50, "No scores available");
+        outtextxy(panel.x + 20, panel.y + 50, (char*)"No scores available");
         return;
     }
 
