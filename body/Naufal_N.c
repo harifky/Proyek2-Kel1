@@ -1,6 +1,13 @@
 #include "../header/config.h"
 #include "../header/Naufal_N.h"
 #include "../header/Hafizh.h"
+#include "../header/game.h"
+#include "../header/Rifky.h"
+
+#include <graphics.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 Tetromino heldTetromino;
 HoldBox holdBox = {100, 50, 100, 100};
@@ -15,28 +22,33 @@ void drawHoldPanel(Panel panel) {
     rectangle(holdBox.x, holdBox.y, holdBox.x + holdBox.width, holdBox.y + holdBox.height);
     char holdText[] = "Hold";
     outtextxy(holdBox.x + 30, holdBox.y + 10, holdText);
+
     // Jika ada tetromino yang di-hold
     if (isHolding) {
-        int minX = 5, minY = 5, maxX = -5, maxY = -5;  // Inisialisasi nilai batas
-        for (int i = 0; i < 4; i++) {
-            if (heldTetromino.blocks[i].x < minX) minX = heldTetromino.blocks[i].x;
-            if (heldTetromino.blocks[i].y < minY) minY = heldTetromino.blocks[i].y;
-            if (heldTetromino.blocks[i].x > maxX) maxX = heldTetromino.blocks[i].x;
-            if (heldTetromino.blocks[i].y > maxY) maxY = heldTetromino.blocks[i].y;
+        int minX = 999, minY = 999, maxX = -999, maxY = -999;
+        BlockNode* node = heldTetromino.head;
+
+        while (node) {
+            if (node->x < minX) minX = node->x;
+            if (node->y < minY) minY = node->y;
+            if (node->x > maxX) maxX = node->x;
+            if (node->y > maxY) maxY = node->y;
+            node = node->next;
         }
 
         int tetrominoWidth = (maxX - minX + 1) * (BLOCK_SIZE / 2);
         int tetrominoHeight = (maxY - minY + 1) * (BLOCK_SIZE / 2);
-
         int startX = holdBox.x + (holdBox.width - tetrominoWidth) / 2;
         int startY = holdBox.y + (holdBox.height - tetrominoHeight) / 2;
 
-        for (int i = 0; i < 4; i++) {
-            int bx = startX + (heldTetromino.blocks[i].x - minX) * (BLOCK_SIZE / 2);
-            int by = startY + (heldTetromino.blocks[i].y - minY) * (BLOCK_SIZE / 2);
+        node = heldTetromino.head;
+        while (node) {
+            int bx = startX + (node->x - minX) * (BLOCK_SIZE / 2);
+            int by = startY + (node->y - minY) * (BLOCK_SIZE / 2);
 
             setfillstyle(SOLID_FILL, heldTetromino.color);
             bar(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
+            node = node->next;
         }
     }
 }
@@ -90,4 +102,54 @@ void drawPanel(Panel panel, int *score) {
     outtextxy(panel.x + 20, panel.y + 150, nextText);
     // Gambar next block
     drawNextTetromino(nextTetromino, panel.x - 60, panel.y + 240);
+}
+
+void showMenu() {
+    initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
+
+    bool menuActive = true;
+    int choice = 0;
+
+    while (menuActive) {
+        cleardevice(); // Bersihkan layar
+
+        // Hitung posisi teks agar berada di tengah layar
+        int centerX = screenWidth / 2;
+        int centerY = screenHeight / 2;
+
+        settextstyle(10, HORIZ_DIR, 4);
+        outtextxy(centerX - 150, centerY - 150, (char*)"TETRIS GAME");
+
+        settextstyle(10, HORIZ_DIR, 3);
+        outtextxy(centerX - 100, centerY - 50, (char*)"1. Play Game");
+        outtextxy(centerX - 100, centerY, (char*)"2. Leaderboard");
+        outtextxy(centerX - 100, centerY + 50, (char*)"3. Exit");
+        outtextxy(centerX - 100, centerY + 100, (char*)"Choose (1/2/3):");
+
+        char key = getch();
+        if (key == '1') {
+            choice = 1;
+            menuActive = false;
+        } else if (key == '2') {
+            choice = 2;
+            menuActive = false;
+        } else if (key == '3') {
+            choice = 3;
+            menuActive = false;
+        }
+    }
+
+    if (choice == 1) {
+        playGame(); // Panggil fungsi untuk memulai game
+    } else if (choice == 2) {
+        cleardevice(); // Bersihkan layar
+        Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200, 400, 400}; // Panel untuk leaderboard
+        drawLeadPanel(leaderboardPanel);
+        outtextxy(screenWidth / 2 - 150, screenHeight / 2 + 250, (char*)"Press any key to return...");
+        getch();
+        showMenu(); // Kembali ke menu setelah melihat leaderboard
+    } else if (choice == 3) {
+        closegraph(); // Keluar dari program
+        exit(0);
+    }
 }
