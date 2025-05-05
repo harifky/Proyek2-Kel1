@@ -27,11 +27,17 @@ typedef struct {
     int width, height; //Inisialisasi panjang dan lebar untuk panel
 } Panel;
 
+typedef struct StoredBlock {
+    int x, y;
+    int color;
+    struct StoredBlock* next;
+} StoredBlock;
+
 //struktur tampilan grid area permainan
 typedef struct {
-    int x, y; //Inisialisasi koordinat x & y untuk grid
-    int width, height;  //Inisialisasi panjang dan lebar untuk grid
-    int cells[GRID_HEIGHT][GRID_WIDTH]; // Grid untuk menyimpan blok
+    int x, y;
+    int width, height;
+    StoredBlock* blocks;  // pointer ke linked list
 } Grid;
 
 // Struktur blok individual dalam tetromino
@@ -62,11 +68,21 @@ const Block tetrominoShapes[7][4] = {
 const int tetrominoColors[7] = {CYAN, YELLOW, MAGENTA, BLUE, LIGHTRED, GREEN, RED};
 
 // Struktur Tetromino
+// typedef struct {
+//     int x, y;      // Posisi Tetromino di dalam grid
+//     Block blocks[4]; //Ukuran dari satu blok tetromino
+//     int color; // untuk warna dari tetromino
+// } Tetromino;
+
+typedef struct BlockNode {
+    int x, y;
+    struct BlockNode* next;
+} BlockNode;
+
 typedef struct {
-    int x, y;      // Posisi Tetromino di dalam grid
-    Block blocks[4]; //Ukuran dari satu blok tetromino
-    int color; // untuk warna dari tetromino
-} Tetromino;
+    BlockNode* head;  // pointer ke blok pertama
+    int color;
+}Tetromino;
 
 extern Tetromino nextTetromino;
 extern Tetromino heldTetromino;
