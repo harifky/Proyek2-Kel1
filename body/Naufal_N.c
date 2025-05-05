@@ -139,7 +139,7 @@ void showMenu() {
     } else if (choice == 2) {
         cleardevice(); // Bersihkan layar
         Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200, 400, 400}; // Panel untuk leaderboard
-        drawLeadPanel(leaderboardPanel); // Panggil fungsi dari Rifky.c
+        drawLeadPanel(leaderboardPanel);
         outtextxy(screenWidth / 2 - 150, screenHeight / 2 + 250, (char*)"Press any key to return...");
         getch();
         showMenu(); // Kembali ke menu setelah melihat leaderboard
