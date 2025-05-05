@@ -144,18 +144,19 @@ void drawGameOverScreen(Grid grid, int score) {
     setcolor(WHITE);
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
     
-    settextstyle(10, HORIZ_DIR, 5);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
     char gameOverText[10] = "GAME OVER";
-    outtextxy(300, 200, gameOverText);
+    outtextxy(275, 200, gameOverText);
     
     
-    settextstyle(10, HORIZ_DIR, 3);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
     char scoreText[30];
     sprintf(scoreText, "Final Score: %d", score);
-    outtextxy(320, 300, scoreText);
+    outtextxy(280, 300, scoreText);
     
     // **Minta Username**
-    settextstyle(10, HORIZ_DIR, 3);
+    settextjustify(CENTER_TEXT, CENTER_TEXT);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
     char username[20];
     char enterNameText[] = "Enter your name:";
     outtextxy(280, 350, enterNameText);
@@ -164,7 +165,7 @@ void drawGameOverScreen(Grid grid, int score) {
     while (1) {
         char key = getch();
         if (key == 13) {
-            settextstyle(10, HORIZ_DIR, 2);
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
             char exitText[] = "Press enter to exit...";
             outtextxy(270, 430, exitText);
             break;
@@ -208,13 +209,15 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
 
     BlockNode* current = t->head;
     while (current != NULL) {
-        StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
-        newBlock->x = current->x;
-        newBlock->y = current->y;
-        newBlock->color = t->color;
-        newBlock->next = grid->blocks;
-        grid->blocks = newBlock;
-
+        // Only store if within grid bounds
+        if (current->y >= 0 && current->x >= 0 && current->x < GRID_WIDTH) {
+            StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
+            newBlock->x = current->x;
+            newBlock->y = current->y;
+            newBlock->color = t->color;
+            newBlock->next = grid->blocks;
+            grid->blocks = newBlock;
+        }
         current = current->next;
     }
 

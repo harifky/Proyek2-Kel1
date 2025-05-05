@@ -1,4 +1,3 @@
-#include <graphics.h>
 #include "header/game.h"
 #include "header/Naufal_N.h"
 

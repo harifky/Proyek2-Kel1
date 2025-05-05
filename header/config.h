@@ -37,6 +37,7 @@ typedef struct StoredBlock {
 typedef struct {
     int x, y;
     int width, height;
+    int cells[GRID_HEIGHT][GRID_WIDTH];
     StoredBlock* blocks;  // pointer ke linked list
 } Grid;
 
@@ -82,6 +83,7 @@ typedef struct BlockNode {
 typedef struct {
     BlockNode* head;  // pointer ke blok pertama
     int color;
+    int x, y;
 }Tetromino;
 
 extern Tetromino nextTetromino;

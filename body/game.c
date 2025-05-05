@@ -23,7 +23,7 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
             storeTetrominoInGrid(grid, tetromino);
             int rowsCleared = clearFullRows(grid);
 
-            int scoreTable[] = {0, 100, 300, 500, 800};
+            int scoreTable[] = {0, 200, 300, 500, 800};
             *score += scoreTable[rowsCleared];
 
             printf("Score: %d\n", *score);
