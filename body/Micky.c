@@ -67,12 +67,32 @@ void rotateTetromino(Tetromino *t, Grid *grid) {
 }
 
 int canMoveDown(Tetromino *t, Grid *grid) {
+    // BlockNode *node = t->head;
+    // while (node != NULL) {
+    //     int x = node->x;
+    //     int y = node->y + 1;
+    //     if (y >= GRID_HEIGHT || (y >= 0 && grid->cells[y][x] != 0)) {
+    //         return 0;
+    //     }
+    //     node = node->next;
+    // }
+    // return 1;
+
     BlockNode *node = t->head;
     while (node != NULL) {
         int x = node->x;
         int y = node->y + 1;
-        if (y >= GRID_HEIGHT || (y >= 0 && grid->cells[y][x] != 0)) {
-            return 0;
+
+        // Check grid bounds
+        if (y >= GRID_HEIGHT) return 0;
+
+        // Check collision with stored blocks
+        StoredBlock* current = grid->blocks;
+        while (current != NULL) {
+            if (current->x == x && current->y == y) {
+                return 0;
+            }
+            current = current->next;
         }
         node = node->next;
     }
@@ -80,16 +100,40 @@ int canMoveDown(Tetromino *t, Grid *grid) {
 }
 
 int canMoveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
+    // BlockNode *node = t->head;
+    // while (node != NULL) {
+    //     int newX = node->x + dx;
+    //     int newY = node->y + dy;
+    //     if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT || (newY >= 0 && grid->cells[newY][newX] != 0)) {
+    //         return 0;
+    //     }
+    //     node = node->next;
+    // }
+    // return 1;
+
+
     BlockNode *node = t->head;
     while (node != NULL) {
         int newX = node->x + dx;
         int newY = node->y + dy;
-        if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT || (newY >= 0 && grid->cells[newY][newX] != 0)) {
+
+        // Batas grid
+        if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT) {
             return 0;
         }
+
+        // Cek tabrakan dengan blok yang sudah tersimpan
+        StoredBlock* current = grid->blocks;
+        while (current != NULL) {
+            if (current->x == newX && current->y == newY) {
+                return 0;
+            }
+            current = current->next;
+        }
+
         node = node->next;
     }
-    return 1;
+    return 1; // Tidak ada tabrakan
 }
 
 int addScore(int *score, Grid *grid){

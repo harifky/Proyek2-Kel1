@@ -209,13 +209,15 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
 
     BlockNode* current = t->head;
     while (current != NULL) {
-        StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
-        newBlock->x = current->x;
-        newBlock->y = current->y;
-        newBlock->color = t->color;
-        newBlock->next = grid->blocks;
-        grid->blocks = newBlock;
-
+        // Only store if within grid bounds
+        if (current->y >= 0 && current->x >= 0 && current->x < GRID_WIDTH) {
+            StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
+            newBlock->x = current->x;
+            newBlock->y = current->y;
+            newBlock->color = t->color;
+            newBlock->next = grid->blocks;
+            grid->blocks = newBlock;
+        }
         current = current->next;
     }
 
