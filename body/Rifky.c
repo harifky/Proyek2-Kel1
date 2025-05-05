@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "../header/Rifky.h"
 #include "../header/Micky.h"
 #include "../header/config.h"
@@ -30,95 +34,107 @@ void drawShadowBlock(Tetromino *t, Grid *grid) {
 }
 
 void drawLeadPanel(Panel panel) {
-    
-    setcolor(WHITE); // set warna untuk panel
+    setcolor(WHITE);
+    rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
 
-    rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height); // gambar panel
-    
-    //Tampilkan teks Leaderboard
     char leaderBoardText[] = "Leader Board";
     outtextxy(panel.x + 50, panel.y + 20, leaderBoardText);
 
-    //Buka file 
     FILE *file = fopen("leaderboard.txt", "r");
 
-    //jika File NULL tampilkan No scores available
     if (file == NULL) {
-        char noScoresText[] = "No scores available";  
-        outtextxy(panel.x + 20, panel.y + 50, noScoresText);
+        outtextxy(panel.x + 20, panel.y + 50, "No scores available");
         return;
     }
 
-    //Tampilkan Leaderboard
-    char name[20];
+    char name[50], time[30];
     int score, yOffset = 50;
-    while (fscanf(file, "%s %d", name, &score) != EOF && yOffset < panel.height - 20) {
-        char scoreEntry[30];
-        sprintf(scoreEntry, "%s: %d", name, score);
+    char scoreEntry[100];
+
+    while (fscanf(file, "%s %d %s", name, &score, time) == 3 && yOffset < panel.height - 20) {
+        sprintf(scoreEntry, "%s: %d (%s)", name, score, time);
         outtextxy(panel.x + 20, panel.y + yOffset, scoreEntry);
         yOffset += 20;
     }
 
-    //Tutup file
     fclose(file);
 }
 
 void saveScoreToFile(const char *username, int score) {
     FILE *file = fopen("leaderboard.txt", "r");
-    char names[100][20];  // simpan lebih banyak dulu
-    int scores[100];
-    int count = 0;
-    int found = 0;
+    Scoring *head = NULL;
 
+    // Load existing scores
     if (file != NULL) {
-        char tempName[20];
+        char tempName[50], tempTime[30];
         int tempScore;
-        while (fscanf(file, "%s %d", tempName, &tempScore) != EOF) {
-            if (strcmp(tempName, username) == 0) {
-                if (score > tempScore) {
-                    tempScore = score;
-                }
-                found = 1;
-            }
-            strcpy(names[count], tempName);
-            scores[count] = tempScore;
-            count++;
+        while (fscanf(file, "%s %d %s", tempName, &tempScore, tempTime) == 3) {
+            Scoring *newNode = (Scoring*)malloc(sizeof(Scoring));
+            strcpy(newNode->username, tempName);
+            newNode->score = tempScore;
+            strcpy(newNode->time, tempTime);
+            newNode->next = head;
+            head = newNode;
         }
         fclose(file);
     }
 
-    if (!found) {
-        strcpy(names[count], username);
-        scores[count] = score;
-        count++;
-    }
+    // Get current time
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    char timeStr[30];
+    strftime(timeStr, sizeof(timeStr), "%Y%m%d_%H%M%S", t);
 
-    // Urutkan descending
-    for (int i = 0; i < count - 1; i++) {
-        for (int j = 0; j < count - i - 1; j++) {
-            if (scores[j] < scores[j + 1]) {
-                int tempScore = scores[j];
-                char tempName[20];
-                strcpy(tempName, names[j]);
+    // Add new score
+    Scoring *newNode = (Scoring*)malloc(sizeof(Scoring));
+    strcpy(newNode->username, username);
+    newNode->score = score;
+    strcpy(newNode->time, timeStr);
+    newNode->next = head;
+    head = newNode;
 
-                scores[j] = scores[j + 1];
-                strcpy(names[j], names[j + 1]);
+    // Sort linked list by score descending
+    for (Scoring *i = head; i != NULL; i = i->next) {
+        for (Scoring *j = i->next; j != NULL; j = j->next) {
+            if (j->score > i->score) {
+                // Swap data
+                int tempScore = i->score;
+                char tempName[50], tempTime[30];
+                strcpy(tempName, i->username);
+                strcpy(tempTime, i->time);
 
-                scores[j + 1] = tempScore;
-                strcpy(names[j + 1], tempName);
+                i->score = j->score;
+                strcpy(i->username, j->username);
+                strcpy(i->time, j->time);
+
+                j->score = tempScore;
+                strcpy(j->username, tempName);
+                strcpy(j->time, tempTime);
             }
         }
     }
 
+    // Save top 10 to file
     file = fopen("leaderboard.txt", "w");
     if (file == NULL) {
-        perror("Tidak bisa menulis file leaderboard");
+        perror("Gagal membuka file untuk ditulis");
         return;
     }
 
-    for (int i = 0; i < count && i < MAX_LEADERBOARD; i++) {
-        fprintf(file, "%s %d\n", names[i], scores[i]);
+    int count = 0;
+    Scoring *curr = head;
+    while (curr != NULL && count < 10) {
+        fprintf(file, "%s %d %s\n", curr->username, curr->score, curr->time);
+        curr = curr->next;
+        count++;
     }
 
     fclose(file);
+
+    // Free linked list
+    while (head != NULL) {
+        Scoring *temp = head;
+        head = head->next;
+        free(temp);
+    }
 }
