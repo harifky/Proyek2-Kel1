@@ -62,11 +62,23 @@ const Block tetrominoShapes[7][4] = {
 const int tetrominoColors[7] = {CYAN, YELLOW, MAGENTA, BLUE, LIGHTRED, GREEN, RED};
 
 // Struktur Tetromino
+// typedef struct {
+//     int x, y;      // Posisi Tetromino di dalam grid
+//     Block blocks[4]; //Ukuran dari satu blok tetromino
+//     int color; // untuk warna dari tetromino
+// } Tetromino;
+
+typedef struct BlockNode {
+    int x, y;
+    struct BlockNode* next;
+} BlockNode;
+
 typedef struct {
-    int x, y;      // Posisi Tetromino di dalam grid
-    Block blocks[4]; //Ukuran dari satu blok tetromino
-    int color; // untuk warna dari tetromino
+    BlockNode* head;  // pointer ke blok pertama
+    int color;
 } Tetromino;
+
+
 
 extern Tetromino nextTetromino;
 extern Tetromino heldTetromino;
