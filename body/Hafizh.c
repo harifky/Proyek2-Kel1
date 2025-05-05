@@ -40,14 +40,17 @@ void drawTetromino(Tetromino t) {
 void drawNextTetromino(Tetromino next, int posX, int posY) {
     int blockSize = BLOCK_SIZE / 2;
 
+    int offsetx = 30;
+    int offsety = 10;
+    //set warna fill style dan outline untuk block berikutnya
     setcolor(next.color); 
     setfillstyle(SOLID_FILL, next.color);
 
-    BlockNode* current = next.head;
-    while (current != NULL) {
-        int x = posX + current->x * blockSize;
-        int y = posY + current->y * blockSize;
-        bar(x, y, x + blockSize, y + blockSize);
+    //gambar next block
+    for (int i = 0; i < 4; i++) {
+        int x = posX + offsetx + next.blocks[i].x * blockSize;
+        int y = posY + offsety + next.blocks[i].y * blockSize;
+        bar(x, y, x + blockSize, y + blockSize); // Menggambar kotak terisi warna
         rectangle(x, y, x + blockSize, y + blockSize);
         current = current->next;
     }
