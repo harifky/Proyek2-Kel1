@@ -1,4 +1,3 @@
-#include <graphics.h>
 #include "header/game.h"
 
 int main() {
