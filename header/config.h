@@ -83,6 +83,7 @@ typedef struct BlockNode {
 typedef struct {
     BlockNode* head;  // pointer ke blok pertama
     int color;
+    int x, y;
 }Tetromino;
 
 extern Tetromino nextTetromino;

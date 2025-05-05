@@ -22,28 +22,33 @@ void drawHoldPanel(Panel panel) {
     rectangle(holdBox.x, holdBox.y, holdBox.x + holdBox.width, holdBox.y + holdBox.height);
     char holdText[] = "Hold";
     outtextxy(holdBox.x + 30, holdBox.y + 10, holdText);
+
     // Jika ada tetromino yang di-hold
     if (isHolding) {
-        int minX = 5, minY = 5, maxX = -5, maxY = -5;  // Inisialisasi nilai batas
-        for (int i = 0; i < 4; i++) {
-            if (heldTetromino.blocks[i].x < minX) minX = heldTetromino.blocks[i].x;
-            if (heldTetromino.blocks[i].y < minY) minY = heldTetromino.blocks[i].y;
-            if (heldTetromino.blocks[i].x > maxX) maxX = heldTetromino.blocks[i].x;
-            if (heldTetromino.blocks[i].y > maxY) maxY = heldTetromino.blocks[i].y;
+        int minX = 999, minY = 999, maxX = -999, maxY = -999;
+        BlockNode* node = heldTetromino.head;
+
+        while (node) {
+            if (node->x < minX) minX = node->x;
+            if (node->y < minY) minY = node->y;
+            if (node->x > maxX) maxX = node->x;
+            if (node->y > maxY) maxY = node->y;
+            node = node->next;
         }
 
         int tetrominoWidth = (maxX - minX + 1) * (BLOCK_SIZE / 2);
         int tetrominoHeight = (maxY - minY + 1) * (BLOCK_SIZE / 2);
-
         int startX = holdBox.x + (holdBox.width - tetrominoWidth) / 2;
         int startY = holdBox.y + (holdBox.height - tetrominoHeight) / 2;
 
-        for (int i = 0; i < 4; i++) {
-            int bx = startX + (heldTetromino.blocks[i].x - minX) * (BLOCK_SIZE / 2);
-            int by = startY + (heldTetromino.blocks[i].y - minY) * (BLOCK_SIZE / 2);
+        node = heldTetromino.head;
+        while (node) {
+            int bx = startX + (node->x - minX) * (BLOCK_SIZE / 2);
+            int by = startY + (node->y - minY) * (BLOCK_SIZE / 2);
 
             setfillstyle(SOLID_FILL, heldTetromino.color);
             bar(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
+            node = node->next;
         }
     }
 }
