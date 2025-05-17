@@ -28,7 +28,7 @@ typedef struct {
 } Panel;
 
 typedef struct StoredBlock {
-    int x, y;
+    int x, y, z;
     int color;
     struct StoredBlock* next;
 } StoredBlock;
