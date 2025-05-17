@@ -108,48 +108,58 @@ void showMenu() {
     initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
 
     bool menuActive = true;
-    int choice = 0;
+    int selectedOption = 0;
+    const char* options[] = {"Play Game", "Leaderboard", "Exit"};
+    const int optionCount = 3;
 
     while (menuActive) {
-        cleardevice(); // Bersihkan layar
-
-        // Hitung posisi teks agar berada di tengah layar
+        cleardevice();
         int centerX = screenWidth / 2;
         int centerY = screenHeight / 2;
 
-        settextstyle(10, HORIZ_DIR, 4);
-        outtextxy(centerX - 150, centerY - 150, (char*)"TETRIS GAME");
+        // Tulis judul "TETROMANIA" di tengah atas layar
+        settextstyle(10, HORIZ_DIR, 5); // Ukuran font besar
+        const char* title = "TETROMANIA";
 
+        // Hitung lebar tulisan untuk dipusatkan secara horizontal
+        int textWidth = textwidth((char*)title);
+        int textHeight = textheight((char*)title);
+
+        // Cetak tulisan di tengah layar (horizontal dan vertikal)
+        outtextxy(centerX - textWidth / 2, centerY - 200, (char*)title);
+
+        // Menu
         settextstyle(10, HORIZ_DIR, 3);
-        outtextxy(centerX - 100, centerY - 50, (char*)"1. Play Game");
-        outtextxy(centerX - 100, centerY, (char*)"2. Leaderboard");
-        outtextxy(centerX - 100, centerY + 50, (char*)"3. Exit");
-        outtextxy(centerX - 100, centerY + 100, (char*)"Choose (1/2/3):");
+        for (int i = 0; i < optionCount; i++) {
+            char buffer[100];
+            if (i == selectedOption)
+                sprintf(buffer, "-> %d. %s", i + 1, options[i]);
+            else
+                sprintf(buffer, "   %d. %s", i + 1, options[i]);
+
+            outtextxy(centerX - 100, centerY - 50 + i * 50, buffer);
+        }
 
         char key = getch();
-        if (key == '1') {
-            choice = 1;
-            menuActive = false;
-        } else if (key == '2') {
-            choice = 2;
-            menuActive = false;
-        } else if (key == '3') {
-            choice = 3;
+        if (key == 72) {
+            selectedOption = (selectedOption - 1 + optionCount) % optionCount;
+        } else if (key == 80) {
+            selectedOption = (selectedOption + 1) % optionCount;
+        } else if (key == 13) {
             menuActive = false;
         }
     }
 
-    if (choice == 1) {
-        playGame(); // Panggil fungsi untuk memulai game
-    } else if (choice == 2) {
-        cleardevice(); // Bersihkan layar
-        Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200, 400, 400}; // Panel untuk leaderboard
-        drawLeadPanel(leaderboardPanel);
-        outtextxy(screenWidth / 2 - 150, screenHeight / 2 + 250, (char*)"Press any key to return...");
-        getch();
-        showMenu(); // Kembali ke menu setelah melihat leaderboard
-    } else if (choice == 3) {
-        closegraph(); // Keluar dari program
-        exit(0);
+    switch (selectedOption) {
+        case 0: playGame(); break;
+        case 1: {
+            cleardevice();
+            Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200, 400, 400};
+            drawLeadPanel(leaderboardPanel);
+            outtextxy(screenWidth / 2 - 150, screenHeight / 2 + 250, (char*)"Press any key to return...");
+            getch();
+            showMenu(); break;
+        }
+        case 2: closegraph(); exit(0); break;
     }
 }
