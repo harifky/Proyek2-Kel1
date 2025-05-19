@@ -69,39 +69,59 @@ void holdTetromino(Tetromino *current) {
 }
 
 void drawPanel(Panel panel, int *score) {
-    // gambar panel
+    // === Background Panel ===
+    setfillstyle(SOLID_FILL, DARKGRAY);
+    bar(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
+
+    // === Border Panel ===
+    setcolor(WHITE);
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
-    
-    // Tampilkan Teks Score
+
+    // === Judul Panel ===
+    settextstyle(10, HORIZ_DIR, 2);
+    setcolor(LIGHTBLUE);
+    outtextxy(panel.x + 20, panel.y + 10, (char*)"STATUS PANEL");
+
+    // === Skor ===
+    settextstyle(10, HORIZ_DIR, 1);
+    setcolor(WHITE);
     char scoreText[20];
     sprintf(scoreText, "Score: %d", *score);
-    outtextxy(panel.x + 20, panel.y + 20, scoreText);
-    
-    
-    
-    // Semakin tinggi level jatuhnya block semakin cepat
+    outtextxy(panel.x + 20, panel.y + 50, scoreText);
+
+    // === Level Speed Berdasarkan Skor ===
     int levelSpeed = 1;
     if (*score >= 4000) {
         levelSpeed = 4;
     } else if (*score >= 2000) {
         levelSpeed = 3;
     } else if (*score >= 1000) {
-        levelSpeed = 2; 
+        levelSpeed = 2;
     }
-    // Tampilkan teks level
-    char speedText[] = "Speed";
-    char levelSpeedText[10];
-    sprintf(levelSpeedText, "Speed: %d", levelSpeed); 
+
+    char levelSpeedText[20];
+    sprintf(levelSpeedText, "Speed: %d", levelSpeed);
     outtextxy(panel.x + 20, panel.y + 80, levelSpeedText);
+
+    // === Next Block ===
+    setcolor(LIGHTCYAN);
+    outtextxy(panel.x + 20, panel.y + 130, (char*)"Next:");
+
+    // Kotak latar belakang next block
+    setfillstyle(SOLID_FILL, BLACK);
+    bar(panel.x + 15, panel.y + 150, panel.x + panel.width - 15, panel.y + 230);
+
+    // Border next block box
+    setcolor(WHITE);
+    rectangle(panel.x + 15, panel.y + 150, panel.x + panel.width - 15, panel.y + 230);
+
+    // Gambar next tetromino
+    int boxX = panel.x + 15;
+    int boxY = panel.y + 150;
+    int boxW = panel.width - 30;
+    int boxH = 80;  // dari 150 ke 230
     
-    
-    
-    
-    // Tampilkan teks next
-    char nextText[] = "Next";
-    outtextxy(panel.x + 20, panel.y + 150, nextText);
-    // Gambar next block
-    drawNextTetromino(nextTetromino, panel.x - 60, panel.y + 240);
+    drawNextTetromino(nextTetromino, boxX, boxY, boxW, boxH);
 }
 
 void showMenu() {
@@ -123,26 +143,44 @@ void showMenu() {
         // Tulis judul "TETROMANIA" di tengah atas layar
         settextstyle(10, HORIZ_DIR, 5); // Ukuran font besar
         const char* title = "TETROMANIA";
-
-        // Hitung lebar tulisan untuk dipusatkan secara horizontal
         int textWidth = textwidth((char*)title);
-        int textHeight = textheight((char*)title);
+        outtextxy(centerX - textWidth / 2, 80, (char*)title);
 
-        // Cetak tulisan di tengah layar (horizontal dan vertikal)
-        outtextxy(centerX - textWidth / 2, centerY - 200, (char*)title);
+        // === Border dan Background Panel Menu ===
+        int panelWidth = 400;
+        int panelHeight = 300;
+        int panelX = centerX - panelWidth / 2;
+        int panelY = centerY - panelHeight / 2;
 
-        // Menu
+        // Background Panel
+        setfillstyle(SOLID_FILL, DARKGRAY);
+        bar(panelX, panelY, panelX + panelWidth, panelY + panelHeight);
+
+        // Border Panel
+        setcolor(WHITE);
+        rectangle(panelX, panelY, panelX + panelWidth, panelY + panelHeight);
+
+        // === Menu Options ===
         settextstyle(10, HORIZ_DIR, 3);
         for (int i = 0; i < optionCount; i++) {
-            char buffer[100];
-            if (i == selectedOption)
-                sprintf(buffer, "-> %d. %s", i + 1, options[i]);
-            else
-                sprintf(buffer, "   %d. %s", i + 1, options[i]);
+            int optionY = panelY + 50 + i * 60;
 
-            outtextxy(centerX - 100, centerY - 50 + i * 50, buffer);
+            if (i == selectedOption) {
+                // Highlight aktif (warna dan blok latar belakang)
+                setfillstyle(SOLID_FILL, BLUE);
+                bar(panelX + 20, optionY - 10, panelX + panelWidth - 20, optionY + 40);
+
+                setcolor(WHITE);
+                char buffer[100];
+                sprintf(buffer, "-> %s", options[i]);
+                outtextxy(panelX + 40, optionY, buffer);
+            } else {
+                setcolor(WHITE);
+                outtextxy(panelX + 40, optionY, (char*)options[i]);
+            }
         }
 
+        // Navigasi menu
         char key = getch();
         if (key == 72) {
             selectedOption = (selectedOption - 1 + optionCount) % optionCount;
@@ -153,16 +191,23 @@ void showMenu() {
         }
     }
 
+    // === Aksi saat menu dipilih ===
     switch (selectedOption) {
-        case 0: playGame(); break;
+        case 0:
+            playGame();
+            break;
         case 1: {
             cleardevice();
             Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200, 400, 400};
             drawLeadPanel(leaderboardPanel);
             outtextxy(screenWidth / 2 - 170, screenHeight / 2 + 230, (char*)"Press any key to return...");
             getch();
-            showMenu(); break;
+            showMenu();
+            break;
         }
-        case 2: closegraph(); exit(0); break;
+        case 2:
+            closegraph();
+            exit(0);
+            break;
     }
 }

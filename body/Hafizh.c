@@ -37,7 +37,7 @@ void drawTetromino(Tetromino t) {
 }
 
 
-void drawNextTetromino(Tetromino next, int posX, int posY) {
+void drawNextTetromino(Tetromino next, int boxX, int boxY, int boxWidth, int boxHeight) {
     int blockSize = BLOCK_SIZE / 2;
 
     int offsetX = 30;  // geser kanan 30px
