@@ -117,6 +117,9 @@ void showMenu() {
         int centerX = screenWidth / 2;
         int centerY = screenHeight / 2;
 
+        // **Panggil fungsi drawLogo di sini, misal di kiri atas**
+        // drawLogo(centerX - 100, centerY - 1000);  // contoh posisi, sesuaikan
+
         // Tulis judul "TETROMANIA" di tengah atas layar
         settextstyle(10, HORIZ_DIR, 5); // Ukuran font besar
         const char* title = "TETROMANIA";
@@ -156,7 +159,7 @@ void showMenu() {
             cleardevice();
             Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200, 400, 400};
             drawLeadPanel(leaderboardPanel);
-            outtextxy(screenWidth / 2 - 150, screenHeight / 2 + 250, (char*)"Press any key to return...");
+            outtextxy(screenWidth / 2 - 170, screenHeight / 2 + 230, (char*)"Press any key to return...");
             getch();
             showMenu(); break;
         }

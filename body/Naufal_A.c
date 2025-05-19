@@ -144,30 +144,30 @@ void drawGameOverScreen(Grid grid, int score) {
     setcolor(WHITE);
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
     
-    settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
+    settextstyle(10, HORIZ_DIR, 5);
     char gameOverText[10] = "GAME OVER";
     outtextxy(275, 200, gameOverText);
     
     
-    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
+    settextstyle(10, HORIZ_DIR, 3);
     char scoreText[30];
     sprintf(scoreText, "Final Score: %d", score);
     outtextxy(280, 300, scoreText);
     
     // **Minta Username**
     settextjustify(CENTER_TEXT, CENTER_TEXT);
-    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
+    settextstyle(10, HORIZ_DIR, 3);
     char username[20];
     char enterNameText[] = "Enter your name:";
-    outtextxy(280, 350, enterNameText);
+    outtextxy(380, 350, enterNameText);
 
     int i = 0;
     while (1) {
         char key = getch();
         if (key == 13) {
-            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
+            settextstyle(10, HORIZ_DIR, 2);
             char exitText[] = "Press enter to exit...";
-            outtextxy(270, 430, exitText);
+            outtextxy(380, 430, exitText);
             break;
         }  // Jika Enter ditekan, selesai
         if (key == 8 && i > 0) { // Jika Backspace ditekan
@@ -182,7 +182,7 @@ void drawGameOverScreen(Grid grid, int score) {
         setcolor(WHITE);
         setfillstyle(SOLID_FILL, BLACK);
         bar(280, 370, 480, 400); // Bersihkan area input
-        outtextxy(280, 370, username);
+        outtextxy(400, 370, username);
     }
 
     username[i] = '\0'; // Pastikan string diakhiri dengan null terminator

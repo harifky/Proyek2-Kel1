@@ -173,3 +173,33 @@ void updateFrameDelay(int *score) {
     else if (*score >= 1000) frameDelay = 1200;
     else frameDelay = 2000;
 }
+
+void drawLogo(int x, int y) {
+    int size = 100;
+
+    // Kotak sebagai latar belakang
+    setcolor(BLUE);
+    setfillstyle(SOLID_FILL, BLUE);
+    bar(x, y, x + size, y + size);
+
+    // Lingkaran putih di tengah
+    setcolor(WHITE);
+    setfillstyle(SOLID_FILL, WHITE);
+    fillellipse(x + size/2, y + size/2, size/3, size/3);
+
+    // Huruf G sederhana dengan garis
+    setcolor(BLACK);
+    setlinestyle(SOLID_LINE, 0, 3);
+
+    // Garis vertikal G
+    line(x + size/3, y + size/4, x + size/3, y + 3*size/4);
+
+    // Garis atas G
+    line(x + size/3, y + size/4, x + 2*size/3, y + size/4);
+
+    // Garis tengah G
+    line(x + size/2, y + size/2, x + 2*size/3, y + size/2);
+
+    // Garis bawah G
+    line(x + size/3, y + 3*size/4, x + 2*size/3, y + 3*size/4);
+}

@@ -71,8 +71,8 @@ void drawLeadPanel(Panel panel) {
     setcolor(WHITE);
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
 
-    char leaderBoardText[] = "Leader Board";
-    outtextxy(panel.x + 50, panel.y + 20, leaderBoardText);
+    char leaderBoardText[] = "Leaderboard";
+    outtextxy(panel.x + 127, panel.y + 20, leaderBoardText);
 
     FILE *file = fopen("leaderboard.txt", "r");
 

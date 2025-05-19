@@ -40,13 +40,16 @@ void drawTetromino(Tetromino t) {
 void drawNextTetromino(Tetromino next, int posX, int posY) {
     int blockSize = BLOCK_SIZE / 2;
 
+    int offsetX = 30;  // geser kanan 30px
+    int offsetY = 5;  // geser bawah 10px
+
     setcolor(next.color); 
     setfillstyle(SOLID_FILL, next.color);
 
     BlockNode* current = next.head;
     while (current != NULL) {
-        int x = posX + current->x * blockSize;
-        int y = posY + current->y * blockSize;
+        int x = posX + current->x * blockSize + offsetX;
+        int y = posY + current->y * blockSize + offsetY;
         bar(x, y, x + blockSize, y + blockSize);
         rectangle(x, y, x + blockSize, y + blockSize);
         current = current->next;
