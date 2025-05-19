@@ -37,43 +37,79 @@ void drawStoredBlocks(Grid *grid) {
 }
 
 int clearFullRows(Grid *grid) {
-    // Inisialisasi variabel untuk menghitung jumlah baris yang dihapus
+    // // Inisialisasi variabel untuk menghitung jumlah baris yang dihapus
+    // int rowsCleared = 0;
+
+    // // Loop setiap baris di grid dari atas ke bawah
+    // for (int y = 0; y < GRID_HEIGHT; y++) {
+    //     int full = 1;  // Anggap baris ini penuh (flag)
+
+    //     // Loop melalui setiap kolom di baris saat ini
+    //     for (int x = 0; x < GRID_WIDTH; x++) {
+    //         // Jika ada sel yang kosong (nilai 0), baris ini tidak penuh
+    //         if (grid->cells[y][x] == 0) {
+    //             full = 0; // Set flag menjadi 0
+    //             break;    // Keluar dari loop kolom
+    //         }
+    //     }
+
+    //     // Jika baris penuh full(flag), hapus baris tersebut
+    //     if (full) {
+    //         // Geser semua baris di atas baris yang penuh ke bawah
+    //         for (int i = y; i > 0; i--) {
+    //             for (int j = 0; j < GRID_WIDTH; j++) {
+    //                 // Salin nilai dari baris di atas ke baris saat ini
+    //                 grid->cells[i][j] = grid->cells[i - 1][j];
+    //             }
+    //         }
+
+    //         // Set baris paling atas (baris 0) menjadi kosong (nilai 0)
+    //         for (int j = 0; j < GRID_WIDTH; j++) {
+    //             grid->cells[0][j] = 0;
+    //         }
+
+    //         // Tambahkan jumlah baris yang dihapus
+    //         rowsCleared++;
+    //     }
+    // }
+
+    // // Kembalikan jumlah baris yang dihapus
+    // return rowsCleared;
+
     int rowsCleared = 0;
 
-    // Loop setiap baris di grid dari atas ke bawah
     for (int y = 0; y < GRID_HEIGHT; y++) {
-        int full = 1;  // Anggap baris ini penuh (flag)
+        int blockCount = 0;
+        StoredBlock* current = grid->blocks;
 
-        // Loop melalui setiap kolom di baris saat ini
-        for (int x = 0; x < GRID_WIDTH; x++) {
-            // Jika ada sel yang kosong (nilai 0), baris ini tidak penuh
-            if (grid->cells[y][x] == 0) {
-                full = 0; // Set flag menjadi 0
-                break;    // Keluar dari loop kolom
+        // Hitung berapa blok yang ada di baris y
+        while (current != NULL) {
+            if (current->y == y) {
+                blockCount++;
             }
+            current = current->next;
         }
 
-        // Jika baris penuh full(flag), hapus baris tersebut
-        if (full) {
-            // Geser semua baris di atas baris yang penuh ke bawah
-            for (int i = y; i > 0; i--) {
-                for (int j = 0; j < GRID_WIDTH; j++) {
-                    // Salin nilai dari baris di atas ke baris saat ini
-                    grid->cells[i][j] = grid->cells[i - 1][j];
+        if (blockCount == GRID_WIDTH) {
+            // Hapus semua blok di baris y
+            StoredBlock **indirect = &grid->blocks;
+            while (*indirect != NULL) {
+                if ((*indirect)->y == y) {
+                    StoredBlock* temp = *indirect;
+                    *indirect = (*indirect)->next;
+                    free(temp);
+                } else {
+                    if ((*indirect)->y < y) {
+                        (*indirect)->y += 1; // geser ke bawah
+                    }
+                    indirect = &(*indirect)->next;
                 }
             }
 
-            // Set baris paling atas (baris 0) menjadi kosong (nilai 0)
-            for (int j = 0; j < GRID_WIDTH; j++) {
-                grid->cells[0][j] = 0;
-            }
-
-            // Tambahkan jumlah baris yang dihapus
             rowsCleared++;
         }
     }
 
-    // Kembalikan jumlah baris yang dihapus
     return rowsCleared;
 }
 
@@ -86,30 +122,41 @@ void stopSound() {
 }
 
 int isGameOver(Grid* grid) {
-    for (int x = 0; x < GRID_WIDTH; x++) {
-        if (grid->cells[0][x] != 0) {
-            return 1; // Game Over
+    // for (int x = 0; x < GRID_WIDTH; x++) {
+    //     if (grid->cells[0][x] != 0) {
+    //         return 1; // Game Over
+    //     }
+    // }
+    // return 0; // Game masih berjalan
+
+
+    StoredBlock* current = grid->blocks;
+    while (current != NULL) {
+        if (current->y == 0) {
+            return 1;
         }
+        current = current->next;
     }
-    return 0; // Game masih berjalan
+    return 0;
 }
 
 void drawGameOverScreen(Grid grid, int score) {
     setcolor(WHITE);
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
     
-    settextstyle(10, HORIZ_DIR, 5);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
     char gameOverText[10] = "GAME OVER";
-    outtextxy(300, 200, gameOverText);
+    outtextxy(275, 200, gameOverText);
     
     
-    settextstyle(10, HORIZ_DIR, 3);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
     char scoreText[30];
     sprintf(scoreText, "Final Score: %d", score);
-    outtextxy(320, 300, scoreText);
+    outtextxy(280, 300, scoreText);
     
     // **Minta Username**
-    settextstyle(10, HORIZ_DIR, 3);
+    settextjustify(CENTER_TEXT, CENTER_TEXT);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
     char username[20];
     char enterNameText[] = "Enter your name:";
     outtextxy(280, 350, enterNameText);
@@ -118,7 +165,7 @@ void drawGameOverScreen(Grid grid, int score) {
     while (1) {
         char key = getch();
         if (key == 13) {
-            settextstyle(10, HORIZ_DIR, 2);
+            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
             char exitText[] = "Press enter to exit...";
             outtextxy(270, 430, exitText);
             break;
@@ -160,11 +207,18 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
     //     }
     // }
 
-    StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
-    newBlock->x = x;
-    newBlock->y = y;
-    newBlock->color = t->color;
-    newBlock->next = grid->blocks;
-    grid->blocks = newBlock;
+    BlockNode* current = t->head;
+    while (current != NULL) {
+        // Only store if within grid bounds
+        if (current->y >= 0 && current->x >= 0 && current->x < GRID_WIDTH) {
+            StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
+            newBlock->x = current->x;
+            newBlock->y = current->y;
+            newBlock->color = t->color;
+            newBlock->next = grid->blocks;
+            grid->blocks = newBlock;
+        }
+        current = current->next;
+    }
 
 }

@@ -1,6 +1,13 @@
 #include "../header/config.h"
 #include "../header/Naufal_N.h"
 #include "../header/Hafizh.h"
+#include "../header/game.h"
+#include "../header/Rifky.h"
+
+#include <graphics.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 Tetromino heldTetromino;
 HoldBox holdBox = {100, 50, 100, 100};
@@ -15,28 +22,33 @@ void drawHoldPanel(Panel panel) {
     rectangle(holdBox.x, holdBox.y, holdBox.x + holdBox.width, holdBox.y + holdBox.height);
     char holdText[] = "Hold";
     outtextxy(holdBox.x + 30, holdBox.y + 10, holdText);
+
     // Jika ada tetromino yang di-hold
     if (isHolding) {
-        int minX = 5, minY = 5, maxX = -5, maxY = -5;  // Inisialisasi nilai batas
-        for (int i = 0; i < 4; i++) {
-            if (heldTetromino.blocks[i].x < minX) minX = heldTetromino.blocks[i].x;
-            if (heldTetromino.blocks[i].y < minY) minY = heldTetromino.blocks[i].y;
-            if (heldTetromino.blocks[i].x > maxX) maxX = heldTetromino.blocks[i].x;
-            if (heldTetromino.blocks[i].y > maxY) maxY = heldTetromino.blocks[i].y;
+        int minX = 999, minY = 999, maxX = -999, maxY = -999;
+        BlockNode* node = heldTetromino.head;
+
+        while (node) {
+            if (node->x < minX) minX = node->x;
+            if (node->y < minY) minY = node->y;
+            if (node->x > maxX) maxX = node->x;
+            if (node->y > maxY) maxY = node->y;
+            node = node->next;
         }
 
         int tetrominoWidth = (maxX - minX + 1) * (BLOCK_SIZE / 2);
         int tetrominoHeight = (maxY - minY + 1) * (BLOCK_SIZE / 2);
-
         int startX = holdBox.x + (holdBox.width - tetrominoWidth) / 2;
         int startY = holdBox.y + (holdBox.height - tetrominoHeight) / 2;
 
-        for (int i = 0; i < 4; i++) {
-            int bx = startX + (heldTetromino.blocks[i].x - minX) * (BLOCK_SIZE / 2);
-            int by = startY + (heldTetromino.blocks[i].y - minY) * (BLOCK_SIZE / 2);
+        node = heldTetromino.head;
+        while (node) {
+            int bx = startX + (node->x - minX) * (BLOCK_SIZE / 2);
+            int by = startY + (node->y - minY) * (BLOCK_SIZE / 2);
 
             setfillstyle(SOLID_FILL, heldTetromino.color);
             bar(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
+            node = node->next;
         }
     }
 }
@@ -90,4 +102,64 @@ void drawPanel(Panel panel, int *score) {
     outtextxy(panel.x + 20, panel.y + 150, nextText);
     // Gambar next block
     drawNextTetromino(nextTetromino, panel.x - 60, panel.y + 240);
+}
+
+void showMenu() {
+    initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
+
+    bool menuActive = true;
+    int selectedOption = 0;
+    const char* options[] = {"Play Game", "Leaderboard", "Exit"};
+    const int optionCount = 3;
+
+    while (menuActive) {
+        cleardevice();
+        int centerX = screenWidth / 2;
+        int centerY = screenHeight / 2;
+
+        // Tulis judul "TETROMANIA" di tengah atas layar
+        settextstyle(10, HORIZ_DIR, 5); // Ukuran font besar
+        const char* title = "TETROMANIA";
+
+        // Hitung lebar tulisan untuk dipusatkan secara horizontal
+        int textWidth = textwidth((char*)title);
+        int textHeight = textheight((char*)title);
+
+        // Cetak tulisan di tengah layar (horizontal dan vertikal)
+        outtextxy(centerX - textWidth / 2, centerY - 200, (char*)title);
+
+        // Menu
+        settextstyle(10, HORIZ_DIR, 3);
+        for (int i = 0; i < optionCount; i++) {
+            char buffer[100];
+            if (i == selectedOption)
+                sprintf(buffer, "-> %d. %s", i + 1, options[i]);
+            else
+                sprintf(buffer, "   %d. %s", i + 1, options[i]);
+
+            outtextxy(centerX - 100, centerY - 50 + i * 50, buffer);
+        }
+
+        char key = getch();
+        if (key == 72) {
+            selectedOption = (selectedOption - 1 + optionCount) % optionCount;
+        } else if (key == 80) {
+            selectedOption = (selectedOption + 1) % optionCount;
+        } else if (key == 13) {
+            menuActive = false;
+        }
+    }
+
+    switch (selectedOption) {
+        case 0: playGame(); break;
+        case 1: {
+            cleardevice();
+            Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200, 400, 400};
+            drawLeadPanel(leaderboardPanel);
+            outtextxy(screenWidth / 2 - 150, screenHeight / 2 + 250, (char*)"Press any key to return...");
+            getch();
+            showMenu(); break;
+        }
+        case 2: closegraph(); exit(0); break;
+    }
 }

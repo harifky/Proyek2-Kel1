@@ -7,5 +7,6 @@ void drawGrid(Grid grid);
 void drawPanel(Panel panel, int *score);
 void drawHoldPanel(Panel panel);
 void holdTetromino(Tetromino *current);
+void showMenu();
 
 #endif
