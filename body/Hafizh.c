@@ -37,16 +37,35 @@ void drawTetromino(Tetromino t) {
 }
 
 
-void drawNextTetromino(Tetromino next, int posX, int posY) {
+void drawNextTetromino(Tetromino next, int boxX, int boxY, int boxWidth, int boxHeight) {
     int blockSize = BLOCK_SIZE / 2;
 
+    // Hitung ukuran minimum dan maksimum dari posisi block tetromino
+    int minX = 10, minY = 10, maxX = -10, maxY = -10;
+    BlockNode* curr = next.head;
+    while (curr != NULL) {
+        if (curr->x < minX) minX = curr->x;
+        if (curr->y < minY) minY = curr->y;
+        if (curr->x > maxX) maxX = curr->x;
+        if (curr->y > maxY) maxY = curr->y;
+        curr = curr->next;
+    }
+
+    int tetroWidth = (maxX - minX + 1) * blockSize;
+    int tetroHeight = (maxY - minY + 1) * blockSize;
+
+    // Hitung posisi tengah dalam kotak next
+    int startX = boxX + (boxWidth - tetroWidth) / 2 - minX * blockSize;
+    int startY = boxY + (boxHeight - tetroHeight) / 2 - minY * blockSize;
+
+    // Gambar blok
     setcolor(next.color); 
     setfillstyle(SOLID_FILL, next.color);
 
     BlockNode* current = next.head;
     while (current != NULL) {
-        int x = posX + current->x * blockSize;
-        int y = posY + current->y * blockSize;
+        int x = startX + current->x * blockSize;
+        int y = startY + current->y * blockSize;
         bar(x, y, x + blockSize, y + blockSize);
         rectangle(x, y, x + blockSize, y + blockSize);
         current = current->next;
