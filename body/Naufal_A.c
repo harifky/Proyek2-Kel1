@@ -207,8 +207,8 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
     // }
 
     for (int i = 0; i < 4; i++) {
-        int x = t->blocks[i].x + t->x;
-        int y = t->blocks[i].y + t->y;
+        int x = t->blocks[i].x;
+        int y = t->blocks[i].y;
 
         // Simpan ke dalam linked list StoredBlock jika masih dalam batas grid
         if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
