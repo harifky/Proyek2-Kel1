@@ -7,35 +7,11 @@
 #include "../header/config.h"
 
 Tetromino findShadowPosition(Tetromino *t, Grid *grid) {
-    // Salin linked list tetromino
-    Tetromino shadow;
-    shadow.color = t->color;
-    shadow.head = NULL;
+    Tetromino shadow = *t;  // Salin langsung isi Tetromino (deep copy array)
 
-    BlockNode *current = t->head;
-    BlockNode *prev = NULL;
-
-    while (current != NULL) {
-        BlockNode *newNode = (BlockNode *)malloc(sizeof(BlockNode));
-        newNode->x = current->x;
-        newNode->y = current->y;
-        newNode->next = NULL;
-
-        if (prev == NULL) {
-            shadow.head = newNode;
-        } else {
-            prev->next = newNode;
-        }
-        prev = newNode;
-        current = current->next;
-    }
-
-    // Selama masih bisa turun, geser semua blok ke bawah
     while (canMoveDown(&shadow, grid)) {
-        BlockNode *node = shadow.head;
-        while (node != NULL) {
-            node->y += 1;
-            node = node->next;
+        for (int i = 0; i < 4; i++) {
+            shadow.blocks[i].y += 1;
         }
     }
 
@@ -45,26 +21,16 @@ Tetromino findShadowPosition(Tetromino *t, Grid *grid) {
 void drawShadowBlock(Tetromino *t, Grid *grid) {
     Tetromino shadow = findShadowPosition(t, grid);
 
-    setcolor(WHITE);  // Set warna putih untuk bayangan
-    setlinestyle(DOTTED_LINE, 0, 1);  // Gaya garis putus-putus
+    setcolor(WHITE);  // Warna putih untuk shadow
+    setlinestyle(DOTTED_LINE, 0, 1);  // Garis putus-putus
 
-    BlockNode *node = shadow.head;
-    while (node != NULL) {
-        int x = node->x * BLOCK_SIZE + 600;
-        int y = node->y * BLOCK_SIZE + 50;
+    for (int i = 0; i < 4; i++) {
+        int x = shadow.blocks[i].x * BLOCK_SIZE + 600;
+        int y = shadow.blocks[i].y * BLOCK_SIZE + 50;
         rectangle(x, y, x + BLOCK_SIZE, y + BLOCK_SIZE);
-        node = node->next;
     }
 
-    // Bebaskan memori dari shadow
-    node = shadow.head;
-    while (node != NULL) {
-        BlockNode *temp = node;
-        node = node->next;
-        free(temp);
-    }
-
-    setlinestyle(SOLID_LINE, 0, 1);  // Kembalikan garis ke default jika perlu
+    setlinestyle(SOLID_LINE, 0, 1);  // Kembalikan ke default
 }
 
 void drawLeadPanel(Panel panel) {
@@ -81,12 +47,22 @@ void drawLeadPanel(Panel panel) {
         return;
     }
 
-    char name[50], time[30];
-    int score, yOffset = 50;
-    char scoreEntry[100];
+    char name[50];
+    int score;
+    char timeStr[100];
+    int yOffset = 50;
+    char scoreEntry[200];
 
-    while (fscanf(file, "%s %d %s", name, &score, time) == 3 && yOffset < panel.height - 20) {
-        sprintf(scoreEntry, "%s: %d (%s)", name, score, time);
+    while (fscanf(file, "%s %d", name, &score) == 2 && fgets(timeStr, sizeof(timeStr), file) != NULL && yOffset < panel.height - 20) {
+        // Hapus newline dari fgets
+        timeStr[strcspn(timeStr, "\n")] = 0;
+
+        // Hilangkan spasi awal (karena fgets dimulai setelah fscanf)
+        char *cleanTime = timeStr;
+        while (*cleanTime == ' ') cleanTime++;
+
+        // Gabungkan dan tampilkan
+        sprintf(scoreEntry, "%s: %d (%s)", name, score, cleanTime);
         outtextxy(panel.x + 20, panel.y + yOffset, scoreEntry);
         yOffset += 20;
     }

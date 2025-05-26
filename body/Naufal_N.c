@@ -10,11 +10,54 @@
 #include <string.h>
 
 Tetromino heldTetromino;
-HoldBox holdBox = {100 + 50, 50 + 30, 100, 100}; // x = 150, y = 80
+HoldBox holdBox = {490, 50, 100, 100};
 int isHolding = 0;
 
 void drawGrid(Grid grid) {
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
+}
+
+void drawHoldPanel(Panel panel) {
+    // Background Hold Box
+    setfillstyle(SOLID_FILL, DARKGRAY);
+    bar(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
+
+    // Border Hold Box
+    setcolor(WHITE);
+    rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
+
+    // Label Hold
+    settextstyle(10, HORIZ_DIR, 1);
+    setcolor(LIGHTCYAN);
+    char holdText[] = "Hold";
+    outtextxy(panel.x + (panel.width - textwidth(holdText)) / 2, panel.y + 5, (char*)holdText);
+
+    // Gambar tetromino di tengah box jika ada yang di-hold
+    if (isHolding) {
+        int minX = 999, minY = 999, maxX = -999, maxY = -999;
+        for (int i = 0; i < 4; i++) {
+            int x = heldTetromino.blocks[i].x;
+            int y = heldTetromino.blocks[i].y;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+        }
+        int blockSize = BLOCK_SIZE / 2;
+        int tetrominoWidth = (maxX - minX + 1) * blockSize;
+        int tetrominoHeight = (maxY - minY + 1) * blockSize;
+        int startX = panel.x + (panel.width - tetrominoWidth) / 2;
+        int startY = panel.y + (panel.height - tetrominoHeight) / 2;
+
+        setcolor(heldTetromino.color);
+        setfillstyle(SOLID_FILL, heldTetromino.color);
+        for (int i = 0; i < 4; i++) {
+            int bx = startX + (heldTetromino.blocks[i].x - minX) * blockSize;
+            int by = startY + (heldTetromino.blocks[i].y - minY) * blockSize;
+            bar(bx, by, bx + blockSize, by + blockSize);
+            rectangle(bx, by, bx + blockSize, by + blockSize);
+        }
+    }
 }
 
 void holdTetromino(Tetromino *current) {
@@ -32,51 +75,51 @@ void holdTetromino(Tetromino *current) {
     }
 }
 
-void drawHoldPanel(Panel panel) {
-    // Label Hold
-    settextstyle(10, HORIZ_DIR, 1);
-    setcolor(LIGHTCYAN);
-    outtextxy(panel.x + 30, panel.y - 20, (char*)"Hold");
+// void drawHoldPanel(Panel panel) {
+//     // Label Hold
+//     settextstyle(10, HORIZ_DIR, 1);
+//     setcolor(LIGHTCYAN);
+//     outtextxy(panel.x + 30, panel.y - 20, (char*)"Hold");
 
-    // Kotak Hold
-    setfillstyle(SOLID_FILL, DARKGRAY);
-    bar(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
-    setcolor(WHITE);
-    rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
+//     // Kotak Hold
+//     setfillstyle(SOLID_FILL, DARKGRAY);
+//     bar(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
+//     setcolor(WHITE);
+//     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
 
-    if (isHolding) {
-        // Hitung bounding box tetromino
-        int minX = 999, minY = 999, maxX = -999, maxY = -999;
-        BlockNode* node = heldTetromino.head;
+//     if (isHolding) {
+//         // Hitung bounding box tetromino
+//         int minX = 999, minY = 999, maxX = -999, maxY = -999;
+//         BlockNode* node = heldTetromino.head;
 
-        while (node) {
-            if (node->x < minX) minX = node->x;
-            if (node->y < minY) minY = node->y;
-            if (node->x > maxX) maxX = node->x;
-            if (node->y > maxY) maxY = node->y;
-            node = node->next;
-        }
+//         while (node) {
+//             if (node->x < minX) minX = node->x;
+//             if (node->y < minY) minY = node->y;
+//             if (node->x > maxX) maxX = node->x;
+//             if (node->y > maxY) maxY = node->y;
+//             node = node->next;
+//         }
 
-        int tetrominoWidth = (maxX - minX + 1) * (BLOCK_SIZE / 2);
-        int tetrominoHeight = (maxY - minY + 1) * (BLOCK_SIZE / 2);
+//         int tetrominoWidth = (maxX - minX + 1) * (BLOCK_SIZE / 2);
+//         int tetrominoHeight = (maxY - minY + 1) * (BLOCK_SIZE / 2);
 
-        int startX = panel.x + (panel.width - tetrominoWidth) / 2;
-        int startY = panel.y + (panel.height - tetrominoHeight) / 2;
+//         int startX = panel.x + (panel.width - tetrominoWidth) / 2;
+//         int startY = panel.y + (panel.height - tetrominoHeight) / 2;
 
-        node = heldTetromino.head;
-        while (node) {
-            int bx = startX + (node->x - minX) * (BLOCK_SIZE / 2);
-            int by = startY + (node->y - minY) * (BLOCK_SIZE / 2);
+//         node = heldTetromino.head;
+//         while (node) {
+//             int bx = startX + (node->x - minX) * (BLOCK_SIZE / 2);
+//             int by = startY + (node->y - minY) * (BLOCK_SIZE / 2);
 
-            setcolor(WHITE);
-            setfillstyle(SOLID_FILL, heldTetromino.color);
-            bar(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
-            rectangle(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
+//             setcolor(WHITE);
+//             setfillstyle(SOLID_FILL, heldTetromino.color);
+//             bar(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
+//             rectangle(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
 
-            node = node->next;
-        }
-    }
-}
+//             node = node->next;
+//         }
+//     }
+// }
 
 void drawPanel(Panel panel, int *score) {
     // Background Panel
@@ -117,10 +160,10 @@ void drawPanel(Panel panel, int *score) {
     outtextxy(panel.x + 20, panel.y + 120, (char*)"Next");
 
     // Kotak Next
-    int boxX = panel.x + 20;
-    int boxY = panel.y + 140;
-    int boxW = panel.width - 40;
+    int boxW = 160;
     int boxH = 80;
+    int boxX = panel.x + (panel.width - boxW) / 2;
+    int boxY = panel.y + 140;
 
     setfillstyle(SOLID_FILL, DARKGRAY);
     bar(boxX, boxY, boxX + boxW, boxY + boxH);
@@ -128,7 +171,7 @@ void drawPanel(Panel panel, int *score) {
     rectangle(boxX, boxY, boxX + boxW, boxY + boxH);
 
     // Gambar next tetromino di tengah box
-    drawNextTetromino(nextTetromino, boxX, boxY, boxW, boxH);
+    drawNextTetromino(nextTetromino, boxX, boxY);
 }
 
 void showMenu() {

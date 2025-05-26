@@ -58,9 +58,9 @@ void playGame(){
     Grid gameGrid = {600, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
     // Panel Hold di tengah sisi kiri grid utama
     Panel gameHoldPanel = {
-        gameGrid.x - 110, 
+        gameGrid.x - 160, 
         gameGrid.y + (gameGrid.height - 950), // Tengah vertikal grid
-        100, 100
+        150, 150
     };
 
     Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 200, gameGrid.height};
@@ -71,12 +71,12 @@ void playGame(){
     int frameCount = 0; // Counter untuk mengontrol kecepatan jatuh
     int score = 0; //inisialisasi awal score
 
-    //Inisialisasi grid dengan mengisi sel dengan nilai 0 (kosong)
-    // for (int y = 0; y < GRID_HEIGHT; y++) {
-    //     for (int x = 0; x < GRID_WIDTH; x++) {
-    //         gameGrid.cells[y][x] = 0;  // Pastikan grid kosong saat memulai permainan
-    //     }
-    // }
+    // Inisialisasi grid dengan mengisi sel dengan nilai 0 (kosong)
+    for (int y = 0; y < GRID_HEIGHT; y++) {
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            gameGrid.cells[y][x] = 0;  // Pastikan grid kosong saat memulai permainan
+        }
+    }
 
     StoredBlock* current = grid.blocks;
     while (current != NULL) {
@@ -127,7 +127,7 @@ void playGame(){
         
         drawStoredBlocks(&gameGrid); 
 
-        drawTetromino(currentTetromino, gameGrid);
+        drawTetromino(currentTetromino);
 
         setvisualpage(currentPage);  // Tampilkan halaman buffer
         currentPage = 1 - currentPage; // Ganti halaman untuk frame berikutnya
