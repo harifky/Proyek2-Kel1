@@ -67,57 +67,76 @@ void drawTetromino(Tetromino t) {
 }
 
 
-<<<<<<< HEAD
-void drawNextTetromino(Tetromino next, int boxX, int boxY, int boxWidth, int boxHeight) {
-=======
-/*void drawNextTetromino(Tetromino next, int posX, int posY) {
->>>>>>> b1336f21f0a0c22ce2a89d01892a13211195810f
-    int blockSize = BLOCK_SIZE / 2;
+// *void drawNextTetromino(Tetromino next, int posX, int posY) {
+//     int blockSize = BLOCK_SIZE / 2;
 
-    // Hitung ukuran minimum dan maksimum dari posisi block tetromino
-    int minX = 10, minY = 10, maxX = -10, maxY = -10;
-    BlockNode* curr = next.head;
-    while (curr != NULL) {
-        if (curr->x < minX) minX = curr->x;
-        if (curr->y < minY) minY = curr->y;
-        if (curr->x > maxX) maxX = curr->x;
-        if (curr->y > maxY) maxY = curr->y;
-        curr = curr->next;
+//     // Hitung ukuran minimum dan maksimum dari posisi block tetromino
+//     int minX = 10, minY = 10, maxX = -10, maxY = -10;
+//     BlockNode* curr = next.head;
+//     while (curr != NULL) {
+//         if (curr->x < minX) minX = curr->x;
+//         if (curr->y < minY) minY = curr->y;
+//         if (curr->x > maxX) maxX = curr->x;
+//         if (curr->y > maxY) maxY = curr->y;
+//         curr = curr->next;
+//     }
+
+//     int tetroWidth = (maxX - minX + 1) * blockSize;
+//     int tetroHeight = (maxY - minY + 1) * blockSize;
+
+//     // Hitung posisi tengah dalam kotak next
+//     int startX = boxX + (boxWidth - tetroWidth) / 2 - minX * blockSize;
+//     int startY = boxY + (boxHeight - tetroHeight) / 2 - minY * blockSize;
+
+//     // Gambar blok
+//     setcolor(next.color); 
+//     setfillstyle(SOLID_FILL, next.color);
+
+//     BlockNode* current = next.head;
+//     while (current != NULL) {
+//         int x = startX + current->x * blockSize;
+//         int y = startY + current->y * blockSize;
+//         bar(x, y, x + blockSize, y + blockSize);
+//         rectangle(x, y, x + blockSize, y + blockSize);
+//         current = current->next;
+//     }
+// }*/
+
+void drawNextTetromino(Tetromino next, int posX, int posY) {
+    const int boxWidth = 80;
+    const int boxHeight = 80;
+
+    // Ukuran blok: maksimal muat 4 blok dalam kotak
+    int blockSizeX = boxWidth / 4;
+    int blockSizeY = boxHeight / 4;
+    int blockSize = (blockSizeX < blockSizeY) ? blockSizeX : blockSizeY;
+
+    // Cari bounding box tetromino
+    int minX = next.blocks[0].x, maxX = next.blocks[0].x;
+    int minY = next.blocks[0].y, maxY = next.blocks[0].y;
+
+    for (int i = 1; i < 4; i++) {
+        if (next.blocks[i].x < minX) minX = next.blocks[i].x;
+        if (next.blocks[i].x > maxX) maxX = next.blocks[i].x;
+        if (next.blocks[i].y < minY) minY = next.blocks[i].y;
+        if (next.blocks[i].y > maxY) maxY = next.blocks[i].y;
     }
 
     int tetroWidth = (maxX - minX + 1) * blockSize;
     int tetroHeight = (maxY - minY + 1) * blockSize;
 
-    // Hitung posisi tengah dalam kotak next
-    int startX = boxX + (boxWidth - tetroWidth) / 2 - minX * blockSize;
-    int startY = boxY + (boxHeight - tetroHeight) / 2 - minY * blockSize;
+    // Offset supaya tetromino muncul di tengah kotak 80x80
+    int offsetX = posX + (boxWidth - tetroWidth) / 2 - minX * blockSize;
+    int offsetY = posY + (boxHeight - tetroHeight) / 2 - minY * blockSize;
 
-    // Gambar blok
-    setcolor(next.color); 
+    setcolor(next.color);
     setfillstyle(SOLID_FILL, next.color);
 
-    BlockNode* current = next.head;
-    while (current != NULL) {
-        int x = startX + current->x * blockSize;
-        int y = startY + current->y * blockSize;
+    for (int i = 0; i < 4; i++) {
+        int x = offsetX + next.blocks[i].x * blockSize;
+        int y = offsetY + next.blocks[i].y * blockSize;
         bar(x, y, x + blockSize, y + blockSize);
         rectangle(x, y, x + blockSize, y + blockSize);
-        current = current->next;
-    }
-}*/
-
-void drawNextTetromino(Tetromino next, int posX, int posY) {
-    int blockSize = BLOCK_SIZE / 2;
-    
-    setcolor(next.color);
-    setfillstyle(SOLID_FILL, next.color); // Mengatur fill style dan warna
-    for (int i = 0; i < 4; i++) {
-        int x = posX + next.blocks[i].x * blockSize;
-        int y = posY + next.blocks[i].y * blockSize;
-        bar(x, y, x + blockSize, y + blockSize); // Menggambar kotak terisi warna
-        rectangle(x, y, x + blockSize, y + blockSize);
-        // printf("Color: %d\n", next.color);
-        // floodfill(x + blockSize, y + blockSize, next.color);
     }
 }
 

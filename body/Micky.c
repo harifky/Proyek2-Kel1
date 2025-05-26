@@ -5,135 +5,203 @@
 #include "../header/Hafizh.h"
 
 void moveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
-    BlockNode *node = t->head;
-    while (node != NULL) {
-        int newX = node->x + dx;
-        int newY = node->y + dy;
-        if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT || (newY >= 0 && grid->cells[newY][newX] != 0)) {
-            return;
+    if (canMoveTetromino(t, grid, dx, dy)) {
+        for (int i = 0; i < 4; i++) {
+            t->blocks[i].x += dx;
+            t->blocks[i].y += dy;
         }
-        node = node->next;
-    }
-
-    node = t->head;
-    while (node != NULL) {
-        node->x += dx;
-        node->y += dy;
-        node = node->next;
     }
 }
+
+// void rotateTetromino(Tetromino *t, Grid *grid) {
+//     BlockNode *pivot = t->head;
+//     if (pivot == NULL || pivot->next == NULL) return;
+//     pivot = pivot->next; // gunakan blok ke-2 sebagai pivot
+
+//     BlockNode *temp = t->head;
+//     Block rotated[4];
+//     int i = 0;
+//     while (temp != NULL && i < 4) {
+//         int relX = temp->x - pivot->x;
+//         int relY = temp->y - pivot->y;
+//         rotated[i].x = pivot->x - relY;
+//         rotated[i].y = pivot->y + relX;
+//         temp = temp->next;
+//         i++;
+//     }
+
+//     int minX = GRID_WIDTH, maxX = 0;
+//     for (i = 0; i < 4; i++) {
+//         if (rotated[i].x < minX) minX = rotated[i].x;
+//         if (rotated[i].x > maxX) maxX = rotated[i].x;
+//     }
+//     int shiftX = 0;
+//     if (minX < 0) shiftX = -minX;
+//     if (maxX >= GRID_WIDTH) shiftX = GRID_WIDTH - 1 - maxX;
+
+//     for (i = 0; i < 4; i++) {
+//         rotated[i].x += shiftX;
+//         if (rotated[i].y >= 0 && grid->cells[rotated[i].y][rotated[i].x] != 0) {
+//             return; // batal jika bertabrakan
+//         }
+//     }
+
+//     temp = t->head;
+//     i = 0;
+//     while (temp != NULL && i < 4) {
+//         temp->x = rotated[i].x;
+//         temp->y = rotated[i].y;
+//         temp = temp->next;
+//         i++;
+//     }
+// }
 
 void rotateTetromino(Tetromino *t, Grid *grid) {
-    BlockNode *pivot = t->head;
-    if (pivot == NULL || pivot->next == NULL) return;
-    pivot = pivot->next; // gunakan blok ke-2 sebagai pivot
+    int pivotX = t->blocks[1].x; // Titik pusat rotasi
+    int pivotY = t->blocks[1].y;
 
-    BlockNode *temp = t->head;
-    Block rotated[4];
-    int i = 0;
-    while (temp != NULL && i < 4) {
-        int relX = temp->x - pivot->x;
-        int relY = temp->y - pivot->y;
-        rotated[i].x = pivot->x - relY;
-        rotated[i].y = pivot->y + relX;
-        temp = temp->next;
-        i++;
+    Block rotatedBlocks[4];
+
+    for (int i = 0; i < 4; i++) {
+        int relativeX = t->blocks[i].x - pivotX;
+        int relativeY = t->blocks[i].y - pivotY;
+
+        // Rotasi searah jarum jam (90° CW)
+        rotatedBlocks[i].x = pivotX - relativeY;
+        rotatedBlocks[i].y = pivotY + relativeX;
     }
 
+    // Cek batas grid dan geser jika perlu
     int minX = GRID_WIDTH, maxX = 0;
-    for (i = 0; i < 4; i++) {
-        if (rotated[i].x < minX) minX = rotated[i].x;
-        if (rotated[i].x > maxX) maxX = rotated[i].x;
+    for (int i = 0; i < 4; i++) {
+        if (rotatedBlocks[i].x < minX) minX = rotatedBlocks[i].x;
+        if (rotatedBlocks[i].x > maxX) maxX = rotatedBlocks[i].x;
     }
-    int shiftX = 0;
-    if (minX < 0) shiftX = -minX;
-    if (maxX >= GRID_WIDTH) shiftX = GRID_WIDTH - 1 - maxX;
 
-    for (i = 0; i < 4; i++) {
-        rotated[i].x += shiftX;
-        if (rotated[i].y >= 0 && grid->cells[rotated[i].y][rotated[i].x] != 0) {
-            return; // batal jika bertabrakan
+    int shiftX = 0;
+    if (minX < 0) shiftX = -minX;  // Geser ke kanan jika keluar kiri
+    if (maxX >= GRID_WIDTH) shiftX = GRID_WIDTH - 1 - maxX; // Geser ke kiri jika keluar kanan
+
+    // Terapkan pergeseran jika diperlukan
+    for (int i = 0; i < 4; i++) {
+        rotatedBlocks[i].x += shiftX;
+
+        // Cek tabrakan dengan blok lain di grid
+        if (rotatedBlocks[i].y >= 0 && grid->cells[rotatedBlocks[i].y][rotatedBlocks[i].x] != 0) {
+            return; // Batalkan rotasi jika bertabrakan
         }
     }
 
-    temp = t->head;
-    i = 0;
-    while (temp != NULL && i < 4) {
-        temp->x = rotated[i].x;
-        temp->y = rotated[i].y;
-        temp = temp->next;
-        i++;
+    // Terapkan rotasi jika valid
+    for (int i = 0; i < 4; i++) {
+        t->blocks[i] = rotatedBlocks[i];
     }
 }
+
+// int canMoveDown(Tetromino *t, Grid *grid) {
+//     // BlockNode *node = t->head;
+//     // while (node != NULL) {
+//     //     int x = node->x;
+//     //     int y = node->y + 1;
+//     //     if (y >= GRID_HEIGHT || (y >= 0 && grid->cells[y][x] != 0)) {
+//     //         return 0;
+//     //     }
+//     //     node = node->next;
+//     // }
+//     // return 1;
+
+//     BlockNode *node = t->head;
+//     while (node != NULL) {
+//         int x = node->x;
+//         int y = node->y + 1;
+
+//         // Check grid bounds
+//         if (y >= GRID_HEIGHT) return 0;
+
+//         // Check collision with stored blocks
+//         StoredBlock* current = grid->blocks;
+//         while (current != NULL) {
+//             if (current->x == x && current->y == y) {
+//                 return 0;
+//             }
+//             current = current->next;
+//         }
+//         node = node->next;
+//     }
+//     return 1;
+// }
 
 int canMoveDown(Tetromino *t, Grid *grid) {
-    // BlockNode *node = t->head;
-    // while (node != NULL) {
-    //     int x = node->x;
-    //     int y = node->y + 1;
-    //     if (y >= GRID_HEIGHT || (y >= 0 && grid->cells[y][x] != 0)) {
-    //         return 0;
-    //     }
-    //     node = node->next;
-    // }
-    // return 1;
+    for (int i = 0; i < 4; i++) {
+        int x = t->blocks[i].x;
+        int y = t->blocks[i].y + 1; // Cek sel di bawahnya
 
-    BlockNode *node = t->head;
-    while (node != NULL) {
-        int x = node->x;
-        int y = node->y + 1;
-
-        // Check grid bounds
-        if (y >= GRID_HEIGHT) return 0;
-
-        // Check collision with stored blocks
-        StoredBlock* current = grid->blocks;
-        while (current != NULL) {
-            if (current->x == x && current->y == y) {
-                return 0;
-            }
-            current = current->next;
+        // Jika sudah di dasar grid, tidak bisa turun
+        if (y >= GRID_HEIGHT) {
+            return 0; 
         }
-        node = node->next;
+
+        // Cek hanya jika sudah masuk dalam area grid
+        if (y >= 0 && grid->cells[y][x] != 0) {
+            return 0; // Tidak bisa turun karena ada blok lain
+        }
     }
-    return 1;
+    return 1; // Bisa turun
 }
 
+// int canMoveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
+//     // BlockNode *node = t->head;
+//     // while (node != NULL) {
+//     //     int newX = node->x + dx;
+//     //     int newY = node->y + dy;
+//     //     if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT || (newY >= 0 && grid->cells[newY][newX] != 0)) {
+//     //         return 0;
+//     //     }
+//     //     node = node->next;
+//     // }
+//     // return 1;
+
+
+//     BlockNode *node = t->head;
+//     while (node != NULL) {
+//         int newX = node->x + dx;
+//         int newY = node->y + dy;
+
+//         // Batas grid
+//         if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT) {
+//             return 0;
+//         }
+
+//         // Cek tabrakan dengan blok yang sudah tersimpan
+//         StoredBlock* current = grid->blocks;
+//         while (current != NULL) {
+//             if (current->x == newX && current->y == newY) {
+//                 return 0;
+//             }
+//             current = current->next;
+//         }
+
+//         node = node->next;
+//     }
+//     return 1; // Tidak ada tabrakan
+// }
+
 int canMoveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
-    // BlockNode *node = t->head;
-    // while (node != NULL) {
-    //     int newX = node->x + dx;
-    //     int newY = node->y + dy;
-    //     if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT || (newY >= 0 && grid->cells[newY][newX] != 0)) {
-    //         return 0;
-    //     }
-    //     node = node->next;
-    // }
-    // return 1;
+    for (int i = 0; i < 4; i++) {
+        int newX = t->blocks[i].x + dx;
+        int newY = t->blocks[i].y + dy;
 
-
-    BlockNode *node = t->head;
-    while (node != NULL) {
-        int newX = node->x + dx;
-        int newY = node->y + dy;
-
-        // Batas grid
+        // Cek batas grid
         if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT) {
-            return 0;
+            return 0; // Tidak bisa bergerak
         }
 
         // Cek tabrakan dengan blok yang sudah tersimpan
-        StoredBlock* current = grid->blocks;
-        while (current != NULL) {
-            if (current->x == newX && current->y == newY) {
-                return 0;
-            }
-            current = current->next;
+        if (newY >= 0 && grid->cells[newY][newX] != 0) {
+            return 0; // Tidak bisa bergerak
         }
-
-        node = node->next;
     }
-    return 1; // Tidak ada tabrakan
+    return 1; // Bisa bergerak
 }
 
 int addScore(int *score, Grid *grid){
@@ -145,13 +213,27 @@ int addScore(int *score, Grid *grid){
     return *score;
 }
 
+// void hardDropTetromino(Tetromino *t, Grid *grid, int *score) {
+//     while (canMoveDown(t, grid)) {
+//         moveTetromino(t, grid, 0, 1);
+//     }
+//     storeTetrominoInGrid(grid, t);
+//     *score = addScore(score, grid);
+//     *t = getNewTetromino();
+// }
+
 void hardDropTetromino(Tetromino *t, Grid *grid, int *score) {
     while (canMoveDown(t, grid)) {
-        moveTetromino(t, grid, 0, 1);
+        moveTetromino(t, grid, 0, 1); // Turunkan terus hingga mentok
     }
-    storeTetrominoInGrid(grid, t);
+
+    storeTetrominoInGrid(grid, t); // Simpan blok di grid
+    printf("Memeriksa baris penuh...\n");
+
     *score = addScore(score, grid);
-    *t = getNewTetromino();
+
+    // Buat Tetromino baru setelah hard drop
+    *t = createTetromino(setRandomTetromino(), 5, -2);
 }
 
 void handleInput(Tetromino *tetromino, Grid *grid, int *score) {

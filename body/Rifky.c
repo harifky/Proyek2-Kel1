@@ -7,64 +7,30 @@
 #include "../header/config.h"
 
 Tetromino findShadowPosition(Tetromino *t, Grid *grid) {
-    // Salin linked list tetromino
-    Tetromino shadow;
-    shadow.color = t->color;
-    shadow.head = NULL;
+    Tetromino shadow = *t; // Salin tetromino asli
 
-    BlockNode *current = t->head;
-    BlockNode *prev = NULL;
-
-    while (current != NULL) {
-        BlockNode *newNode = (BlockNode *)malloc(sizeof(BlockNode));
-        newNode->x = current->x;
-        newNode->y = current->y;
-        newNode->next = NULL;
-
-        if (prev == NULL) {
-            shadow.head = newNode;
-        } else {
-            prev->next = newNode;
-        }
-        prev = newNode;
-        current = current->next;
-    }
-
-    // Selama masih bisa turun, geser semua blok ke bawah
     while (canMoveDown(&shadow, grid)) {
-        BlockNode *node = shadow.head;
-        while (node != NULL) {
-            node->y += 1;
-            node = node->next;
+        for (int i = 0; i < 4; i++) {
+            shadow.blocks[i].y += 1;
         }
     }
-
     return shadow;
 }
 
 void drawShadowBlock(Tetromino *t, Grid *grid) {
     Tetromino shadow = findShadowPosition(t, grid);
 
-    setcolor(WHITE);  // Set warna putih untuk bayangan
-    setlinestyle(DOTTED_LINE, 0, 1);  // Gaya garis putus-putus
+    setcolor(RED);  // Gunakan warna gelap untuk bayangan
+    setlinestyle(DOTTED_LINE, 0, 1);  // Garis putus-putus untuk efek bayangan
 
-    BlockNode *node = shadow.head;
-    while (node != NULL) {
-        int x = node->x * BLOCK_SIZE + 220;
-        int y = node->y * BLOCK_SIZE + 50;
+    for (int i = 0; i < 4; i++) {
+        int x = shadow.blocks[i].x * BLOCK_SIZE + 220;
+        int y = shadow.blocks[i].y * BLOCK_SIZE + 50;
+
         rectangle(x, y, x + BLOCK_SIZE, y + BLOCK_SIZE);
-        node = node->next;
     }
 
-    // Bebaskan memori dari shadow
-    node = shadow.head;
-    while (node != NULL) {
-        BlockNode *temp = node;
-        node = node->next;
-        free(temp);
-    }
-
-    setlinestyle(SOLID_LINE, 0, 1);  // Kembalikan garis ke default jika perlu
+    setlinestyle(SOLID_LINE, 0, 1); // Kembalikan ke garis solid setelah menggambar
 }
 
 void drawLeadPanel(Panel panel) {

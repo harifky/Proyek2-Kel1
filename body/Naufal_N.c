@@ -5,6 +5,7 @@
 #include "../header/Rifky.h"
 
 #include <graphics.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,40 +18,11 @@ void drawGrid(Grid grid) {
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
 }
 
-void drawHoldPanel(Panel panel) {
-    // Gambar kotak Hold
-    rectangle(holdBox.x, holdBox.y, holdBox.x + holdBox.width, holdBox.y + holdBox.height);
+void drawHoldPanel(Panel panel){
+    rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
     char holdText[] = "Hold";
-    outtextxy(holdBox.x + 30, holdBox.y + 10, holdText);
 
-    // Jika ada tetromino yang di-hold
-    if (isHolding) {
-        int minX = 999, minY = 999, maxX = -999, maxY = -999;
-        BlockNode* node = heldTetromino.head;
-
-        while (node) {
-            if (node->x < minX) minX = node->x;
-            if (node->y < minY) minY = node->y;
-            if (node->x > maxX) maxX = node->x;
-            if (node->y > maxY) maxY = node->y;
-            node = node->next;
-        }
-
-        int tetrominoWidth = (maxX - minX + 1) * (BLOCK_SIZE / 2);
-        int tetrominoHeight = (maxY - minY + 1) * (BLOCK_SIZE / 2);
-        int startX = holdBox.x + (holdBox.width - tetrominoWidth) / 2;
-        int startY = holdBox.y + (holdBox.height - tetrominoHeight) / 2;
-
-        node = heldTetromino.head;
-        while (node) {
-            int bx = startX + (node->x - minX) * (BLOCK_SIZE / 2);
-            int by = startY + (node->y - minY) * (BLOCK_SIZE / 2);
-
-            setfillstyle(SOLID_FILL, heldTetromino.color);
-            bar(bx, by, bx + BLOCK_SIZE / 2, by + BLOCK_SIZE / 2);
-            node = node->next;
-        }
-    }
+    outtextxy(panel.x + 20, panel.y + 20, holdText);
 }
 
 void holdTetromino(Tetromino *current) {
@@ -118,19 +90,16 @@ void drawPanel(Panel panel, int *score) {
     int nextBoxLeft = panel.x + margin;
     int nextBoxRight = panel.x + panel.width - margin;
 
-    // Background kotak
+    // Background kotak (hitam)
     setfillstyle(SOLID_FILL, BLACK);
     bar(nextBoxLeft, nextBoxTop, nextBoxRight, nextBoxBottom);
 
-    // Border
+    // Border kotak putih
     setcolor(WHITE);
     rectangle(nextBoxLeft, nextBoxTop, nextBoxRight, nextBoxBottom);
 
-    // Gambar next tetromino di tengah kotak
-    int boxW = nextBoxRight - nextBoxLeft;
-    int boxH = nextBoxBottom - nextBoxTop;
-
-    drawNextTetromino(nextTetromino, nextBoxLeft, nextBoxTop, boxW, boxH);
+    // Gambar next tetromino dengan posisi top-left kotak next block
+    drawNextTetromino(nextTetromino, nextBoxLeft, nextBoxTop);
 }
 
 
