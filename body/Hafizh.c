@@ -20,13 +20,13 @@ Tetromino createTetromino(int type, int startX, int startY) {
 }
 
 
-void drawTetromino(Tetromino t) {
+void drawTetromino(Tetromino t, Grid grid) {
     setfillstyle(SOLID_FILL, t.color);
     BlockNode* current = t.head;
     
     while (current != NULL) {
-        int x = current->x * BLOCK_SIZE + 220;
-        int y = current->y * BLOCK_SIZE + 50;
+        int x = current->x * BLOCK_SIZE + grid.x;
+        int y = current->y * BLOCK_SIZE + grid.y;
         if (current->y >= -5) {
             bar(x, y, x + BLOCK_SIZE - 2, y + BLOCK_SIZE - 2);
             setcolor(WHITE);
@@ -37,40 +37,40 @@ void drawTetromino(Tetromino t) {
 }
 
 
-void drawNextTetromino(Tetromino next, int boxX, int boxY, int boxWidth, int boxHeight) {
+void drawNextTetromino(Tetromino next, int posX, int posY, int boxWidth, int boxHeight) {
     int blockSize = BLOCK_SIZE / 2;
 
-    // Hitung ukuran minimum dan maksimum dari posisi block tetromino
-    int minX = 10, minY = 10, maxX = -10, maxY = -10;
-    BlockNode* curr = next.head;
-    while (curr != NULL) {
-        if (curr->x < minX) minX = curr->x;
-        if (curr->y < minY) minY = curr->y;
-        if (curr->x > maxX) maxX = curr->x;
-        if (curr->y > maxY) maxY = curr->y;
-        curr = curr->next;
+    // Hitung bounding box
+    int minX = 999, minY = 999, maxX = -999, maxY = -999;
+    BlockNode* node = next.head;
+    while (node) {
+        if (node->x < minX) minX = node->x;
+        if (node->y < minY) minY = node->y;
+        if (node->x > maxX) maxX = node->x;
+        if (node->y > maxY) maxY = node->y;
+        node = node->next;
     }
 
-    int tetroWidth = (maxX - minX + 1) * blockSize;
-    int tetroHeight = (maxY - minY + 1) * blockSize;
+    int tetrominoWidth = (maxX - minX + 1) * blockSize;
+    int tetrominoHeight = (maxY - minY + 1) * blockSize;
 
-    // Hitung posisi tengah dalam kotak next
-    int startX = boxX + (boxWidth - tetroWidth) / 2 - minX * blockSize;
-    int startY = boxY + (boxHeight - tetroHeight) / 2 - minY * blockSize;
+    int startX = posX + (boxWidth - tetrominoWidth) / 2;
+    int startY = posY + (boxHeight - tetrominoHeight) / 2;
 
-    // Gambar blok
-    setcolor(next.color); 
     setfillstyle(SOLID_FILL, next.color);
+    setcolor(WHITE);
 
-    BlockNode* current = next.head;
-    while (current != NULL) {
-        int x = startX + current->x * blockSize;
-        int y = startY + current->y * blockSize;
+    node = next.head;
+    while (node) {
+        int x = startX + (node->x - minX) * blockSize;
+        int y = startY + (node->y - minY) * blockSize;
         bar(x, y, x + blockSize, y + blockSize);
         rectangle(x, y, x + blockSize, y + blockSize);
-        current = current->next;
+        node = node->next;
     }
 }
+
+
 
 Tetromino getNewTetromino() {
     Tetromino current = nextTetromino;  // Tetromino yang sebelumnya sudah ditampilkan menjadi aktif

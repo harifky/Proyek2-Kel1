@@ -50,7 +50,7 @@ void drawShadowBlock(Tetromino *t, Grid *grid) {
 
     BlockNode *node = shadow.head;
     while (node != NULL) {
-        int x = node->x * BLOCK_SIZE + 220;
+        int x = node->x * BLOCK_SIZE + 600;
         int y = node->y * BLOCK_SIZE + 50;
         rectangle(x, y, x + BLOCK_SIZE, y + BLOCK_SIZE);
         node = node->next;

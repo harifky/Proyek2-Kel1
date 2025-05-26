@@ -55,10 +55,16 @@ void playGame(){
     initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
     
     //Inisialisasi ukuran grid dan panel untuk tampilan game
-    Grid gameGrid = {220, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
-    Panel gameHoldPanel = {gameGrid.x - 110, 100, 100, 100};
-    Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 110, gameGrid.height};
-    Panel leadPanel = {gameGrid.x + gameGrid.width + gamePanel.width + 20, 50, 250, 300};
+    Grid gameGrid = {600, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
+    // Panel Hold di tengah sisi kiri grid utama
+    Panel gameHoldPanel = {
+        gameGrid.x - 110, 
+        gameGrid.y + (gameGrid.height - 950), // Tengah vertikal grid
+        100, 100
+    };
+
+    Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 200, gameGrid.height};
+    Panel leadPanel = {gameGrid.x + gameGrid.width + gamePanel.width + 20, 50, 400, 300};
     
     bool start = true; //trigger untuk memulai game
     int currentPage = 0; // Untuk mengatur buffer aktif
@@ -121,7 +127,7 @@ void playGame(){
         
         drawStoredBlocks(&gameGrid); 
 
-        drawTetromino(currentTetromino);
+        drawTetromino(currentTetromino, gameGrid);
 
         setvisualpage(currentPage);  // Tampilkan halaman buffer
         currentPage = 1 - currentPage; // Ganti halaman untuk frame berikutnya
