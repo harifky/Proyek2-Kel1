@@ -80,11 +80,12 @@ typedef struct BlockNode {
     struct BlockNode* next;
 } BlockNode;
 
+// Struktur Tetromino
 typedef struct {
-    BlockNode* head;  // pointer ke blok pertama
-    int color;
-    int x, y;
-}Tetromino;
+    int x, y;      // Posisi Tetromino di dalam grid
+    Block blocks[4]; //Ukuran dari satu blok tetromino
+    int color; // untuk warna dari tetromino
+} Tetromino;
 
 extern Tetromino nextTetromino;
 extern Tetromino heldTetromino;

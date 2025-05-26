@@ -6,7 +6,7 @@
 
 void drawStoredBlocks(Grid *grid) {
 
-    //Gambar semua block yang sudah didimpan didalam grid
+    // Gambar semua block yang sudah didimpan didalam grid
     // for (int y = 0; y < GRID_HEIGHT; y++) {
     //     for (int x = 0; x < GRID_WIDTH; x++) {
     //         if (grid->cells[y][x] != 0) {
@@ -20,7 +20,6 @@ void drawStoredBlocks(Grid *grid) {
     //         }
     //     }
     // }
-
 
     StoredBlock* current = grid->blocks;
     while (current != NULL) {
@@ -207,18 +206,34 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
     //     }
     // }
 
-    BlockNode* current = t->head;
-    while (current != NULL) {
-        // Only store if within grid bounds
-        if (current->y >= 0 && current->x >= 0 && current->x < GRID_WIDTH) {
+    for (int i = 0; i < 4; i++) {
+        int x = t->blocks[i].x + t->x;
+        int y = t->blocks[i].y + t->y;
+
+        // Simpan ke dalam linked list StoredBlock jika masih dalam batas grid
+        if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
             StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
-            newBlock->x = current->x;
-            newBlock->y = current->y;
+            newBlock->x = x;
+            newBlock->y = y;
             newBlock->color = t->color;
             newBlock->next = grid->blocks;
             grid->blocks = newBlock;
         }
-        current = current->next;
     }
+
+
+    // BlockNode* current = t->head;
+    // while (current != NULL) {
+    //     // Only store if within grid bounds
+    //     if (current->y >= 0 && current->x >= 0 && current->x < GRID_WIDTH) {
+    //         StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
+    //         newBlock->x = current->x;
+    //         newBlock->y = current->y;
+    //         newBlock->color = t->color;
+    //         newBlock->next = grid->blocks;
+    //         grid->blocks = newBlock;
+    //     }
+    //     current = current->next;
+    // }
 
 }

@@ -8,6 +8,6 @@ void drawTetromino(Tetromino t);
 void drawNextTetromino(Tetromino next, int boxX, int boxY, int boxWidth, int boxHeight);
 Tetromino getNewTetromino();
 int setRandomTetromino();
-void destroyTetromino(Tetromino* t);
+/*void destroyTetromino(Tetromino* t);*/
 
 #endif
