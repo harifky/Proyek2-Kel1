@@ -69,6 +69,11 @@ void holdTetromino(Tetromino *current) {
 }
 
 void drawPanel(Panel panel, int *score) {
+    const int margin = 20;
+    const int spacing = 30;
+    const int fontSmall = 1;
+    const int fontMedium = 2;
+
     // === Background Panel ===
     setfillstyle(SOLID_FILL, DARKGRAY);
     bar(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
@@ -78,16 +83,16 @@ void drawPanel(Panel panel, int *score) {
     rectangle(panel.x, panel.y, panel.x + panel.width, panel.y + panel.height);
 
     // === Judul Panel ===
-    settextstyle(10, HORIZ_DIR, 2);
+    settextstyle(10, HORIZ_DIR, fontMedium);
     setcolor(LIGHTBLUE);
-    outtextxy(panel.x + 20, panel.y + 10, (char*)"STATUS PANEL");
+    outtextxy(panel.x + margin, panel.y + margin, (char*)"STATUS PANEL");
 
     // === Skor ===
-    settextstyle(10, HORIZ_DIR, 1);
+    settextstyle(10, HORIZ_DIR, fontSmall);
     setcolor(WHITE);
     char scoreText[20];
     sprintf(scoreText, "Score: %d", *score);
-    outtextxy(panel.x + 20, panel.y + 50, scoreText);
+    outtextxy(panel.x + margin, panel.y + margin + spacing * 2, scoreText);
 
     // === Level Speed Berdasarkan Skor ===
     int levelSpeed = 1;
@@ -101,28 +106,33 @@ void drawPanel(Panel panel, int *score) {
 
     char levelSpeedText[20];
     sprintf(levelSpeedText, "Speed: %d", levelSpeed);
-    outtextxy(panel.x + 20, panel.y + 80, levelSpeedText);
+    outtextxy(panel.x + margin, panel.y + margin + spacing * 3, levelSpeedText);
 
-    // === Next Block ===
+    // === Next Block Label ===
     setcolor(LIGHTCYAN);
-    outtextxy(panel.x + 20, panel.y + 130, (char*)"Next:");
+    outtextxy(panel.x + margin, panel.y + margin + spacing * 5, (char*)"Next:");
 
-    // Kotak latar belakang next block
+    // === Next Block Box ===
+    int nextBoxTop = panel.y + margin + spacing * 6;
+    int nextBoxBottom = nextBoxTop + 80;
+    int nextBoxLeft = panel.x + margin;
+    int nextBoxRight = panel.x + panel.width - margin;
+
+    // Background kotak
     setfillstyle(SOLID_FILL, BLACK);
-    bar(panel.x + 15, panel.y + 150, panel.x + panel.width - 15, panel.y + 230);
+    bar(nextBoxLeft, nextBoxTop, nextBoxRight, nextBoxBottom);
 
-    // Border next block box
+    // Border
     setcolor(WHITE);
-    rectangle(panel.x + 15, panel.y + 150, panel.x + panel.width - 15, panel.y + 230);
+    rectangle(nextBoxLeft, nextBoxTop, nextBoxRight, nextBoxBottom);
 
-    // Gambar next tetromino
-    int boxX = panel.x + 15;
-    int boxY = panel.y + 150;
-    int boxW = panel.width - 30;
-    int boxH = 80;  // dari 150 ke 230
-    
-    drawNextTetromino(nextTetromino, boxX, boxY, boxW, boxH);
+    // Gambar next tetromino di tengah kotak
+    int boxW = nextBoxRight - nextBoxLeft;
+    int boxH = nextBoxBottom - nextBoxTop;
+
+    drawNextTetromino(nextTetromino, nextBoxLeft, nextBoxTop, boxW, boxH);
 }
+
 
 void showMenu() {
     initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
@@ -137,11 +147,13 @@ void showMenu() {
         int centerX = screenWidth / 2;
         int centerY = screenHeight / 2;
 
-        // **Panggil fungsi drawLogo di sini, misal di kiri atas**
-        // drawLogo(centerX - 100, centerY - 1000);  // contoh posisi, sesuaikan
 
-        // Tulis judul "TETROMANIA" di tengah atas layar
-        settextstyle(10, HORIZ_DIR, 5); // Ukuran font besar
+        // Logo Tetromania //
+        drawTetrisLogo(centerX - 30, 35);  // Sesuaikan posisi
+
+        // === Judul "TETROMANIA" ===
+        settextstyle(10, HORIZ_DIR, 6);
+        setcolor(LIGHTBLUE);
         const char* title = "TETROMANIA";
         int textWidth = textwidth((char*)title);
         outtextxy(centerX - textWidth / 2, 80, (char*)title);

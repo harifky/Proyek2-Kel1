@@ -11,6 +11,6 @@ void hardDropTetromino(Tetromino *t, Grid *grid, int *score);
 int addScore(int *score, Grid *grid);
 void handleInput(Tetromino *tetromino, Grid *grid, int *score);
 void updateFrameDelay(int *score);
-void drawLogo(int x, int y);
+void drawTetrisLogo(int x, int y);
 
 #endif

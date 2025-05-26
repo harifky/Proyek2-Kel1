@@ -174,32 +174,29 @@ void updateFrameDelay(int *score) {
     else frameDelay = 2000;
 }
 
-void drawLogo(int x, int y) {
-    int size = 100;
+void drawTetrisLogo(int x, int y) {
+    int blockSize = 20; // Ukuran blok
+    int padding = 3;    // Jarak antar blok (bisa diabaikan atau diatur)
 
-    // Kotak sebagai latar belakang
-    setcolor(BLUE);
-    setfillstyle(SOLID_FILL, BLUE);
-    bar(x, y, x + size, y + size);
+    // Warna tetromino 'T'
+    int color = MAGENTA;
+    setfillstyle(SOLID_FILL, color);
 
-    // Lingkaran putih di tengah
-    setcolor(WHITE);
-    setfillstyle(SOLID_FILL, WHITE);
-    fillellipse(x + size/2, y + size/2, size/3, size/3);
+    // Bentuk huruf 'T' seperti tetromino T
+    int blocks[4][2] = {
+        {-1, 0}, {0, 0}, {1, 0}, // baris atas (horizontal)
+        {0, 1},                  // blok tengah bawah
+    };
 
-    // Huruf G sederhana dengan garis
-    setcolor(BLACK);
-    setlinestyle(SOLID_LINE, 0, 3);
+    for (int i = 0; i < 5; i++) {
+        int dx = blocks[i][0];
+        int dy = blocks[i][1];
 
-    // Garis vertikal G
-    line(x + size/3, y + size/4, x + size/3, y + 3*size/4);
+        int blockX = x + dx * (blockSize + padding);
+        int blockY = y + dy * (blockSize + padding);
 
-    // Garis atas G
-    line(x + size/3, y + size/4, x + 2*size/3, y + size/4);
-
-    // Garis tengah G
-    line(x + size/2, y + size/2, x + 2*size/3, y + size/2);
-
-    // Garis bawah G
-    line(x + size/3, y + 3*size/4, x + 2*size/3, y + 3*size/4);
+        bar(blockX, blockY, blockX + blockSize, blockY + blockSize);
+        setcolor(WHITE);
+        rectangle(blockX, blockY, blockX + blockSize, blockY + blockSize);
+    }
 }
