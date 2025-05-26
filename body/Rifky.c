@@ -81,12 +81,22 @@ void drawLeadPanel(Panel panel) {
         return;
     }
 
-    char name[50], time[30];
-    int score, yOffset = 50;
-    char scoreEntry[100];
+    char name[50];
+    int score;
+    char timeStr[100];
+    int yOffset = 50;
+    char scoreEntry[200];
 
-    while (fscanf(file, "%s %d %s", name, &score, time) == 3 && yOffset < panel.height - 20) {
-        sprintf(scoreEntry, "%s: %d (%s)", name, score, time);
+    while (fscanf(file, "%s %d", name, &score) == 2 && fgets(timeStr, sizeof(timeStr), file) != NULL && yOffset < panel.height - 20) {
+        // Hapus newline dari fgets
+        timeStr[strcspn(timeStr, "\n")] = 0;
+
+        // Hilangkan spasi awal (karena fgets dimulai setelah fscanf)
+        char *cleanTime = timeStr;
+        while (*cleanTime == ' ') cleanTime++;
+
+        // Gabungkan dan tampilkan
+        sprintf(scoreEntry, "%s: %d (%s)", name, score, cleanTime);
         outtextxy(panel.x + 20, panel.y + yOffset, scoreEntry);
         yOffset += 20;
     }
