@@ -55,24 +55,26 @@ void playGame(){
     initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
     
     //Inisialisasi ukuran grid dan panel untuk tampilan game
-    Grid gameGrid = {220, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
-    Panel gameHoldPanel = {gameGrid.x - 110, 100, 100, 100};
-    Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 110, gameGrid.height};
-    Panel leadPanel = {gameGrid.x + gameGrid.width + gamePanel.width + 20, 50, 250, 300};
+    Grid gameGrid = {600, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
+    // Panel Hold di tengah sisi kiri grid utama
+    Panel gameHoldPanel = {gameGrid.x - 160, gameGrid.y + (gameGrid.height - 950), 150, 150};
+
+    Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 200, gameGrid.height};
+    Panel leadPanel = {gameGrid.x + gameGrid.width + gamePanel.width + 20, 50, 400, 300};
     
     bool start = true; //trigger untuk memulai game
     int currentPage = 0; // Untuk mengatur buffer aktif
     int frameCount = 0; // Counter untuk mengontrol kecepatan jatuh
     int score = 0; //inisialisasi awal score
 
-    Inisialisasi grid dengan mengisi sel dengan nilai 0 (kosong)
+    // Inisialisasi grid dengan mengisi sel dengan nilai 0 (kosong)
     for (int y = 0; y < GRID_HEIGHT; y++) {
         for (int x = 0; x < GRID_WIDTH; x++) {
             gameGrid.cells[y][x] = 0;  // Pastikan grid kosong saat memulai permainan
         }
     }
 
-    StoredBlock* current = grid.blocks;
+    StoredBlock* current = gameGrid.blocks;
     while (current != NULL) {
         StoredBlock* temp = current;
         current = current->next;
@@ -82,7 +84,7 @@ void playGame(){
     
     //Inisialisasi currentTetromino & nextTetromino**
     nextTetromino = createTetromino(setRandomTetromino(), 5, -2);
-    currentTetromino = createTetromino(rand() % 7, 5, -3);
+    currentTetromino = createTetromino(setRandomTetromino(), 5, -3);
 
     //memutar backsound
     playSoundEffect("sound/HoldOnTight.wav");

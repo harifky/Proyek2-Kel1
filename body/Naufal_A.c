@@ -2,6 +2,7 @@
 #include "../header/Rifky.h"
 #include "../header/Naufal_A.h"
 
+#include <stdlib.h>
 // typedef struct 
 
 void drawStoredBlocks(Grid *grid) {
@@ -94,12 +95,13 @@ int clearFullRows(Grid *grid) {
             StoredBlock **indirect = &grid->blocks;
             while (*indirect != NULL) {
                 if ((*indirect)->y == y) {
-                    StoredBlock* temp = *indirect;
-                    *indirect = (*indirect)->next;
-                    free(temp);
-                } else {
+                        StoredBlock* temp = *indirect;
+                        *indirect = (*indirect)->next;
+                        free(temp);
+                        continue; // <- Tambahkan ini agar tidak lanjut ke bawah
+                    } else {
                     if ((*indirect)->y < y) {
-                        (*indirect)->y += 1; // geser ke bawah
+                        (*indirect)->y += 1;
                     }
                     indirect = &(*indirect)->next;
                 }
@@ -198,7 +200,7 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
         int x = t->blocks[i].x + t->x;
         int y = t->blocks[i].y + t->y;
         if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
-            StoredBlock* newBlock = malloc(sizeof(StoredBlock));
+            StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
             newBlock->x = x;
             newBlock->y = y;
             newBlock->color = t->color;
