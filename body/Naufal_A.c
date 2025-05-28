@@ -146,20 +146,20 @@ void drawGameOverScreen(Grid grid, int score) {
     
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
     char gameOverText[10] = "GAME OVER";
-    outtextxy(275, 200, gameOverText);
+    outtextxy(670, 200, gameOverText);
     
     
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
     char scoreText[30];
     sprintf(scoreText, "Final Score: %d", score);
-    outtextxy(280, 300, scoreText);
+    outtextxy(670, 300, scoreText);
     
     // **Minta Username**
     settextjustify(CENTER_TEXT, CENTER_TEXT);
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
     char username[20];
     char enterNameText[] = "Enter your name:";
-    outtextxy(280, 350, enterNameText);
+    outtextxy(850, 350, enterNameText);
 
     int i = 0;
     while (1) {

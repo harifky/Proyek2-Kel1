@@ -63,15 +63,15 @@ void drawHoldPanel(Panel panel) {
 void holdTetromino(Tetromino *current) {
     Tetromino temp = *current;
 
-    if (!isHolding) {// Jika Hold Box kosong
+    if (!isHolding) {
         heldTetromino = *current;
+        *current = nextTetromino;
+        nextTetromino = getNewTetromino();
         isHolding = 1;
-        *current = createTetromino(setRandomTetromino(), 5, 0);
-    } else {// Jika sudah ada tetromino di Hold Box, tukar
+    } else {
+        Tetromino temp = *current;
         *current = heldTetromino;
         heldTetromino = temp;
-        current->x = 5;
-        current->y = 0;
     }
 }
 
