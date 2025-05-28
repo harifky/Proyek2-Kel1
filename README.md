@@ -44,7 +44,7 @@ menyusun block-block tetromino yang jatuh dari atas agar membentuk baris penuh s
 | -------------------- | --------------------------------------------------- |
 | 🔼 (Arrow Up)        | Memutar tetromino (rotate)                          |
 | 🔽 (Arrow Down)      | Mempercepat jatuhnya tetromino                      |
-| ◀ (Arrow Left)      | Menggeser tetromino ke kiri                         |
-| ▶ (Arrow Right)     | Menggeser tetromino ke kanan                        |
-| *Spasi*            | Menjatuhkan tetromino langsung ke bawah (hard drop) |
-| *Enter*            | Menahan (hold) tetromino aktif                      |
+| ◀ (Arrow Left)       | Menggeser tetromino ke kiri                         |
+| ▶ (Arrow Right)      | Menggeser tetromino ke kanan                        |
+| *Spasi*              | Menjatuhkan tetromino langsung ke bawah (hard drop) |
+| *Enter*              | Menahan (hold) tetromino aktif                      |

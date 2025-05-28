@@ -25,7 +25,7 @@ void drawShadowBlock(Tetromino *t, Grid *grid) {
     setlinestyle(DOTTED_LINE, 0, 1);  // Garis putus-putus
 
     for (int i = 0; i < 4; i++) {
-        int x = shadow.blocks[i].x * BLOCK_SIZE + 600;
+        int x = shadow.blocks[i].x * BLOCK_SIZE + 400;
         int y = shadow.blocks[i].y * BLOCK_SIZE + 50;
         rectangle(x, y, x + BLOCK_SIZE, y + BLOCK_SIZE);
     }

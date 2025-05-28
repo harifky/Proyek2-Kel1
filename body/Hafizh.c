@@ -22,6 +22,8 @@
 
 Tetromino createTetromino(int type, int startX, int startY) {
     Tetromino t;
+    t.x = startX;
+    t.y = startY;
     for (int i = 0; i < 4; i++) {
         t.blocks[i].x = startX + tetrominoShapes[type][i].x;
         t.blocks[i].y = startY + tetrominoShapes[type][i].y;
@@ -51,7 +53,7 @@ void drawTetromino(Tetromino t) {
     setfillstyle(SOLID_FILL, t.color);
     
     for (int i = 0; i < 4; i++) {
-        int x = t.blocks[i].x * BLOCK_SIZE + 600;  // Koordinat X dalam grid
+        int x = t.blocks[i].x * BLOCK_SIZE + 400;  // Koordinat X dalam grid
         int y = t.blocks[i].y * BLOCK_SIZE + 50;   // Koordinat Y dalam grid
         
         // Gambar hanya jika sebagian dari blok masuk layar
