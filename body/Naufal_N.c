@@ -3,6 +3,7 @@
 #include "../header/Hafizh.h"
 #include "../header/game.h"
 #include "../header/Rifky.h"
+#include "../header/Naufal_A.h"
 
 #include <graphics.h>
 #include <stdio.h>
@@ -179,8 +180,8 @@ void showMenu() {
 
     bool menuActive = true;
     int selectedOption = 0;
-    const char* options[] = {"Play Game", "Leaderboard", "Exit"};
-    const int optionCount = 3;
+    const char* options[] = {"Play Game", "Leaderboard", "Tutorial", "Exit"};
+    const int optionCount = 4;
 
     while (menuActive) {
         cleardevice();
@@ -254,6 +255,9 @@ void showMenu() {
             break;
         }
         case 2:
+            tutorialPage();
+            break;
+        case 3:
             closegraph();
             exit(0);
             break;
