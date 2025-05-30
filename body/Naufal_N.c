@@ -5,7 +5,6 @@
 #include "../header/Rifky.h"
 
 #include <graphics.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -90,16 +89,20 @@ void drawPanel(Panel panel, int *score) {
     int nextBoxLeft = panel.x + margin;
     int nextBoxRight = panel.x + panel.width - margin;
 
-    // Background kotak (hitam)
+    // Background kotak
     setfillstyle(SOLID_FILL, BLACK);
     bar(nextBoxLeft, nextBoxTop, nextBoxRight, nextBoxBottom);
 
-    // Border kotak putih
+    // Border
     setcolor(WHITE);
     rectangle(nextBoxLeft, nextBoxTop, nextBoxRight, nextBoxBottom);
 
-    // Gambar next tetromino dengan posisi top-left kotak next block
+    // Gambar next tetromino di tengah kotak
+    int boxW = nextBoxRight - nextBoxLeft;
+    int boxH = nextBoxBottom - nextBoxTop;
+
     drawNextTetromino(nextTetromino, nextBoxLeft, nextBoxTop);
+
 }
 
 
@@ -118,14 +121,15 @@ void showMenu() {
 
 
         // Logo Tetromania //
-        drawTetrisLogo(centerX - 30, 35);  // Sesuaikan posisi
+        // drawTetrisLogo(centerX - 30, 35);  // Sesuaikan posisi
 
         // === Judul "TETROMANIA" ===
-        settextstyle(10, HORIZ_DIR, 6);
-        setcolor(LIGHTBLUE);
-        const char* title = "TETROMANIA";
-        int textWidth = textwidth((char*)title);
-        outtextxy(centerX - textWidth / 2, 80, (char*)title);
+        readimagefile("image/TETROMANIA LOGO.jpg", 360, 30, 900, 180);
+        // settextstyle(10, HORIZ_DIR, 6);
+        // setcolor(LIGHTBLUE);
+        // const char* title = "TETROMANIA";
+        // int textWidth = textwidth((char*)title);
+        // outtextxy(centerX - textWidth / 2, 80, (char*)title);
 
         // === Border dan Background Panel Menu ===
         int panelWidth = 400;

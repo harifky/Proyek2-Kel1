@@ -102,6 +102,7 @@ void drawTetromino(Tetromino t) {
 //     }
 // }*/
 
+
 void drawNextTetromino(Tetromino next, int posX, int posY) {
     const int boxWidth = 80;
     const int boxHeight = 80;

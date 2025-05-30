@@ -1,6 +1,7 @@
 #include <graphics.h>
 #include "../header/game.h"
 #include <windows.h>
+#include <stdbool.h>
 #include <mmsystem.h>
 
 //#define TARGET_FPS 60  // Bisa diganti ke 20 jika ingin 20 FPS
@@ -65,12 +66,12 @@ void playGame(){
     int frameCount = 0; // Counter untuk mengontrol kecepatan jatuh
     int score = 0; //inisialisasi awal score
 
-    //Inisialisasi grid dengan mengisi sel dengan nilai 0 (kosong)
-    // for (int y = 0; y < GRID_HEIGHT; y++) {
-    //     for (int x = 0; x < GRID_WIDTH; x++) {
-    //         gameGrid.cells[y][x] = 0;  // Pastikan grid kosong saat memulai permainan
-    //     }
-    // }
+    // Inisialisasi grid dengan mengisi sel dengan nilai 0 (kosong)
+    for (int y = 0; y < GRID_HEIGHT; y++) {
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            gameGrid.cells[y][x] = 0;  // Pastikan grid kosong saat memulai permainan
+        }
+    }
 
     StoredBlock* current = grid.blocks;
     while (current != NULL) {
