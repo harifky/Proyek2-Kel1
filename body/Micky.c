@@ -23,49 +23,6 @@ void moveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
     }
 }
 
-// void rotateTetromino(Tetromino *t, Grid *grid) {
-//     BlockNode *pivot = t->head;
-//     if (pivot == NULL || pivot->next == NULL) return;
-//     pivot = pivot->next; // gunakan blok ke-2 sebagai pivot
-
-//     BlockNode *temp = t->head;
-//     Block rotated[4];
-//     int i = 0;
-//     while (temp != NULL && i < 4) {
-//         int relX = temp->x - pivot->x;
-//         int relY = temp->y - pivot->y;
-//         rotated[i].x = pivot->x - relY;
-//         rotated[i].y = pivot->y + relX;
-//         temp = temp->next;
-//         i++;
-//     }
-
-//     int minX = GRID_WIDTH, maxX = 0;
-//     for (i = 0; i < 4; i++) {
-//         if (rotated[i].x < minX) minX = rotated[i].x;
-//         if (rotated[i].x > maxX) maxX = rotated[i].x;
-//     }
-//     int shiftX = 0;
-//     if (minX < 0) shiftX = -minX;
-//     if (maxX >= GRID_WIDTH) shiftX = GRID_WIDTH - 1 - maxX;
-
-//     for (i = 0; i < 4; i++) {
-//         rotated[i].x += shiftX;
-//         if (rotated[i].y >= 0 && grid->cells[rotated[i].y][rotated[i].x] != 0) {
-//             return; // batal jika bertabrakan
-//         }
-//     }
-
-//     temp = t->head;
-//     i = 0;
-//     while (temp != NULL && i < 4) {
-//         temp->x = rotated[i].x;
-//         temp->y = rotated[i].y;
-//         temp = temp->next;
-//         i++;
-//     }
-// }
-
 void rotateTetromino(Tetromino *t, Grid *grid) {
     Block pivot = t->blocks[1]; // gunakan blok ke-2 sebagai pivot
     Block rotated[4];
@@ -105,39 +62,6 @@ void rotateTetromino(Tetromino *t, Grid *grid) {
     }
 }
 
-// int canMoveDown(Tetromino *t, Grid *grid) {
-//     // BlockNode *node = t->head;
-//     // while (node != NULL) {
-//     //     int x = node->x;
-//     //     int y = node->y + 1;
-//     //     if (y >= GRID_HEIGHT || (y >= 0 && grid->cells[y][x] != 0)) {
-//     //         return 0;
-//     //     }
-//     //     node = node->next;
-//     // }
-//     // return 1;
-
-//     BlockNode *node = t->head;
-//     while (node != NULL) {
-//         int x = node->x;
-//         int y = node->y + 1;
-
-//         // Check grid bounds
-//         if (y >= GRID_HEIGHT) return 0;
-
-//         // Check collision with stored blocks
-//         StoredBlock* current = grid->blocks;
-//         while (current != NULL) {
-//             if (current->x == x && current->y == y) {
-//                 return 0;
-//             }
-//             current = current->next;
-//         }
-//         node = node->next;
-//     }
-//     return 1;
-// }
-
 int canMoveDown(Tetromino *t, Grid *grid) {
     for (int i = 0; i < 4; i++) {
         int x = t->blocks[i].x;
@@ -153,43 +77,6 @@ int canMoveDown(Tetromino *t, Grid *grid) {
     }
     return 1; // Bisa turun
 }
-
-// int canMoveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
-//     // BlockNode *node = t->head;
-//     // while (node != NULL) {
-//     //     int newX = node->x + dx;
-//     //     int newY = node->y + dy;
-//     //     if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT || (newY >= 0 && grid->cells[newY][newX] != 0)) {
-//     //         return 0;
-//     //     }
-//     //     node = node->next;
-//     // }
-//     // return 1;
-
-
-//     BlockNode *node = t->head;
-//     while (node != NULL) {
-//         int newX = node->x + dx;
-//         int newY = node->y + dy;
-
-//         // Batas grid
-//         if (newX < 0 || newX >= GRID_WIDTH || newY >= GRID_HEIGHT) {
-//             return 0;
-//         }
-
-//         // Cek tabrakan dengan blok yang sudah tersimpan
-//         StoredBlock* current = grid->blocks;
-//         while (current != NULL) {
-//             if (current->x == newX && current->y == newY) {
-//                 return 0;
-//             }
-//             current = current->next;
-//         }
-
-//         node = node->next;
-//     }
-//     return 1; // Tidak ada tabrakan
-// }
 
 int canMoveTetromino(Tetromino *t, Grid *grid, int dx, int dy) {
     for (int i = 0; i < 4; i++) {
@@ -216,19 +103,11 @@ int addScore(int *score, Grid *grid){
     return *score;
 }
 
-// void hardDropTetromino(Tetromino *t, Grid *grid, int *score) {
-//     while (canMoveDown(t, grid)) {
-//         moveTetromino(t, grid, 0, 1);
-//     }
-//     storeTetrominoInGrid(grid, t);
-//     *score = addScore(score, grid);
-//     *t = getNewTetromino();
-// }
-
 void hardDropTetromino(Tetromino *t, Grid *grid, int *score) {
     while (canMoveDown(t, grid)) {
         moveTetromino(t, grid, 0, 1); // Turunkan terus hingga mentok
     }
+    PlaySound("sound/point.wav", NULL, SND_FILENAME | SND_ASYNC);
 
     storeTetrominoInGrid(grid, t); // Simpan blok di grid
     printf("Memeriksa baris penuh...\n");
@@ -285,3 +164,5 @@ void drawTetrisLogo(int x, int y) {
         rectangle(blockX, blockY, blockX + blockSize, blockY + blockSize);
     }
 }
+
+    

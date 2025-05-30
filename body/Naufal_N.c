@@ -189,17 +189,10 @@ void showMenu() {
         int centerX = screenWidth / 2;
         int centerY = screenHeight / 2;
 
-
-        // Logo Tetromania //
-        // drawTetrisLogo(centerX - 30, 35);  // Sesuaikan posisi
-
         // === Judul "TETROMANIA" ===
         readimagefile("image/TETROMANIA LOGO.jpg", 360, 30, 900, 180);
-        // settextstyle(10, HORIZ_DIR, 6);
-        // setcolor(LIGHTBLUE);
-        // const char* title = "TETROMANIA";
-        // int textWidth = textwidth((char*)title);
-        // outtextxy(centerX - textWidth / 2, 80, (char*)title);
+
+        readimagefile("image/FOOTER.jpg", 375, 500, 900, 300);
 
         // === Border dan Background Panel Menu ===
         int panelWidth = 400;

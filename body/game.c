@@ -62,7 +62,7 @@ void playGame(){
 
     Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 200, gameGrid.height};
     Panel leadPanel = {gameGrid.x + gameGrid.width + gamePanel.width + 20, 50, 400, 300};
-    
+
     bool start = true; //trigger untuk memulai game
     int currentPage = 0; // Untuk mengatur buffer aktif
     int frameCount = 0; // Counter untuk mengontrol kecepatan jatuh
@@ -95,10 +95,10 @@ void playGame(){
     while (start) {
 
         // printf("Start Loop!!\n");
-
         handleInput(&currentTetromino, &gameGrid, &score);
 
         updateGame(&currentTetromino, &gameGrid, &score, frameCount);
+        
     
         // Aktifkan halaman buffer
         setactivepage(currentPage);
@@ -115,7 +115,7 @@ void playGame(){
             drawPanel(gamePanel, &score);
             
             drawGrid(gameGrid);
-            
+
             drawLeadPanel(leadPanel);
             
             drawGameOverScreen(gameGrid, score);
