@@ -124,9 +124,9 @@ void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
 }
 
 void updateFrameDelay(int *score) {
-    if (*score >= 4000) frameDelay = 150;
-    else if (*score >= 3000) frameDelay = 300;
-    else if (*score >= 2000) frameDelay = 600;
-    else if (*score >= 1000) frameDelay = 1200;
-    else frameDelay = 2000;
+    if (*score >= 4000) frameDelay = 1000/60;
+    else if (*score >= 3000) frameDelay = 1000/40;
+    else if (*score >= 2000) frameDelay = 1000/30;
+    else if (*score >= 1000) frameDelay = 1000/20;
+    else frameDelay = 1000/15;
 }

@@ -1,6 +1,6 @@
 # Proyek2-Kel1
-pengembangan Aplikasi berbasis library menggunakan bahasa C
-Aplikasi Gim Tetromania
+*pengembangan Aplikasi berbasis library menggunakan bahasa C*
+_Aplikasi Gim Tetromania_
 
 Anggota:
 - Hafizh Andika
@@ -27,8 +27,8 @@ Berikut langkah-langkah jika ingin melakukan clone pada repositori ini:
 * Jika sudah selesai buka folder repositori menggunakan VS Code
 * Lakukan compile dengan menekan win + shift + B
 * Jika tidak bisa, copy perintah berikut pada terminal:
-    ` g++ main.c body/game.c body/Hafizh.c body/Micky.c body/Naufal_A.c body/Naufal_N.c body/Rifky.c -o output/tetris.exe -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 -lwinmm `
-* Setelah selesai maka file .exe akan terbuat pada folder /output
+    ```` g++ main.c body/game.c body/Hafizh.c body/Micky.c body/Naufal_A.c body/Naufal_N.c body/Rifky.c -o output/tetris.exe -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 -lwinmm ````
+* Setelah selesai maka file .exe akan terbuat pada folder _/output_
 * Klik kanan pada file tersebut dan Run Executable atau double klik pada file .exe di file manager
 
 
@@ -44,7 +44,9 @@ menyusun block-block tetromino yang jatuh dari atas agar membentuk baris penuh s
 | -------------------- | --------------------------------------------------- |
 | 🔼 (Arrow Up)        | Memutar tetromino (rotate)                          |
 | 🔽 (Arrow Down)      | Mempercepat jatuhnya tetromino                      |
-| ◀ (Arrow Left)       | Menggeser tetromino ke kiri                         |
-| ▶ (Arrow Right)      | Menggeser tetromino ke kanan                        |
-| *Spasi*              | Menjatuhkan tetromino langsung ke bawah (hard drop) |
-| *Enter*              | Menahan (hold) tetromino aktif                      |
+| ◀️ (Arrow Left)      | Menggeser tetromino ke kiri                         |
+| ▶️ (Arrow Right)     | Menggeser tetromino ke kanan                        |
+| **Spasi**            | Menjatuhkan tetromino langsung ke bawah (hard drop) |
+| **Enter**            | Menahan (hold) tetromino aktif                      |
+
+

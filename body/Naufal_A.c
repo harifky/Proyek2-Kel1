@@ -2,6 +2,7 @@
 #include "../header/Rifky.h"
 #include "../header/Naufal_A.h"
 
+#include <stdlib.h>
 // typedef struct 
 
 void drawStoredBlocks(Grid *grid) {
@@ -20,7 +21,7 @@ void drawStoredBlocks(Grid *grid) {
     //         }
     //     }
     // }
-
+int count = 0;
     StoredBlock* current = grid->blocks;
     while (current != NULL) {
         setfillstyle(SOLID_FILL, current->color);
@@ -36,44 +37,44 @@ void drawStoredBlocks(Grid *grid) {
 }
 
 int clearFullRows(Grid *grid) {
-    // // Inisialisasi variabel untuk menghitung jumlah baris yang dihapus
-    // int rowsCleared = 0;
+    // // // Inisialisasi variabel untuk menghitung jumlah baris yang dihapus
+    // // int rowsCleared = 0;
 
-    // // Loop setiap baris di grid dari atas ke bawah
-    // for (int y = 0; y < GRID_HEIGHT; y++) {
-    //     int full = 1;  // Anggap baris ini penuh (flag)
+    // // // Loop setiap baris di grid dari atas ke bawah
+    // // for (int y = 0; y < GRID_HEIGHT; y++) {
+    // //     int full = 1;  // Anggap baris ini penuh (flag)
 
-    //     // Loop melalui setiap kolom di baris saat ini
-    //     for (int x = 0; x < GRID_WIDTH; x++) {
-    //         // Jika ada sel yang kosong (nilai 0), baris ini tidak penuh
-    //         if (grid->cells[y][x] == 0) {
-    //             full = 0; // Set flag menjadi 0
-    //             break;    // Keluar dari loop kolom
-    //         }
-    //     }
+    // //     // Loop melalui setiap kolom di baris saat ini
+    // //     for (int x = 0; x < GRID_WIDTH; x++) {
+    // //         // Jika ada sel yang kosong (nilai 0), baris ini tidak penuh
+    // //         if (grid->cells[y][x] == 0) {
+    // //             full = 0; // Set flag menjadi 0
+    // //             break;    // Keluar dari loop kolom
+    // //         }
+    // //     }
 
-    //     // Jika baris penuh full(flag), hapus baris tersebut
-    //     if (full) {
-    //         // Geser semua baris di atas baris yang penuh ke bawah
-    //         for (int i = y; i > 0; i--) {
-    //             for (int j = 0; j < GRID_WIDTH; j++) {
-    //                 // Salin nilai dari baris di atas ke baris saat ini
-    //                 grid->cells[i][j] = grid->cells[i - 1][j];
-    //             }
-    //         }
+    // //     // Jika baris penuh full(flag), hapus baris tersebut
+    // //     if (full) {
+    // //         // Geser semua baris di atas baris yang penuh ke bawah
+    // //         for (int i = y; i > 0; i--) {
+    // //             for (int j = 0; j < GRID_WIDTH; j++) {
+    // //                 // Salin nilai dari baris di atas ke baris saat ini
+    // //                 grid->cells[i][j] = grid->cells[i - 1][j];
+    // //             }
+    // //         }
 
-    //         // Set baris paling atas (baris 0) menjadi kosong (nilai 0)
-    //         for (int j = 0; j < GRID_WIDTH; j++) {
-    //             grid->cells[0][j] = 0;
-    //         }
+    // //         // Set baris paling atas (baris 0) menjadi kosong (nilai 0)
+    // //         for (int j = 0; j < GRID_WIDTH; j++) {
+    // //             grid->cells[0][j] = 0;
+    // //         }
 
-    //         // Tambahkan jumlah baris yang dihapus
-    //         rowsCleared++;
-    //     }
-    // }
+    // //         // Tambahkan jumlah baris yang dihapus
+    // //         rowsCleared++;
+    // //     }
+    // // }
 
-    // // Kembalikan jumlah baris yang dihapus
-    // return rowsCleared;
+    // // // Kembalikan jumlah baris yang dihapus
+    // // return rowsCleared;
 
     int rowsCleared = 0;
 
@@ -132,7 +133,7 @@ int isGameOver(Grid* grid) {
 
     StoredBlock* current = grid->blocks;
     while (current != NULL) {
-        if (current->y == 0) {
+        if (current->y <= 1) {
             return 1;
         }
         current = current->next;
@@ -195,23 +196,9 @@ void drawGameOverScreen(Grid grid, int score) {
 }
 
 void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
-    // printf("Menyimpan tetromino...\n"); //?DEBUGGING
-
-    //Gambar blok dan simpan jika sudah mencapai batas pergerakan
-    // for (int i = 0; i < 4; i++) {
-    //     int x = t->blocks[i].x;
-    //     int y = t->blocks[i].y;
-        
-    //     if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
-    //         grid->cells[y][x] = t->color;
-    //     }
-    // }
-
     for (int i = 0; i < 4; i++) {
         int x = t->blocks[i].x;
         int y = t->blocks[i].y;
-
-        // Simpan ke dalam linked list StoredBlock jika masih dalam batas grid
         if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
             StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
             newBlock->x = x;
@@ -221,20 +208,53 @@ void storeTetrominoInGrid(Grid *grid, Tetromino *t) {
             grid->blocks = newBlock;
         }
     }
+}
 
+void tutorialPage(){
 
-    // BlockNode* current = t->head;
-    // while (current != NULL) {
-    //     // Only store if within grid bounds
-    //     if (current->y >= 0 && current->x >= 0 && current->x < GRID_WIDTH) {
-    //         StoredBlock* newBlock = (StoredBlock*)malloc(sizeof(StoredBlock));
-    //         newBlock->x = current->x;
-    //         newBlock->y = current->y;
-    //         newBlock->color = t->color;
-    //         newBlock->next = grid->blocks;
-    //         grid->blocks = newBlock;
-    //     }
-    //     current = current->next;
-    // }
+    initwindow(screenWidth, screenHeight, (char*)"Tutorial Bermain Tetris");
+
+    setbkcolor(BLACK);
+    cleardevice();
+
+    // Label Hold
+    settextstyle(3, HORIZ_DIR, 8);
+    setcolor(MAGENTA);
+    outtextxy(30, 20, (char*)"Cara Bermain");
+    
+    settextstyle(2, HORIZ_DIR, 8);
+    setcolor(LIGHTBLUE);
+    outtextxy(40, 100, (char*)"Tujuan Permainan");
+    
+    settextstyle(10, HORIZ_DIR, 3);
+    setcolor(WHITE);
+    outtextxy(50, 133, (char*)"Susun block-block tetromino yang jatuh agar membentuk baris penuh secara horizontal ");
+    outtextxy(50, 153, (char*)"untuk mendapatkan skor!!");
+    outtextxy(60, 180, (char*)"- Baris penuh akan menghilang dan menambah skor.");
+    outtextxy(60, 200, (char*)"- Permainan berakhir jika blok mencapai atas grid.");
+    outtextxy(60, 230, (char*)"- Dapatkan skor tertinggi untuk masuk leaderboard!");
+
+    settextstyle(2, HORIZ_DIR, 8);
+    setcolor(LIGHTBLUE);
+    outtextxy(40, 275, (char*)"Kontrol Permainan");
+    
+    settextstyle(10, HORIZ_DIR, 2);
+    setcolor(WHITE);
+    outtextxy(50, 315, (char*)"[Arrow Up]       : Memutar Tetromino (Rotate)");
+    outtextxy(50, 345, (char*)"[Arrow Down]     : Mempercepat jatuhnya Tetromino");
+    outtextxy(50, 365, (char*)"[Arrow Left]     : Menggeser Tetromino ke kiri");
+    outtextxy(50, 385, (char*)"[Arrow Right]    : Menggeser Tetromino ke kanan");
+    outtextxy(50, 415, (char*)"[Spasi]          : Menjatuhkan langsung ke bawah (Hard Drop)");
+    outtextxy(50, 445, (char*)"[Enter]          : Menahan (Hold) Tetromino aktif");
+
+    getch();
+    closegraph();
+
 
 }
+
+
+    
+    
+   
+ 

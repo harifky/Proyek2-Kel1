@@ -7,7 +7,7 @@
             "command": "g++",
             "args": [
                 // "/c if not exist output mkdir output && g++ main.c body/game.c body/grid.c body/tetromino.c -o output/output.exe -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32"
-                "-o", "output/tetris.exe", 
+                "-o", "output/tetromino.exe", 
                 "main.c", 
                 "body/game.c",
                 "body/Hafizh.c",
