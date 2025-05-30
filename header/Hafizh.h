@@ -5,7 +5,7 @@
 
 Tetromino createTetromino(int type, int startX, int startY);
 void drawTetromino(Tetromino t);
-void drawNextTetromino(Tetromino next, int posX, int posY);
+void drawNextTetromino(Tetromino next, int boxX, int boxY);
 Tetromino getNewTetromino();
 int setRandomTetromino();
 /*void destroyTetromino(Tetromino* t);*/
