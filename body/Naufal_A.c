@@ -1,6 +1,7 @@
 #include "../header/config.h"
 #include "../header/Rifky.h"
 #include "../header/Naufal_A.h"
+#include "../header/Naufal_N.h"
 
 #include <stdlib.h>
 // typedef struct 
@@ -247,7 +248,18 @@ void tutorialPage(){
     outtextxy(50, 415, (char*)"[Spasi]          : Menjatuhkan langsung ke bawah (Hard Drop)");
     outtextxy(50, 445, (char*)"[Enter]          : Menahan (Hold) Tetromino aktif");
 
-    getch();
+    settextstyle(10, HORIZ_DIR, 2);
+    setcolor(WHITE);
+    outtextxy(50, 480, (char*)"Tekan ESC untuk kembali ke main menu");
+
+    while(1) {
+        char key = getch();
+        if (key == 27) { // ESC key
+            showMenu();
+            break;
+        }
+    }
+
     closegraph();
 
 
