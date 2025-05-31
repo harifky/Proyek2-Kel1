@@ -176,90 +176,99 @@ void drawPanel(Panel panel, int *score) {
 }
 
 void showMenu() {
-    initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
+  initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
 
-    bool menuActive = true;
-    int selectedOption = 0;
-    const char* options[] = {"Play Game", "Leaderboard", "Tutorial", "Exit"};
-    const int optionCount = 4;
+  bool menuActive = true;
+  int selectedOption = 0;
+  const char *options[] = {"Play Game", "Leaderboard", "Tutorial", "Exit"};
+  const int optionCount = 4;
 
-    while (menuActive) {
-        cleardevice();
-        int centerX = screenWidth / 2;
-        int centerY = screenHeight / 2;
+  while (menuActive) {
+    cleardevice();
+    int centerX = screenWidth / 2;
+    int centerY = screenHeight / 2;
 
-        // === Judul "TETROMANIA" ===
-        settextstyle(10, HORIZ_DIR, 6);
-        setcolor(LIGHTBLUE);
-        const char* title = "TETROMANIA";
-        int textWidth = textwidth((char*)title);
-        outtextxy(centerX - textWidth / 2, 80, (char*)title);
+    // === Judul "TETROMANIA" ===
+    int tetromaniaWidth = 540;  // 900 - 360 = 540
+    int tetromaniaHeight = 150; // 180 - 30 = 150
+    int tetromaniaX = centerX - tetromaniaWidth / 2;
+    readimagefile("Proyek2-Kel1/image/TETROMANIA.bmp", tetromaniaX, 30,
+                  tetromaniaX + tetromaniaWidth, 30 + tetromaniaHeight);
 
-        // === Border dan Background Panel Menu ===
-        int panelWidth = 400;
-        int panelHeight = 300;
-        int panelX = centerX - panelWidth / 2;
-        int panelY = centerY - panelHeight / 2;
+    // === Border dan Background Panel Menu ===
+    int panelWidth = 400;
+    int panelHeight = 300;
+    int panelX = centerX - panelWidth / 2;
+    int panelY = centerY - panelHeight / 2;
 
-        // Background Panel
-        setfillstyle(SOLID_FILL, DARKGRAY);
-        bar(panelX, panelY, panelX + panelWidth, panelY + panelHeight);
+    // Background Panel
+    setfillstyle(SOLID_FILL, DARKGRAY);
+    bar(panelX, panelY, panelX + panelWidth, panelY + panelHeight);
 
-        // Border Panel
+    // Border Panel
+    setcolor(WHITE);
+    rectangle(panelX, panelY, panelX + panelWidth, panelY + panelHeight);
+
+    int footerWidth = 525; // 900 - 375 = 525
+    int footerHeight = 50; // Assuming footer height (your 300-500 seems wrong)
+    int footerX = centerX - footerWidth / 2;
+    int footerY = panelY + panelHeight + 50; // 50px below the menu panel
+    readimagefile("Proyek2-Kel1/image/FOOTER.bmp", footerX, footerY,
+                  footerX + footerWidth, footerY + footerHeight);
+
+    // === Menu Options ===
+    settextstyle(10, HORIZ_DIR, 3);
+    for (int i = 0; i < optionCount; i++) {
+      int optionY = panelY + 50 + i * 60;
+
+      if (i == selectedOption) {
+        // Highlight aktif (warna dan blok latar belakang)
+        setfillstyle(SOLID_FILL, BLUE);
+        bar(panelX + 20, optionY - 10, panelX + panelWidth - 20, optionY + 40);
+
         setcolor(WHITE);
-        rectangle(panelX, panelY, panelX + panelWidth, panelY + panelHeight);
-
-        // === Menu Options ===
-        settextstyle(10, HORIZ_DIR, 3);
-        for (int i = 0; i < optionCount; i++) {
-            int optionY = panelY + 50 + i * 60;
-
-            if (i == selectedOption) {
-                // Highlight aktif (warna dan blok latar belakang)
-                setfillstyle(SOLID_FILL, BLUE);
-                bar(panelX + 20, optionY - 10, panelX + panelWidth - 20, optionY + 40);
-
-                setcolor(WHITE);
-                char buffer[100];
-                sprintf(buffer, "-> %s", options[i]);
-                outtextxy(panelX + 40, optionY, buffer);
-            } else {
-                setcolor(WHITE);
-                outtextxy(panelX + 40, optionY, (char*)options[i]);
-            }
-        }
-
-        // Navigasi menu
-        char key = getch();
-        if (key == 72) {
-            selectedOption = (selectedOption - 1 + optionCount) % optionCount;
-        } else if (key == 80) {
-            selectedOption = (selectedOption + 1) % optionCount;
-        } else if (key == 13) {
-            menuActive = false;
-        }
+        char buffer[100];
+        sprintf(buffer, "-> %s", options[i]);
+        outtextxy(panelX + 40, optionY, buffer);
+      } else {
+        setcolor(WHITE);
+        outtextxy(panelX + 40, optionY, (char *)options[i]);
+      }
     }
 
-    // === Aksi saat menu dipilih ===
-    switch (selectedOption) {
-        case 0:
-            playGame();
-            break;
-        case 1: {
-            cleardevice();
-            Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200, 400, 400};
-            drawLeadPanel(leaderboardPanel);
-            outtextxy(screenWidth / 2 - 150, screenHeight / 2 + 250, (char*)"Press any key to return...");
-            getch();
-            showMenu();
-            break;
-        }
-        case 2:
-            tutorialPage();
-            break;
-        case 3:
-            closegraph();
-            exit(0);
-            break;
+    // Navigasi menu
+    char key = getch();
+    if (key == 72) {
+      selectedOption = (selectedOption - 1 + optionCount) % optionCount;
+    } else if (key == 80) {
+      selectedOption = (selectedOption + 1) % optionCount;
+    } else if (key == 13) {
+      menuActive = false;
     }
+  }
+
+  // === Aksi saat menu dipilih ===
+  switch (selectedOption) {
+  case 0:
+    playGame();
+    break;
+  case 1: {
+    cleardevice();
+    Panel leaderboardPanel = {screenWidth / 2 - 200, screenHeight / 2 - 200,
+                              400, 400};
+    drawLeadPanel(leaderboardPanel);
+    outtextxy(screenWidth / 2 - 170, screenHeight / 2 + 230,
+              (char *)"Press any key to return...");
+    getch();
+    showMenu();
+    break;
+  }
+  case 2:
+    tutorialPage();
+    break;
+  case 3:
+    closegraph();
+    exit(0);
+    break;
+  }
 }

@@ -25,6 +25,11 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
 
             int scoreTable[] = {0, 200, 300, 500, 800};
             *score += scoreTable[rowsCleared];
+            int previousScore = *score;
+
+            if (*score > previousScore) {
+                playSoundEffect("sound/Point.wav");
+            }
 
             printf("Score: %d\n", *score);
 
@@ -102,9 +107,6 @@ void playGame(){
         // Aktifkan halaman buffer
         setactivepage(currentPage);
         cleardevice();
-        
-        // printf("draw hold Panel!!\n");
-        drawHoldPanel(gameHoldPanel);
 
         //Cek apakah game over
         if (isGameOver(&gameGrid)) {
@@ -133,6 +135,9 @@ void playGame(){
 
         // printf("draw lead Panel!!\n");
         drawLeadPanel(leadPanel);
+
+        // printf("draw hold Panel!!\n");
+        drawHoldPanel(gameHoldPanel);
 
         // printf("draw Shadowblock!!\n");
         drawShadowBlock(&currentTetromino, &gameGrid);
