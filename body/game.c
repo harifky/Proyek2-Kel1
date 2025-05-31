@@ -23,7 +23,7 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
 
             // Bersihkan baris penuh dan hitung skor
             int rowsCleared = clearFullRows(grid);
-            int scoreTable[] = {0, 200, 300, 500, 800};
+            int scoreTable[] = {0, 100, 250, 400, 800};
             int previousScore = *score;
 
             *score += scoreTable[rowsCleared];

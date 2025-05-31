@@ -8,6 +8,9 @@
 #include <graphics.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h> // Untuk Sleep()
+
+#define DARKGRAY COLOR(64, 64, 64)
 
 // Variabel global untuk hold tetromino dan status hold
 Tetromino heldTetromino;

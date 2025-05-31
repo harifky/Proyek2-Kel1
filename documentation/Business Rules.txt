@@ -1,28 +1,60 @@
-Business Rules - Tetromania
-- Aturan Umum
--- Tetromania adalah permainan berbasis Tetris yang dimainkan pada area grid dengan ukuran tertentu.
--- Pemain mengontrol blok yang jatuh dan harus menyusunnya agar membentuk baris penuh.
--- Blok akan turun secara otomatis, tetapi pemain bisa menggerakkan dan memutar blok.
--- Jika tumpukan blok mencapai batas atas layar, permainan berakhir.
+# Business Rules - Tetromania
 
-- Aturan Blok dan Gerakan
--- Setiap blok (Tetromino) memiliki bentuk dan warna berbeda.
--- Blok dapat digerakkan ke kiri atau kanan.
--- Pemain dapat memutar blok dalam dua orientasi (horizontal dan vertikal).
--- Jika pemain menekan Spasi, blok langsung jatuh ke posisi terendah yang tersedia.
--- Blok akan berhenti jika bertabrakan dengan blok lain atau dasar permainan.
--- Blok dapat dihold dengan menekan Enter
+## Aturan Umum
+- Tetromania adalah permainan berbasis Tetris yang dimainkan pada area grid dengan ukuran 10x20 (lebar x tinggi).
+- Pemain mengontrol blok tetromino yang jatuh dan harus menyusunnya agar membentuk baris penuh.
+- Blok akan turun secara otomatis dengan kecepatan yang meningkat seiring bertambahnya skor.
+- Jika tumpukan blok mencapai batas atas layar (y <= 1), permainan berakhir.
 
-- Aturan Skor
--- Pemain mendapatkan 100 poin untuk setiap baris yang berhasil dihapus.
--- Jika lebih dari satu baris terhapus sekaligus, pemain mendapatkan poin tambahan:
---- 1 baris = 100 poin
---- 2 baris = 250 poin
---- 3 baris = 400 poin
---- 4 baris (Tetris) = 800 poin
--- Skor total akan ditampilkan di layar selama permainan berlangsung.
+## Aturan Blok dan Gerakan
+- Setiap blok (Tetromino) memiliki 7 bentuk berbeda dengan warna yang unik.
+- Blok dapat digerakkan ke kiri (Arrow Left) atau kanan (Arrow Right).
+- Blok dapat dipercepat turunnya dengan menekan Arrow Down.
+- Pemain dapat memutar blok searah jarum jam dengan menekan Arrow Up.
+- Jika pemain menekan Spasi, blok langsung jatuh ke posisi terendah yang tersedia (Hard Drop).
+- Blok akan berhenti jika bertabrakan dengan blok lain atau dasar permainan.
+- Blok dapat di-hold dengan menekan Enter (menyimpan blok saat ini dan menukarnya dengan blok yang sudah di-hold sebelumnya).
 
-- Aturan Kemenangan & Kekalahan
--- Permainan berakhir jika blok mencapai batas atas layar.
--- Setelah permainan berakhir user akan diminta memasukan nama agar dapat dimasukan ke leaderboard
--- Leaderbord hanya akan memunculkan Top 5 score tertinggi
+## Aturan Skor
+- Pemain mendapatkan poin berdasarkan jumlah baris yang berhasil dihapus sekaligus:
+  - 1 baris = 200 poin
+  - 2 baris = 300 poin
+  - 3 baris = 500 poin
+  - 4 baris (Tetris) = 800 poin
+- Skor total akan ditampilkan di panel status selama permainan berlangsung.
+- Efek suara akan diputar ketika pemain berhasil menghapus baris dan mendapat poin.
+
+## Aturan Kecepatan
+- Kecepatan turunnya blok akan meningkat berdasarkan skor yang dicapai:
+  - Skor 0-999: Speed Level 1 (paling lambat)
+  - Skor 1000-1999: Speed Level 2
+  - Skor 2000-3999: Speed Level 3
+  - Skor 4000+: Speed Level 4 (paling cepat)
+
+## Fitur Bantuan
+- Shadow Block: Bayangan blok dengan garis putus-putus menunjukkan posisi dimana blok akan jatuh.
+- Next Preview: Panel menampilkan blok tetromino berikutnya yang akan turun.
+- Hold System: Pemain dapat menyimpan satu blok untuk digunakan nanti dengan menekan Enter.
+
+## Aturan Kemenangan & Kekalahan
+- Permainan berakhir jika blok mencapai batas atas layar (posisi y <= 1).
+- Setelah permainan berakhir, user akan diminta memasukkan nama untuk dimasukkan ke leaderboard.
+- Leaderboard menampilkan top 10 skor tertinggi dengan informasi nama, skor, dan waktu pencapaian.
+- Setiap pemain maksimal dapat memiliki 3 entri di leaderboard. Jika sudah 3 entri dan mendapat skor baru yang lebih tinggi, skor terendah dari pemain tersebut akan digantikan.
+
+## Menu dan Navigasi
+- Main Menu: Terdiri dari opsi Play Game, Leaderboard, Tutorial, dan Exit.
+- Tutorial: Halaman panduan cara bermain dengan kontrol lengkap.
+- Leaderboard: Menampilkan daftar skor tertinggi dari file leaderboard.txt.
+- Navigasi menu menggunakan Arrow Up/Down untuk memilih dan Enter untuk konfirmasi.
+
+## Audio dan Visual
+- Musik latar belakang akan diputar selama permainan berlangsung.
+- Efek suara khusus akan diputar saat pemain mendapat poin.
+- Tampilan menggunakan grafik dengan warna-warna berbeda untuk setiap tipe tetromino.
+- Grid permainan ditampilkan dengan border putih dan background hitam.
+
+## Penyimpanan Data
+- Skor dan data leaderboard disimpan dalam file "leaderboard.txt".
+- Format penyimpanan: [username] [score] [timestamp].
+- File leaderboard akan dibuat otomatis jika belum ada.
