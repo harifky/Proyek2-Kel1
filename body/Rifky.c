@@ -40,7 +40,7 @@ void drawLeadPanel(Panel panel) {
     char leaderBoardText[] = "Leader Board";
     outtextxy(panel.x + 50, panel.y + 20, leaderBoardText);
 
-    FILE *file = fopen("leaderboard.txt", "r");
+    FILE *file = fopen("Proyek2-Kel1/leaderboard.txt", "r");
 
     if (file == NULL) {
         outtextxy(panel.x + 20, panel.y + 50, (char*)"No scores available");
@@ -71,7 +71,7 @@ void drawLeadPanel(Panel panel) {
 }
 
 void saveScoreToFile(const char *username, int score) {
-    FILE *file = fopen("leaderboard.txt", "r");
+    FILE *file = fopen("Proyek2-Kel1/leaderboard.txt", "r");
     Scoring *head = NULL;
 
     // Load existing scores
@@ -125,7 +125,7 @@ void saveScoreToFile(const char *username, int score) {
     }
 
     // Save top 10 to file
-    file = fopen("leaderboard.txt", "w");
+    file = fopen("Proyek2-Kel1/leaderboard.txt", "w");
     if (file == NULL) {
         perror("Gagal membuka file untuk ditulis");
         return;

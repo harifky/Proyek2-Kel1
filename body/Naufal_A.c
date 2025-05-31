@@ -146,53 +146,60 @@ void drawGameOverScreen(Grid grid, int score) {
     setcolor(WHITE);
     rectangle(grid.x, grid.y, grid.x + grid.width, grid.y + grid.height);
     
+    // Tampilkan "GAME OVER"
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
-    char gameOverText[10] = "GAME OVER";
-    outtextxy(670, 200, gameOverText);
-    
-    
+    outtextxy(670, 200, "GAME OVER");
+
+    // Tampilkan skor akhir
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
     char scoreText[30];
     sprintf(scoreText, "Final Score: %d", score);
-    outtextxy(670, 300, scoreText);
-    
-    // **Minta Username**
-    settextjustify(CENTER_TEXT, CENTER_TEXT);
-    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
-    char username[20];
-    char enterNameText[] = "Enter your name:";
-    outtextxy(850, 350, enterNameText);
+    outtextxy(670, 260, scoreText);
 
+    // Instruksi untuk memasukkan nama
+    outtextxy(670, 320, "Enter your name:");
+
+    // Inisialisasi variabel
+    char username[20] = "";
     int i = 0;
+
+    // Input Username
+    settextjustify(LEFT_TEXT, TOP_TEXT);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
+    
     while (1) {
         char key = getch();
-        if (key == 13) {
-            settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-            char exitText[] = "Press enter to exit...";
-            outtextxy(270, 430, exitText);
+
+        if (key == 13) { // Enter ditekan
             break;
-        }  // Jika Enter ditekan, selesai
-        if (key == 8 && i > 0) { // Jika Backspace ditekan
+        } else if (key == 8 && i > 0) { // Backspace
             i--;
             username[i] = '\0';
-        } else if (i < 19) { // Tambahkan karakter ke username
+        } else if (i < sizeof(username) - 1 && (key >= 32 && key <= 126)) {
+            // Hanya karakter ASCII printable
             username[i++] = key;
             username[i] = '\0';
         }
 
-        // Tampilkan input username
-        setcolor(WHITE);
+        // Bersihkan area input
         setfillstyle(SOLID_FILL, BLACK);
-        bar(280, 370, 480, 400); // Bersihkan area input
-        outtextxy(280, 370, username);
+        bar(660, 360, 940, 390);
+        
+        // Tampilkan username saat ini
+        outtextxy(660, 360, username);
     }
 
-    username[i] = '\0'; // Pastikan string diakhiri dengan null terminator
+    // Jika username kosong, isi dengan "Anonymous"
+    if (strlen(username) == 0) {
+        strcpy(username, "Anonymous");
+    }
 
-    // **Simpan Skor ke File**
+    // Simpan skor ke file
     saveScoreToFile(username, score);
-    
-    // Tunggu input sebelum keluar
+
+    // Tampilkan instruksi keluar
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
+    outtextxy(670, 420, "Press any key to exit...");
     getch();
 }
 
