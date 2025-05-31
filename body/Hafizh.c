@@ -145,7 +145,7 @@ Tetromino getNewTetromino() {
 }*/
 
 int setRandomTetromino() {
-    srand(time(NULL)); // Seed untuk angka acak
+    // srand(time(NULL)); // Seed untuk angka acak
     int type = rand() % 7;
     printf("type : %d\n", type);
     return type;

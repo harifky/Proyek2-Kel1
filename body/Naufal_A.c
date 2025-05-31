@@ -37,44 +37,6 @@ int count = 0;
 }
 
 int clearFullRows(Grid *grid) {
-    // // // Inisialisasi variabel untuk menghitung jumlah baris yang dihapus
-    // // int rowsCleared = 0;
-
-    // // // Loop setiap baris di grid dari atas ke bawah
-    // // for (int y = 0; y < GRID_HEIGHT; y++) {
-    // //     int full = 1;  // Anggap baris ini penuh (flag)
-
-    // //     // Loop melalui setiap kolom di baris saat ini
-    // //     for (int x = 0; x < GRID_WIDTH; x++) {
-    // //         // Jika ada sel yang kosong (nilai 0), baris ini tidak penuh
-    // //         if (grid->cells[y][x] == 0) {
-    // //             full = 0; // Set flag menjadi 0
-    // //             break;    // Keluar dari loop kolom
-    // //         }
-    // //     }
-
-    // //     // Jika baris penuh full(flag), hapus baris tersebut
-    // //     if (full) {
-    // //         // Geser semua baris di atas baris yang penuh ke bawah
-    // //         for (int i = y; i > 0; i--) {
-    // //             for (int j = 0; j < GRID_WIDTH; j++) {
-    // //                 // Salin nilai dari baris di atas ke baris saat ini
-    // //                 grid->cells[i][j] = grid->cells[i - 1][j];
-    // //             }
-    // //         }
-
-    // //         // Set baris paling atas (baris 0) menjadi kosong (nilai 0)
-    // //         for (int j = 0; j < GRID_WIDTH; j++) {
-    // //             grid->cells[0][j] = 0;
-    // //         }
-
-    // //         // Tambahkan jumlah baris yang dihapus
-    // //         rowsCleared++;
-    // //     }
-    // // }
-
-    // // // Kembalikan jumlah baris yang dihapus
-    // // return rowsCleared;
 
     int rowsCleared = 0;
 
