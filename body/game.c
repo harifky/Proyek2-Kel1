@@ -3,34 +3,33 @@
 #include <windows.h>
 #include <mmsystem.h>
 
-//#define TARGET_FPS 60  // Bisa diganti ke 20 jika ingin 20 FPS
-//#define FRAME_DELAY (1000 / TARGET_FPS)
-//#define DROP_SPEED 20
-
+// Kecepatan awal frame per detik (60 FPS)
 int frameDelay = 1000 / 60;
+
 Tetromino currentTetromino;
 Tetromino nextTetromino;
-// Grid grid;
 
-//fungsi untuk memperbarui tampilan layar
-/*Dibuat oleh M. Naufal Nurmaryadi & M. Naufal Alfarizky*/
+// Fungsi untuk memperbarui posisi tetromino dan skor
 void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
     int dropSpeed = (frameDelay / 5 > 1) ? (frameDelay / 5) : 1;
-    if (frameCount % dropSpeed == 0) {  
+
+    // Setiap interval tertentu, tetromino akan turun
+    if (frameCount % dropSpeed == 0) {
         if (canMoveDown(tetromino, grid)) {
             moveTetromino(tetromino, grid, 0, 1);
         } else {
+            // Simpan tetromino ke grid saat tidak bisa turun
             storeTetrominoInGrid(grid, tetromino);
-            int rowsCleared = clearFullRows(grid);
 
-            int scoreTable[] = {0, 200, 300, 500, 800};
+            // Bersihkan baris penuh dan hitung skor
+            int rowsCleared = clearFullRows(grid);
+            int scoreTable[] = {0, 100, 250, 400, 800};
+            int previousScore = *score;
+
             *score += scoreTable[rowsCleared];
 
             printf("Score: %d\n", *score);
 
-            // *tetromino = nextTetromino;
-
-            // *tetromino = createTetromino(setRandomTetromino(), 5, -2);
             int hasHeldThisTurn = 0;
 
             currentTetromino = getNewTetromino();
@@ -51,17 +50,15 @@ Dibuat oleh
 void playGame(){
 
     int gd = DETECT, gm;
-    
-    // Buat window fullscreen
     initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
-    
-    //Inisialisasi ukuran grid dan panel untuk tampilan game
+
+    // Inisialisasi posisi dan ukuran grid serta panel
     Grid gameGrid = {400, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
-    Panel gameHoldPanel = {gameGrid.x - 160, gameGrid.y + (gameGrid.height - 650), 150, 150};
+    Panel gameHoldPanel = {gameGrid.x - 160, gameGrid.y + (gameGrid.height - 750), 150, 150};
     Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 200, gameGrid.height};
     Panel leadPanel = {gameGrid.x + gameGrid.width + gamePanel.width + 20, 50, 400, 300};
     
-    bool start = true; //trigger untuk memulai game
+    bool isRunning = true; //trigger untuk memulai game
     int currentPage = 0; // Untuk mengatur buffer aktif
     int frameCount = 0; // Counter untuk mengontrol kecepatan jatuh
     int score = 0; //inisialisasi awal score
@@ -87,40 +84,35 @@ void playGame(){
     //memutar backsound
     playSoundEffect("sound/HoldOnTight.wav");
  
-    while (start) {
+    while (isRunning) {
 
         handleInput(&currentTetromino, &gameGrid, &score);
 
+        // Perbarui posisi tetromino, skor, dll.
         updateGame(&currentTetromino, &gameGrid, &score, frameCount);
         
         // Aktifkan halaman buffer
         setactivepage(currentPage);
-        cleardevice();
-        
-        // printf("draw hold Panel!!\n");
-        drawHoldPanel(gameHoldPanel);
+        cleardevice();  // Bersihkan layar
 
-        //Cek apakah game over
+        // Periksa kondisi game over
         if (isGameOver(&gameGrid)) {
-            
-            setvisualpage(currentPage);
-            
-            drawPanel(gamePanel, &score);
-            
-            drawGrid(gameGrid);
-            
-            drawLeadPanel(leadPanel);
-            
-            drawGameOverScreen(gameGrid, score);
-            
-            stopSound();
+            setvisualpage(currentPage);  // Tampilkan buffer saat ini
 
-            start = false;
-            
+            // Tampilkan UI akhir game
+            drawPanel(gamePanel, &score);
+            drawGrid(gameGrid);
+            drawLeadPanel(leadPanel);
+            drawGameOverScreen(gameGrid, score);
+
+            stopSound();     // Hentikan musik
+            isRunning = false;
             break;
         }else {
             drawGrid(gameGrid);
         }
+
+        drawHoldPanel(gameHoldPanel);
         
         drawPanel(gamePanel, &score);
 

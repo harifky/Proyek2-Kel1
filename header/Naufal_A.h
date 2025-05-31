@@ -9,6 +9,8 @@ int clearFullRows(Grid *grid);
 
 void playSoundEffect(const char* soundFile);
 
+void playSoundPoint(const char* soundFile);
+
 void stopSound();
 
 int isGameOver(Grid* grid);
