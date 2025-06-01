@@ -8,7 +8,7 @@
 void drawStoredBlocks(Grid *grid) {
     StoredBlock* current = grid->blocks;
 
-    while (current != NULL && safetyCounter < 1000) {
+    while (current != NULL) {
         setfillstyle(SOLID_FILL, current->color);
         bar(grid->x + current->x * BLOCK_SIZE, grid->y + current->y * BLOCK_SIZE,
             grid->x + (current->x + 1) * BLOCK_SIZE - 2, grid->y + (current->y + 1) * BLOCK_SIZE - 2);
