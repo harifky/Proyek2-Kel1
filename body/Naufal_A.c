@@ -8,7 +8,7 @@
 void drawStoredBlocks(Grid *grid) {
     StoredBlock* current = grid->blocks;
 
-    while (current != NULL) {
+    while (current != NULL && safetyCounter < 1000) {
         setfillstyle(SOLID_FILL, current->color);
         bar(grid->x + current->x * BLOCK_SIZE, grid->y + current->y * BLOCK_SIZE,
             grid->x + (current->x + 1) * BLOCK_SIZE - 2, grid->y + (current->y + 1) * BLOCK_SIZE - 2);
@@ -23,6 +23,7 @@ void drawStoredBlocks(Grid *grid) {
 
 // Menghapus baris penuh dari grid dan menggeser blok di atasnya
 int clearFullRows(Grid *grid) {
+
     int rowsCleared = 0;
 
     for (int y = 0; y < GRID_HEIGHT; y++) {
@@ -90,16 +91,16 @@ void drawGameOverScreen(Grid grid, int score) {
 
     // Tampilkan tulisan "GAME OVER"
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 5);
-    outtextxy(670, 200, "GAME OVER");
+    outtextxy(670, 200, (char*)"GAME OVER");
 
     // Tampilkan skor akhir
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 3);
     char scoreText[30];
-    sprintf(scoreText, "Final Score: %d", score);
+    sprintf(scoreText, (char*)"Final Score: %d", score);
     outtextxy(670, 260, scoreText);
 
     // Input username
-    outtextxy(670, 320, "Enter your name:");
+    outtextxy(670, 320, (char*)"Enter your name:");
     char username[20] = "";
     int i = 0;
 
@@ -126,7 +127,7 @@ void drawGameOverScreen(Grid grid, int score) {
 
     // Tampilkan instruksi keluar
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-    outtextxy(670, 420, "Press any key to exit...");
+    outtextxy(670, 420, (char*)"Press any key to exit...");
     getch();
 }
 

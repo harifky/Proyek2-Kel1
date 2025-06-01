@@ -28,52 +28,70 @@ void updateGame(Tetromino *tetromino, Grid *grid, int *score, int frameCount) {
 
             *score += scoreTable[rowsCleared];
 
-            // Putar suara jika skor bertambah
-            if (*score > previousScore) {
-                playSoundEffect("sound/Point.wav");
-            }
-
             printf("Score: %d\n", *score);
 
-            // Tetromino berikutnya menjadi aktif, dan buat yang baru untuk "next"
-            *tetromino = nextTetromino;
-            nextTetromino = createTetromino(setRandomTetromino(), 5, -2);
+            int hasHeldThisTurn = 0;
+
+            currentTetromino = getNewTetromino();
+
         }
     }
 }
 
-// Fungsi utama untuk menjalankan game
-void playGame() {
+// fungsi untuk menjalankan game
+/*
+Dibuat oleh
+- Hafizh Andika 
+- M. Naufal Alfarizky
+- M. Naufal Nurmaryadi
+- Micky Ridho
+- Rifky Hermawan 
+*/
+void playGame(){
+
     int gd = DETECT, gm;
     initwindow(screenWidth, screenHeight, "Tetris Fullscreen", -3, -3);
 
     // Inisialisasi posisi dan ukuran grid serta panel
     Grid gameGrid = {400, 50, GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE};
-    Panel holdPanel = {gameGrid.x - 160, gameGrid.y + (gameGrid.height - 650), 150, 150};
-    Panel infoPanel = {gameGrid.x + gameGrid.width + 10, 50, 200, gameGrid.height};
-    Panel leaderboardPanel = {infoPanel.x + infoPanel.width + 10, 50, 400, 300};
+    Panel gameHoldPanel = {gameGrid.x - 160, gameGrid.y + (gameGrid.height - 750), 150, 150};
+    Panel gamePanel = {gameGrid.x + gameGrid.width + 10, 50, 200, gameGrid.height};
+    Panel leadPanel = {gameGrid.x + gameGrid.width + gamePanel.width + 20, 50, 400, 300};
+    
+    bool isRunning = true; //trigger untuk memulai game
+    int currentPage = 0; // Untuk mengatur buffer aktif
+    int frameCount = 0; // Counter untuk mengontrol kecepatan jatuh
+    int score = 0; //inisialisasi awal score
 
-    bool isRunning = true;
-    int currentPage = 0;  // Untuk double buffering
-    int frameCount = 0;   // Hitungan frame berjalan
-    int score = 0;;
+    srand(time(NULL));
 
-    // Buat tetromino awal
+    StoredBlock *current = gameGrid.blocks;
+    while (current != NULL) {
+        StoredBlock *temp = current;
+        current = current->next;
+        free(temp);
+    }
+    gameGrid.blocks = NULL;
+    
+
+    //Inisialisasi currentTetromino & nextTetromino**
     nextTetromino = createTetromino(setRandomTetromino(), 5, -2);
     currentTetromino = createTetromino(setRandomTetromino(), 5, -3);
 
-    // Mainkan musik latar
-    playSoundEffect("sound/HoldOnTight.wav");
+    
+    
 
-    // Game loop utama
+    //memutar backsound
+    playSoundEffect("sound/HoldOnTight.wav");
+ 
     while (isRunning) {
-        // Tangani input user (panah, rotasi, drop, dll)
+
         handleInput(&currentTetromino, &gameGrid, &score);
 
         // Perbarui posisi tetromino, skor, dll.
         updateGame(&currentTetromino, &gameGrid, &score, frameCount);
-
-        // Aktifkan halaman buffer untuk menggambar
+        
+        // Aktifkan halaman buffer
         setactivepage(currentPage);
         cleardevice();  // Bersihkan layar
 
@@ -82,31 +100,40 @@ void playGame() {
             setvisualpage(currentPage);  // Tampilkan buffer saat ini
 
             // Tampilkan UI akhir game
-            drawPanel(infoPanel, &score);
+            drawPanel(gamePanel, &score);
             drawGrid(gameGrid);
-            drawLeadPanel(leaderboardPanel);
+            drawLeadPanel(leadPanel);
             drawGameOverScreen(gameGrid, score);
 
             stopSound();     // Hentikan musik
             isRunning = false;
             break;
+        }else {
+            drawGrid(gameGrid);
         }
 
-        // Gambar semua elemen UI game
-        drawGrid(gameGrid);
-        drawPanel(infoPanel, &score);
-        drawLeadPanel(leaderboardPanel);
-        drawHoldPanel(holdPanel);
-        drawShadowBlock(&currentTetromino, &gameGrid);  // Bayangan posisi jatuh
-        drawStoredBlocks(&gameGrid);                    // Blok yang sudah terkunci
-        drawTetromino(currentTetromino);                // Tetromino yang sedang aktif
+        drawHoldPanel(gameHoldPanel);
+        
+        drawPanel(gamePanel, &score);
 
-        // Tampilkan frame ke layar
-        setvisualpage(currentPage);
-        currentPage = 1 - currentPage;  // Ganti buffer
+        drawLeadPanel(leadPanel);
 
-        frameCount++;                   // Tambahkan hitungan frame
-        updateFrameDelay(&score);      // Sesuaikan kecepatan berdasarkan skor
-        delay(frameDelay);             // Tunggu waktu frame
+        drawShadowBlock(&currentTetromino, &gameGrid);
+        
+        drawStoredBlocks(&gameGrid); 
+
+        drawTetromino(currentTetromino);
+
+        setvisualpage(currentPage);  // Tampilkan halaman buffer
+        currentPage = 1 - currentPage; // Ganti halaman untuk frame berikutnya
+
+
+        // Update frame count untuk control kecepatan tetromino
+        frameCount++;
+
+        // Update frame delay berdasarkan skor
+        updateFrameDelay(&score); 
+        delay(frameDelay);
+
     }
 }

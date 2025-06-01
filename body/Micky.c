@@ -144,9 +144,9 @@ void handleInput(Tetromino *tetromino, Grid *grid, int *score) {
 
 // Mempercepat kecepatan jatuh blok berdasarkan skor
 void updateFrameDelay(int *score) {
-    if (*score >= 4000) frameDelay = 1000 / 60;
-    else if (*score >= 3000) frameDelay = 1000 / 40;
-    else if (*score >= 2000) frameDelay = 1000 / 30;
-    else if (*score >= 1000) frameDelay = 1000 / 20;
+    if (*score >= 6000) frameDelay = 1000 / 60;
+    else if (*score >= 4000) frameDelay = 1000 / 40;
+    else if (*score >= 3000) frameDelay = 1000 / 30;
+    else if (*score >= 1500) frameDelay = 1000 / 20;
     else frameDelay = 1000 / 15;
 }
