@@ -6,7 +6,7 @@
 typedef struct Scoring {
     char username[50];
     int score;
-    char time[30]; // waktu dalam format string
+    char time[30];
     struct Scoring *next;
 } Scoring;
 
